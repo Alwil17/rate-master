@@ -1,7 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'core/providers/api_data_provider.dart';
+import 'core/providers/app_state_provider.dart';
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  initializeDateFormatting('fr_FR', "")
+      .then((_) => runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+        create: (_) => AppStateProvider(prefs)..loadPreferences()),
+    ChangeNotifierProvider(create: (_) => ApiDataProvider()),
+  ], child: MyApp())));
+
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false
+    ..customAnimation = CustomAnimation();
+}
+
+class CustomAnimation extends EasyLoadingAnimation {
+  CustomAnimation();
+
+  @override
+  Widget buildWidget(
+      Widget child,
+      AnimationController controller,
+      AlignmentGeometry alignment,
+      ) {
+    return Opacity(
+      opacity: controller.value,
+      child: RotationTransition(
+        turns: controller,
+        child: child,
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -10,29 +69,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    final GoRouter goRouter = AppRouter().router;
+
+    return Consumer<AppStateProvider>(
+        builder: (context, appStateProvider, child) {
+          return MaterialApp.router(
+            title: 'RateMaster',
+            theme: appTheme,
+            localizationsDelegates: [
+              AppLocalizations.delegate, // Add this line
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale('fr'), // french
+              Locale('en'), // English
+            ],
+            locale: Locale(appStateProvider.locale),
+            routeInformationProvider: goRouter.routeInformationProvider,
+            routeInformationParser: goRouter.routeInformationParser,
+            routerDelegate: goRouter.routerDelegate,
+            builder: EasyLoading.init(),
+          );
+        });
   }
 }
 
