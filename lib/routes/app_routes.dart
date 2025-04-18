@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:go_router/go_router.dart';
+import 'package:rate_master/features/splash/screens/splash_screen.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/error_screen.dart';
 
@@ -13,6 +14,11 @@ class AppRouter {
   late final GoRouter _goRouter = GoRouter(
     initialLocation: APP_PAGES.splash.toPath,
     routes: <GoRoute>[
+      GoRoute(
+        path: APP_PAGES.splash.toPath,
+        name: APP_PAGES.splash.toName,
+        builder: (context, state) => SplashScreen(),
+      ),
       /*GoRoute(
           path: APP_PAGES.home.toPath,
           name: APP_PAGES.home.toName,

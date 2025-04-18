@@ -17,12 +17,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  initializeDateFormatting('fr_FR', "")
-      .then((_) => runApp(MultiProvider(providers: [
+  runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (_) => AppStateProvider(prefs)..loadPreferences()),
     ChangeNotifierProvider(create: (_) => ApiDataProvider()),
-  ], child: MyApp())));
+  ], child: MyApp()));
 
   configLoading();
 }
