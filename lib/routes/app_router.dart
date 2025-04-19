@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:go_router/go_router.dart';
-import 'package:rate_master/features/splash/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_master/core/providers/auth_provider.dart';
+import 'package:rate_master/features/init/screens/splash_screen.dart';
+import 'package:rate_master/features/init/screens/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/error_screen.dart';
 
@@ -19,15 +22,20 @@ class AppRouter {
         name: APP_PAGES.splash.toName,
         builder: (context, state) => SplashScreen(),
       ),
+      GoRoute(
+        path: APP_PAGES.welcome.toPath,
+        name: APP_PAGES.welcome.toName,
+        builder: (context, state) => WelcomeScreen(),
+      ),
+      GoRoute(
+        path: APP_PAGES.login.toPath,
+        name: APP_PAGES.login.toName,
+        builder: (context, state) => WelcomeScreen(),
+      ),
       /*GoRoute(
           path: APP_PAGES.home.toPath,
           name: APP_PAGES.home.toName,
           builder: (context, state) => HomeScreen(),),
-      GoRoute(
-        path: APP_PAGES.splash.toPath,
-        name: APP_PAGES.splash.toName,
-        builder: (context, state) => SplashScreen(),
-      ),
       GoRoute(
         path: APP_PAGES.login.toPath,
         name: APP_PAGES.login.toName,
@@ -49,9 +57,13 @@ class AppRouter {
     debugLogDiagnostics: true,
     errorBuilder: (context, state) => ErrorScreen(error: state.error),
     redirect: (context, state) {
-      final splashLocation = state.namedLocation(APP_PAGES.splash.toName);
-      //print(isLogedIn);
-      // Else Don't do anything
+      final auth = context.read<AuthProvider>();
+      final isLoggedIn = auth.isAuthenticated;
+      final loggingIn = state.matchedLocation == Routes.login;
+
+      if (!isLoggedIn && !loggingIn) return Routes.login;
+      if (isLoggedIn && state.matchedLocation == Routes.login) return APP_PAGES.welcome.toName;
+
       return null;
     },
   );

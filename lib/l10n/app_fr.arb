@@ -1,3 +1,14 @@
 {
-
+  "welcomeTo": "Bienvenue sur \n{appName}",
+  "@welcomeTo": {
+    "description": "App Name label.",
+    "placeholders": {
+      "appName": {
+        "type": "String",
+        "example": "RateMaster"
+      }
+    }
+  },
+  "appSlogan": "Votre avis compte. \nNotez bien, vivez bien !",
+  "getStarted": "Rejoindre l'aventure"
 }

@@ -1,3 +1,25 @@
 {
-
+  "welcomeTo": "Welcome to \n{appName}",
+  "@welcomeTo": {
+    "description": "App Name label.",
+    "placeholders": {
+      "appName": {
+        "type": "String",
+        "example": "RateMaster"
+      }
+    }
+  },
+  "appSlogan": "Your opinion matters, \nRate smarter, Live better !",
+  "getStarted": "Get Started",
+  "logIn": "LogIn",
+  "phoneOrEmail": "Phone or Email",
+  "forgotPassword": "Forgot your password?",
+  "loginNow": "Log in",
+  "noAccount": "Don't have an account yet?",
+  "registerNow": "Register now",
+  "registering": "Register",
+  "register": "Register",
+  "lastname": "Last name",
+  "enterName": "Enter your last name",
+  "firstname": "First name"
 }

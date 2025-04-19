@@ -1,8 +1,10 @@
 abstract class Routes {
+
   static const String splash = "/";
   static const String login = "/login";
   static const String register = "/register";
   static const String home = "/home";
+  static const String welcome = "/welcome";
 }
 
 enum APP_PAGES {
@@ -10,36 +12,24 @@ enum APP_PAGES {
   login,
   register,
   home,
+  welcome,
 }
 
 extension AppPageExtension on APP_PAGES {
   String get toPath {
     switch (this) {
       case APP_PAGES.splash:
-        return "/";
+        return Routes.splash;
       case APP_PAGES.login:
-        return "/login";
+        return Routes.login;
       case APP_PAGES.register:
-        return "/register";
+        return Routes.register;
       case APP_PAGES.home:
-        return "/home";
-      default:
-        return "/";
+        return Routes.home;
+        case APP_PAGES.welcome:
+        return Routes.welcome;
     }
   }
 
-  String get toName {
-    switch (this) {
-      case APP_PAGES.home:
-        return "HOME";
-      case APP_PAGES.login:
-        return "LOGIN";
-      case APP_PAGES.register:
-        return "REGISTER";
-      case APP_PAGES.splash:
-        return "SPLASH";
-      default:
-        return "SPLASH";
-    }
-  }
+  String get toName => name.toUpperCase();
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:rate_master/features/auth/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStateProvider with ChangeNotifier {
@@ -33,14 +34,6 @@ class AppStateProvider with ChangeNotifier {
     _loggedIn = sharedPreferences.getBool(_kLoggedIn) ?? false;
     _locale = sharedPreferences.getString(_kLocale) ?? "fr";
 
-    String? userString = sharedPreferences.getString(_kUser);
-
-    /*if (userString != null) {
-      // Convertir la chaîne JSON en Map et ensuite en objet User
-      Map<String, dynamic> userMap = jsonDecode(userString);
-      _user = User.fromJson(userMap);
-    }*/
-
     notifyListeners();
   }
 
@@ -65,11 +58,10 @@ class AppStateProvider with ChangeNotifier {
     _locale = state;
   }
 
- /* set user(User? value) {
+  set user(User? value) {
     String userJson = jsonEncode(value!.toJson());
     _setString(_kUser, userJson);
-    _user = value;
-  }*/
+  }
 }
 
 const String _kUser = "user";
