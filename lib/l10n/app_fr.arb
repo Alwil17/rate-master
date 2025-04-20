@@ -10,5 +10,22 @@
     }
   },
   "appSlogan": "Votre avis compte. \nNotez bien, vivez bien !",
-  "getStarted": "Rejoindre l'aventure"
+  "getStarted": "Rejoindre l'aventure",
+  "logIn": "Connexion",
+  "loginNow": "Se connecter",
+  "yourEmail": "Votre adresse mail",
+  "forgotPassword": "Mot de passe oublié ?",
+  "noAccount": "Pas encore de compte ?",
+  "registerNow": "S'inscrire maintenant",
+  "registering": "Inscription",
+  "register": "S'inscrire",
+  "fullname": "Nom complet",
+  "enterName": "Saisir votre nom complet",
+  "confirmPassword": "Confirmer le mot de passe",
+  "alreadyAccount": "Vous avez déjà un compte ?",
+  "resetPassword": "Réinitialiser le mot de passe",
+  "submit": "Soumettre",
+  "password": "Mot de passe",
+  "passwordText": "Changer mot de passe",
+  "emailValidatorMessage": "Veillez entrez une adresse email valide !"
 }

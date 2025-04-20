@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:rate_master/core/constants/constants.dart';
-import 'package:rate_master/core/providers/api_data_provider.dart';
-import 'package:rate_master/core/providers/app_state_provider.dart';
+import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
-import 'package:rate_master/routes/routes.dart';
-import 'package:rate_master/shared/widgets/cicle_vector.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/theme/theme.dart';
@@ -21,43 +16,10 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  late AppStateProvider prefs;
-  late ApiDataProvider apiData;
-  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    prefs = Provider.of<AppStateProvider>(context, listen: false);
-    apiData = Provider.of<ApiDataProvider>(context, listen: false);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initApp();
-    });
-  }
-
-  Future<void> _initApp() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Charger les préférences sans perturber la construction initiale
-    await prefs.loadPreferences();
-
-    bool isAuthenticated = prefs.loggedIn;
-
-    if (isAuthenticated) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-        context.goNamed(APP_PAGES.home.toName);
-      }
-    } else {
-      if (mounted) {
-        context.goNamed(APP_PAGES.login.toName);
-      }
-    }
   }
 
   @override
@@ -141,7 +103,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => context.pushNamed(APP_PAGES.login.toName),
         style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 15),
             shape: StadiumBorder(),

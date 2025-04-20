@@ -11,7 +11,7 @@ class AuthVector extends CustomPainter {
     // Path number 1
 
 
-    paint.color = AppColors.accent;
+    paint.color = AppColors.vectorsBackground;
     path = Path();
     path.lineTo(0, size.height * 0.86);
     path.cubicTo(0, size.height * 0.86, 0, 0, 0, 0);

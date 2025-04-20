@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/core/providers/api_data_provider.dart';
 import 'package:rate_master/core/providers/app_state_provider.dart';
+import 'package:rate_master/core/providers/auth_provider.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
@@ -16,14 +17,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late AppStateProvider prefs;
+  late AuthProvider authProvider;
   late ApiDataProvider apiData;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    prefs = Provider.of<AppStateProvider>(context, listen: false);
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
     apiData = Provider.of<ApiDataProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -36,12 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
       _isLoading = true;
     });
 
-    // Charger les préférences sans perturber la construction initiale
-    await prefs.loadPreferences();
-
-    bool isAuthenticated = prefs.loggedIn;
-
-    if (isAuthenticated) {
+    if (authProvider.isAuthenticated) {
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -50,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } else {
       if (mounted) {
-        context.goNamed(APP_PAGES.login.toName);
+        context.goNamed(APP_PAGES.welcome.toName);
       }
     }
   }

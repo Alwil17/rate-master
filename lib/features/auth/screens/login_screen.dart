@@ -3,10 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/core/providers/app_state_provider.dart';
+import 'package:rate_master/core/providers/auth_provider.dart';
+import 'package:rate_master/core/theme/theme.dart';
 import 'package:rate_master/features/auth/models/user.dart';
 import 'package:rate_master/features/auth/widgets/auth_vector.dart';
+import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:http/http.dart';
@@ -21,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  late AppStateProvider prefs;
+  late AuthProvider auth;
 
   // Controllers for text fields to keep the state
   final TextEditingController _emailController = TextEditingController();
@@ -30,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    prefs = Provider.of<AppStateProvider>(context, listen: false);
+    auth = Provider.of<AuthProvider>(context, listen: false);
   }
 
   Future<void> _login() async {
@@ -55,71 +59,21 @@ class _LoginScreenState extends State<LoginScreen> {
         'password': password,
       };
 
-      try {
-        // Effectuer la requête POST
-        final response = await post(
-          Uri.parse(ApiRoutes.login), // Remplacez par votre URL
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(body),
-        );
+      final success =
+          await auth.login(_emailController.text, _passwordController.text);
 
-        if (response.statusCode == 200) {
-          final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (success) {
+        // Navigate to home (not splash)
+        await EasyLoading.dismiss();
+        await EasyLoading.showSuccess("Connecté avec succès");
+        await EasyLoading.dismiss();
 
-          // Si le login est correct, on stocke le token
-          if (responseData['status'] == 200) {
-            await _saveLoginData(responseData);
-            await EasyLoading.dismiss();
-            await EasyLoading.showSuccess("Connecté avec succès");
-            await EasyLoading.dismiss();
-            _navigateToHome();
-          } else {
-            _showError(responseData['message'] ?? 'Erreur de connexion.');
-          }
-        } else {
-          _showError('Erreur du serveur : ${response.body}');
-        }
-      } catch (error, s) {
-        print(error);
-        debugPrintStack(stackTrace: s);
-        _showError('Une erreur est survenue. Vérifiez votre connexion.');
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        context.goNamed(APP_PAGES.splash.toName);
+      } else {
+        _showError('Login failed, please check your credentials');
       }
       await EasyLoading.dismiss();
     }
-
-
-  }
-
-  Future<void> _saveLoginData(Map<String, dynamic> datas) async {
-    // Récupérer les données du patient et le token
-    String token = datas['token'];
-    Map<String, dynamic> patientData = datas['data'];
-
-
-    // Créer un objet User à partir des données reçues
-    User user = User.fromJson({
-      ...patientData, // Combine les données du patient
-      'token': token  // Ajoute le token dans les données
-    });
-
-    //print(user.toJson());
-
-    // Sauvegarder les données utilisateur dans le UserProvider
-    prefs.user = user;
-    prefs.loggedIn = true;
-  }
-
-  void _navigateToHome() {
-
-    context.goNamed(APP_PAGES.splash.toName);
-    /*Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen()), // Votre page d'accueil
-    );*/
   }
 
   void _showError(String message) {
@@ -156,13 +110,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).padding.top,
-            right: 20,
+            top: MediaQuery.of(context).padding.top + 10,
+            left: 15,
             child: SizedBox(
-              child: Image.asset(
-                'assets/images/logo.PNG',
-                height: 80,
-              ),
+              child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: PhosphorIcon(
+                      PhosphorIconsRegular.arrowLeft,
+                    size: 30,
+                    color: Colors.black,
+                  )),
             ),
           ),
           Center(
@@ -181,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Image.asset(
-        'assets/images/doctor_image.png', // Votre image du médecin ici
+        Assets.imagesShootingStar, // Votre image du médecin ici
         height: 150, // Vous pouvez ajuster la hauteur
       ),
     );
@@ -224,12 +181,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 // Champ Email/Téléphone
                 Text(
-                  AppLocalizations.of(context)!.phoneOrEmail,
+                  AppLocalizations.of(context)!.yourEmail,
                   style: const TextStyle(color: Colors.black54, fontSize: 16),
                 ),
                 _buildTextField(
-                  hintText: 'Exemple: 24156333538',
-                  icon: Icons.alternate_email,
+                  hintText: 'test@example.com'
                 ),
                 // Champ Mot de passe
                 Row(
@@ -237,12 +193,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.password,
-                      style: const TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
                     TextButton(
-                      onPressed: () {
-                        context.goNamed(APP_PAGES.forgetPassword.toName);
-                      },
+                      onPressed: () {},
                       child: Text(
                         AppLocalizations.of(context)!.forgotPassword,
                         style: TextStyle(color: Colors.blue, fontSize: 14),
@@ -251,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
 
-                _buildPasswordField(),
+                _buildPasswordField(showIcon: false),
                 // Bouton de Connexion
                 _buildLoginButton(),
                 SizedBox(height: 10),
@@ -265,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildTextField({
     required String hintText,
-    required IconData icon,
+    IconData? icon,
   }) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 16),
@@ -274,20 +229,20 @@ class _LoginScreenState extends State<LoginScreen> {
         autofocus: true,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return "Veuillez entrer un email ou telephone valide";
+            return AppLocalizations.of(context)!.emailValidatorMessage;
           }
           return null;
         },
         controller: _emailController,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon),
+          prefixIcon: (icon != null) ? Icon(icon): null,
           hintText: hintText,
         ),
       ),
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField({bool showIcon = true}) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 16),
       child: TextFormField(
@@ -296,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
         obscureText: !_isPasswordVisible,
         controller: _passwordController,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.vpn_key),
+          prefixIcon: showIcon ? Icon(Icons.vpn_key) : null,
           hintText: '********',
           suffixIcon: IconButton(
             icon: Icon(
@@ -320,12 +275,12 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: _login,
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 15),
-          backgroundColor: Color(0xFF056380), // Couleur bouton
+          backgroundColor: AppColors.accent, // Couleur bouton
           shape: StadiumBorder(),
         ),
         child: Text(
           AppLocalizations.of(context)!.loginNow,
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ),
     );
@@ -338,8 +293,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(AppLocalizations.of(context)!.noAccount),
         TextButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => RegisterScreen()));
+            /*Navigator.push(
+                context, MaterialPageRoute(builder: (_) => RegisterScreen()));*/
           },
           child: Text(
             AppLocalizations.of(context)!.registerNow,

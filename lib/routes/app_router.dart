@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/core/providers/auth_provider.dart';
+import 'package:rate_master/features/auth/screens/login_screen.dart';
 import 'package:rate_master/features/init/screens/splash_screen.dart';
 import 'package:rate_master/features/init/screens/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
@@ -30,7 +31,7 @@ class AppRouter {
       GoRoute(
         path: APP_PAGES.login.toPath,
         name: APP_PAGES.login.toName,
-        builder: (context, state) => WelcomeScreen(),
+        builder: (context, state) => LoginScreen(),
       ),
       /*GoRoute(
           path: APP_PAGES.home.toPath,
@@ -57,12 +58,12 @@ class AppRouter {
     debugLogDiagnostics: true,
     errorBuilder: (context, state) => ErrorScreen(error: state.error),
     redirect: (context, state) {
-      final auth = context.read<AuthProvider>();
+      /*final auth = context.read<AuthProvider>();
       final isLoggedIn = auth.isAuthenticated;
       final loggingIn = state.matchedLocation == Routes.login;
 
       if (!isLoggedIn && !loggingIn) return Routes.login;
-      if (isLoggedIn && state.matchedLocation == Routes.login) return APP_PAGES.welcome.toName;
+      if (isLoggedIn && state.matchedLocation == Routes.login) return APP_PAGES.welcome.toName;*/
 
       return null;
     },

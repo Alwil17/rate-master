@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:rate_master/features/auth/models/user.dart';
+import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,27 +30,38 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> _setString(String key, String value) async {
+    await prefs.setString(key, value);
+    notifyListeners();
+  }
+
+  Future<void> _setBool(String key, bool value) async {
+    await prefs.setBool(key, value);
+    notifyListeners();
+  }
+
   Future<bool> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('https://yourapi.com/auth/login'),
-      body: {
-        'email': email,
-        'password': password,
-      },
+    final res = await http.post(
+      Uri.parse(ApiRoutes.login),
+      headers: {'Content-Type':'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
     );
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      _token = data['token'];
-      _user = data['user'];
+    if (res.statusCode == 200) {
+      final data = json.decode(res.body);
+      String returnToken = data['token'];
 
-      await prefs.setString(_kToken, _token!);
-      await prefs.setString(_kUser, jsonEncode(_user!));
+      User retrievedUser = User.fromJson({
+        ...data['user'], // Combine les données du patient
+        'token': returnToken  // Ajoute le token dans les données
+      });
+
+      user = retrievedUser;
+
       notifyListeners();
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   Future<void> logout() async {
@@ -58,6 +70,13 @@ class AuthProvider with ChangeNotifier {
     await prefs.remove(_kToken);
     await prefs.remove(_kUser);
     notifyListeners();
+  }
+
+  // Setters with SharedPreferences updates
+  set user(User? value) {
+    String userJson = jsonEncode(value!.toJson());
+    _setString(_kUser, userJson);
+    _setString(_kToken, value.token!);
   }
 }
 
