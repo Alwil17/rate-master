@@ -8,7 +8,7 @@ class AppColors {
   static const Color success = Color(0xFF4CAF50);
   static const Color error = Color(0xFFF44336);
   static const Color secondaryAccent = Color(0xFF7E57C2);
-  static const Color vectorsBackground = Color(0xFFFFE5FD);
+  static const Color vectorsBackground = Color(0xFFBB86FC);
   static const Color darkBackground = Color(0xFF171712);
 }
 
