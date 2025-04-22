@@ -10,6 +10,7 @@ import 'package:rate_master/features/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/shared/api/api_helper.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -58,19 +59,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'password': password,
       };
 
-      final success =
+      final response =
           await auth.register(_nameController.text, _emailController.text, _passwordController.text);
 
-      if (success) {
-        // Navigate to home (not splash)
-        await EasyLoading.dismiss();
-        await EasyLoading.showSuccess(
-            "Inscription réussie, veuillez maintenant vous connectez.");
-        await EasyLoading.dismiss();
+      await EasyLoading.dismiss();
 
-        context.goNamed(APP_PAGES.login.toName);
+      if (response is bool && response == true) {
+        await EasyLoading.showSuccess("Inscription réussie, veuillez maintenant vous connecter.");
+        // return back to login
+        context.pop();
+      } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
+        final errorMessages = ApiHelper.parseApiErrors(response['detail']);
+        _showError(errorMessages.join("\n"));
       } else {
-        _showError('Login failed, please check your credentials');
+        _showError('Une erreur inconnue est survenue.');
       }
       await EasyLoading.dismiss();
     }

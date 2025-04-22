@@ -1,9 +1,9 @@
 abstract class ApiRoutes {
-  static const String base_url = "https://api.docteurgabon.com";
-  static const String base_api = "$base_url/api";
+  static const String base_url = "http://192.168.17.144:8000";
+  static const String base_api = base_url;
   static const String login = "$base_api/login";
   static const String forgetpassword = "$base_api/forgetpassword";
-  static const String register = "$base_api/register";
+  static const String register = "$base_api/auth/register";
   static const String specialites = "$base_api/specialites";
   static const String actualites = "$base_api/actualites";
   static const String envedettes = "$base_api/envedettes";

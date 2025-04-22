@@ -74,4 +74,15 @@ class ApiHelper {
 
     return response;
   }
+
+  static List<String> parseApiErrors(dynamic detail) {
+    if (detail is List) {
+      return detail.map<String>((error) {
+        final field = (error['loc'] as List?)?.last ?? 'Champ inconnu';
+        final msg = error['msg'] ?? 'Erreur inconnue';
+        return "$field : $msg";
+      }).toList();
+    }
+    return ['Une erreur est survenue.'];
+  }
 }

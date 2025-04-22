@@ -64,17 +64,26 @@ class AuthProvider with ChangeNotifier {
     return false;
   }
 
-  Future<bool> register(String fullname, String email, String password) async {
-    final res = await http.post(
-      Uri.parse(ApiRoutes.register),
-      headers: {'Content-Type':'application/json'},
-      body: jsonEncode({'name': fullname, 'email': email, 'password': password}),
-    );
+  Future<dynamic> register(String name, String email, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse(ApiRoutes.register),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': name,
+          'email': email,
+          'password': password,
+        }),
+      );
 
-    if (res.statusCode == 200) {
-      return true;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      } else {
+        return jsonDecode(response.body); // renvoie les erreurs à l’écran
+      }
+    } catch (e) {
+      return {'detail': [{'msg': 'Erreur réseau ou serveur.'}]};
     }
-    return false;
   }
 
   Future<void> logout() async {
