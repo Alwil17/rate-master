@@ -27,5 +27,6 @@
   "submit": "Submit",
   "password": "Password",
   "passwordText": "Change Password",
-  "emailValidatorMessage": "Please enter a valid email address"
+  "emailValidatorMessage": "Please enter a valid email address",
+  "fieldValidatorMessage": "Please enter a valid and non-empty value for this field"
 }

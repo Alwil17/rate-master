@@ -64,6 +64,19 @@ class AuthProvider with ChangeNotifier {
     return false;
   }
 
+  Future<bool> register(String fullname, String email, String password) async {
+    final res = await http.post(
+      Uri.parse(ApiRoutes.register),
+      headers: {'Content-Type':'application/json'},
+      body: jsonEncode({'name': fullname, 'email': email, 'password': password}),
+    );
+
+    if (res.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
   Future<void> logout() async {
     _token = null;
     _user = null;

@@ -1,34 +1,30 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/app_state_provider.dart';
 import 'package:rate_master/core/providers/auth_provider.dart';
 import 'package:rate_master/core/theme/theme.dart';
-import 'package:rate_master/features/auth/models/user.dart';
-import 'package:rate_master/features/auth/screens/register_screen.dart';
 import 'package:rate_master/features/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
-import 'package:rate_master/shared/api/api_routes.dart';
-import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/shared/widgets/text_field_builder.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
   late AuthProvider auth;
 
   // Controllers for text fields to keep the state
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -38,13 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
     auth = Provider.of<AuthProvider>(context, listen: false);
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     FocusScope.of(context).requestFocus(FocusNode());
     if (_formKey.currentState!.validate()) {
-      final String user = _emailController.text.trim();
+      final String fullname = _nameController.text.trim();
+      final String email = _emailController.text.trim();
       final String password = _passwordController.text.trim();
 
-      if (user.isEmpty || password.isEmpty) {
+      if (email.isEmpty || password.isEmpty || fullname.isEmpty) {
         _showError('Veuillez remplir tous les champs.');
         return;
       }
@@ -56,20 +53,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Créer le corps de la requête
       final Map<String, String> body = {
-        'user': user,
+        'name': fullname,
+        'email': email,
         'password': password,
       };
 
       final success =
-          await auth.login(_emailController.text, _passwordController.text);
+          await auth.register(_nameController.text, _emailController.text, _passwordController.text);
 
       if (success) {
         // Navigate to home (not splash)
         await EasyLoading.dismiss();
-        await EasyLoading.showSuccess("Connecté avec succès");
+        await EasyLoading.showSuccess(
+            "Inscription réussie, veuillez maintenant vous connectez.");
         await EasyLoading.dismiss();
 
-        context.goNamed(APP_PAGES.splash.toName);
+        context.goNamed(APP_PAGES.login.toName);
       } else {
         _showError('Login failed, please check your credentials');
       }
@@ -117,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: PhosphorIcon(
-                      PhosphorIconsRegular.arrowLeft,
+                    PhosphorIconsRegular.arrowLeft,
                     size: 30,
                     color: Colors.black,
                   )),
@@ -126,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Center(
             child: SingleChildScrollView(
               child: Column(
-                children: [_buildHeaderImage(), _buildLoginForm(context)],
+                children: [_buildHeaderImage(), _buildRegisterForm(context)],
               ),
             ),
           )
@@ -145,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginForm(BuildContext context) {
+  Widget _buildRegisterForm(BuildContext context) {
     return Form(
         key: _formKey,
         child: Center(
@@ -169,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    AppLocalizations.of(context)!.logIn,
+                    AppLocalizations.of(context)!.registering,
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -180,67 +179,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                // Champ Email/Téléphone
+                // fullname field
+                Text(
+                  AppLocalizations.of(context)!.fullname,
+                  style: const TextStyle(color: Colors.black54, fontSize: 16),
+                ),
+                buildTextField(context,
+                    hintText: AppLocalizations.of(context)!.enterName,
+                    controller: _nameController,
+                    keyboardType: TextInputType.name,
+                inputAction: TextInputAction.next,
+                ),
+                // email field
                 Text(
                   AppLocalizations.of(context)!.yourEmail,
                   style: const TextStyle(color: Colors.black54, fontSize: 16),
                 ),
-                _buildTextField(
-                  hintText: 'test@example.com'
-                ),
-                // Champ Mot de passe
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.password,
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 16),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        AppLocalizations.of(context)!.forgotPassword,
-                        style: TextStyle(color: Colors.blue, fontSize: 14),
-                      ),
-                    )
-                  ],
+                buildTextField(context,
+                    hintText: 'Ex: test@example.com',
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    inputAction: TextInputAction.next),
+                // password field
+                Text(
+                  AppLocalizations.of(context)!.password,
+                  style: const TextStyle(color: Colors.black54, fontSize: 16),
                 ),
 
                 _buildPasswordField(showIcon: false),
                 // Bouton de Connexion
-                _buildLoginButton(),
+                _buildRegisterButton(),
                 SizedBox(height: 10),
-                // Lien "S'inscrire maintenant"
-                _buildSignUpOption(),
+                // Sign up now
+                _buildSignInOption(),
               ],
             ),
           ),
         ));
-  }
-
-  Widget _buildTextField({
-    required String hintText,
-    IconData? icon,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      child: TextFormField(
-        textInputAction: TextInputAction.done,
-        autofocus: true,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return AppLocalizations.of(context)!.emailValidatorMessage;
-          }
-          return null;
-        },
-        controller: _emailController,
-        decoration: InputDecoration(
-          prefixIcon: (icon != null) ? Icon(icon): null,
-          hintText: hintText,
-        ),
-      ),
-    );
   }
 
   Widget _buildPasswordField({bool showIcon = true}) {
@@ -269,36 +244,35 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildRegisterButton() {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _login,
+        onPressed: _register,
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 15),
           backgroundColor: AppColors.accent, // Couleur bouton
           shape: StadiumBorder(),
         ),
         child: Text(
-          AppLocalizations.of(context)!.loginNow,
+          AppLocalizations.of(context)!.register,
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ),
     );
   }
 
-  Widget _buildSignUpOption() {
+  Widget _buildSignInOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(AppLocalizations.of(context)!.noAccount),
+        Text(AppLocalizations.of(context)!.alreadyAccount),
         TextButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => RegisterScreen()));
+            Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context)!.registerNow,
+            AppLocalizations.of(context)!.loginNow,
             style: TextStyle(color: Colors.blue, fontSize: 14),
           ),
         ),
