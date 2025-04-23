@@ -47,7 +47,6 @@ class AuthProvider with ChangeNotifier {
 
   Future<dynamic> login(String email, String password) async {
     try {
-      print("try login");
       final tokenResponse = await http.post(
         Uri.parse(ApiRoutes.token),
         headers: {
@@ -59,10 +58,6 @@ class AuthProvider with ChangeNotifier {
           'password': password,
         },
       );
-      print("getting something");
-
-      print(tokenResponse.statusCode);
-      print(tokenResponse.body);
 
       if (tokenResponse.statusCode == 200) {
         final tokenBody = jsonDecode(tokenResponse.body);
