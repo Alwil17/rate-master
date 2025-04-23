@@ -8,25 +8,30 @@ import 'package:http/http.dart' as http;
 class AuthProvider with ChangeNotifier {
   final SharedPreferences prefs;
   String? _token;
-  User? _user;
+  User?   _user;
 
   AuthProvider(this.prefs) {
     _loadFromPrefs();
   }
 
-  // getters
   bool get isAuthenticated => _token != null;
   String? get token => _token;
-  User? get user => _user;
+  User?   get user  => _user;
 
   Future<void> _loadFromPrefs() async {
     _token = prefs.getString(_kToken);
-
-    String? userJson = prefs.getString(_kUser);
+    final userJson = prefs.getString(_kUser);
     if (userJson != null) {
-      Map<String, dynamic> userMap = jsonDecode(userJson);
-      _user = User.fromJson(userMap);
+      _user = User.fromJson(jsonDecode(userJson));
     }
+    notifyListeners();
+  }
+
+  Future<void> _saveToPrefs(String token, User user) async {
+    _token = token;
+    _user  = user;
+    await prefs.setString(_kToken, token);
+    await prefs.setString(_kUser, jsonEncode(user.toJson()));
     notifyListeners();
   }
 
@@ -40,49 +45,86 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> login(String email, String password) async {
-    final res = await http.post(
-      Uri.parse(ApiRoutes.login),
-      headers: {'Content-Type':'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+  Future<dynamic> login(String email, String password) async {
+    try {
+      print("try login");
+      final tokenResponse = await http.post(
+        Uri.parse(ApiRoutes.token),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': '*/*',
+        },
+        body: {
+          'username': email,
+          'password': password,
+        },
+      );
+      print("getting something");
 
-    if (res.statusCode == 200) {
-      final data = json.decode(res.body);
-      String returnToken = data['token'];
+      print(tokenResponse.statusCode);
+      print(tokenResponse.body);
 
-      User retrievedUser = User.fromJson({
-        ...data['user'], // Combine les données du patient
-        'token': returnToken  // Ajoute le token dans les données
-      });
+      if (tokenResponse.statusCode == 200) {
+        final tokenBody = jsonDecode(tokenResponse.body);
+        final token = tokenBody['access_token'];
 
-      user = retrievedUser;
+        // Ensuite, récupérer les infos utilisateur via /me ou /users/me
+        final userResponse = await http.get(
+          Uri.parse(ApiRoutes.me),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        );
 
-      notifyListeners();
-      return true;
+        if (userResponse.statusCode == 200) {
+          final userMap = jsonDecode(userResponse.body) as Map<String, dynamic>;
+          final user = User.fromJson(userMap).copyWith(token: token);
+
+          // 3. Sauvegarde locale
+          await _saveToPrefs(token, user);
+
+          return true;
+        } else {
+          return jsonDecode(userResponse.body);
+        }
+      } else {
+        return jsonDecode(tokenResponse.body);
+      }
+    } catch (e) {
+      return {
+        'detail': [
+          {'msg': 'Erreur réseau ou serveur.'}
+        ]
+      };
     }
-    return false;
   }
 
-  Future<dynamic> register(String name, String email, String password) async {
+  Future<dynamic> register(Map<String, String> datas) async {
     try {
-      final response = await http.post(
+      // Étape 1 : Inscription
+      final registerResponse = await http.post(
         Uri.parse(ApiRoutes.register),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'name': name,
-          'email': email,
-          'password': password,
+          'name': datas["name"],
+          'email': datas["email"],
+          'password': datas["password"],
         }),
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return true;
-      } else {
-        return jsonDecode(response.body); // renvoie les erreurs à l’écran
+      if (registerResponse.statusCode != 200 && registerResponse.statusCode != 201) {
+        return jsonDecode(registerResponse.body);
       }
+
+      return await login(datas["email"]!, datas["password"]!);
+
     } catch (e) {
-      return {'detail': [{'msg': 'Erreur réseau ou serveur.'}]};
+      return {
+        'detail': [
+          {'msg': 'Erreur réseau ou serveur.'}
+        ]
+      };
     }
   }
 

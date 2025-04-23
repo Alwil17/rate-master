@@ -59,15 +59,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'password': password,
       };
 
-      final response =
-          await auth.register(_nameController.text, _emailController.text, _passwordController.text);
+      final response = await auth.register(body);
 
       await EasyLoading.dismiss();
 
+      print(response);
+
       if (response is bool && response == true) {
-        await EasyLoading.showSuccess("Inscription réussie, veuillez maintenant vous connecter.");
+        await EasyLoading.showSuccess("Inscription réussie.");
         // return back to login
-        context.pop();
+        context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
         _showError(errorMessages.join("\n"));

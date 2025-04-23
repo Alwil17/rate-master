@@ -35,4 +35,18 @@ class User {
   String toString() {
     return name;
   }
+
+  User copyWith({
+    int? id,
+    String? name,
+    String? email,
+    String? token,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      token: token ?? this.token,
+    );
+  }
 }

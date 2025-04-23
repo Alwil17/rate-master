@@ -13,9 +13,11 @@ import 'package:rate_master/features/auth/screens/register_screen.dart';
 import 'package:rate_master/features/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/shared/api/api_helper.dart';
 import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/shared/widgets/text_field_builder.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -56,22 +58,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Créer le corps de la requête
       final Map<String, String> body = {
-        'user': user,
+        'username': user,
         'password': password,
       };
+      final response = await auth.login(user, password);
 
-      final success =
-          await auth.login(_emailController.text, _passwordController.text);
+      await EasyLoading.dismiss();
 
-      if (success) {
-        // Navigate to home (not splash)
-        await EasyLoading.dismiss();
-        await EasyLoading.showSuccess("Connecté avec succès");
-        await EasyLoading.dismiss();
-
+      if (response is bool && response == true) {
+        await EasyLoading.showSuccess("Connexion réussie");
+        // return back to login
         context.goNamed(APP_PAGES.splash.toName);
+      } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
+        final errorMessages = ApiHelper.parseApiErrors(response['detail']);
+        _showError(errorMessages.join("\n"));
       } else {
-        _showError('Login failed, please check your credentials');
+        _showError('Une erreur inconnue est survenue.');
       }
       await EasyLoading.dismiss();
     }
@@ -185,8 +187,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   AppLocalizations.of(context)!.yourEmail,
                   style: const TextStyle(color: Colors.black54, fontSize: 16),
                 ),
-                _buildTextField(
-                  hintText: 'test@example.com'
+                buildTextField(
+                  context,
+                  hintText: 'test@example.com',
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  inputAction: TextInputAction.next
                 ),
                 // Champ Mot de passe
                 Row(
@@ -217,30 +223,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ));
-  }
-
-  Widget _buildTextField({
-    required String hintText,
-    IconData? icon,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      child: TextFormField(
-        textInputAction: TextInputAction.done,
-        autofocus: true,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return AppLocalizations.of(context)!.emailValidatorMessage;
-          }
-          return null;
-        },
-        controller: _emailController,
-        decoration: InputDecoration(
-          prefixIcon: (icon != null) ? Icon(icon): null,
-          hintText: hintText,
-        ),
-      ),
-    );
   }
 
   Widget _buildPasswordField({bool showIcon = true}) {

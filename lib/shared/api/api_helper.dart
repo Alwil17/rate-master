@@ -83,6 +83,6 @@ class ApiHelper {
         return "$field : $msg";
       }).toList();
     }
-    return ['Une erreur est survenue.'];
+    return [detail];
   }
 }
