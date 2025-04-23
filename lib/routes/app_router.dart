@@ -6,7 +6,7 @@ import 'package:rate_master/features/auth/screens/register_screen.dart';
 import 'package:rate_master/features/init/screens/splash_screen.dart';
 import 'package:rate_master/features/init/screens/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
-import 'package:rate_master/screens/error_screen.dart';
+import 'package:rate_master/shared/error_screen.dart';
 
 class AppRouter {
   //late final PreferencesService appService;
