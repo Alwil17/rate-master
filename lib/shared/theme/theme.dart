@@ -60,6 +60,11 @@ final lightTheme = ThemeData(
     iconTheme: IconThemeData(color: AppColors.primaryText),
     titleTextStyle: TextStyle(color: AppColors.darkBackground, fontSize: 20),
   ),
+  bottomAppBarTheme: const BottomAppBarTheme(
+    color: Colors.white,
+    elevation: 1,
+    shape: CircularNotchedRectangle(),
+  ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.accent,
     foregroundColor: AppColors.primaryText,
@@ -97,6 +102,11 @@ final darkTheme = ThemeData(
     titleLarge:   TextStyle(color: AppColors.primaryText, fontSize: 20),
     bodyLarge:    TextStyle(color: AppColors.primaryText, fontSize: 16),
     bodyMedium:   TextStyle(color: AppColors.primaryText, fontSize: 14),
+  ),
+  bottomAppBarTheme: const BottomAppBarTheme(
+    color: AppColors.darkBackground,
+    elevation: 1,
+    shape: CircularNotchedRectangle(),
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: AppColors.accent,
