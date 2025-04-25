@@ -9,8 +9,8 @@ class CategoryService {
 
   CategoryService(this.api);
 
-  Future<List<Category>> fetchCategorys() async {
-    final response = await api.get(ApiRoutes.items);
+  Future<List<Category>> fetchCategories() async {
+    final response = await api.get(ApiRoutes.categories);
 
     if (response.statusCode == 200) {
       List jsonList = jsonDecode(response.body);

@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:rate_master/models/item.dart';
-
-import 'package:rate_master/services/item_service.dart';
+import 'package:rate_master/models/category.dart';
+import 'package:rate_master/services/category_service.dart';
 
 class CategoryProvider with ChangeNotifier {
-  final CategoryService itemService;
+  final CategoryService categoryService;
 
-  CategoryProvider(this.itemService);
+  CategoryProvider(this.categoryService);
 
-  List<Category> _items = [];
+  List<Category> _categorys = [];
   bool _isLoading = false;
   String? _error;
 
-  List<Category> get items => _items;
+  List<Category> get categorys => _categorys;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
 
-  Future<void> fetchCategorys() async {
+  Future<void> fetchCategories() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      _items = await itemService.fetchCategorys();
+      _categorys = await categoryService.fetchCategories();
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -33,7 +32,7 @@ class CategoryProvider with ChangeNotifier {
   }
 
   void clear() {
-    _items = [];
+    _categorys = [];
     notifyListeners();
   }
 }
