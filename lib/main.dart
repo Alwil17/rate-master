@@ -4,14 +4,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/auth_provider.dart';
-import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/services/api_service.dart';
+import 'package:rate_master/services/item_service.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'core/providers/api_data_provider.dart';
-import 'core/providers/app_state_provider.dart';
+import 'providers/app_state_provider.dart';
 
 final AppRouter appRouter = AppRouter();
 
@@ -22,8 +24,15 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (_) => AppStateProvider(prefs)..loadPreferences()),
-    ChangeNotifierProvider(create: (_) => ApiDataProvider()),
     ChangeNotifierProvider(create: (_) => AuthProvider(prefs)),
+    Provider<ApiService>(create: (_) => ApiService(prefs)),
+    ProxyProvider<ApiService, ItemService>(
+      update: (_, api, __) => ItemService(api),
+    ),
+    ChangeNotifierProxyProvider<ItemService, ItemProvider>(
+      create: (_) => ItemProvider(ItemService(ApiService(prefs))),
+      update: (_, itemService, previous) => previous!..itemService,
+    )
   ], child: MyApp()));
 
   configLoading();

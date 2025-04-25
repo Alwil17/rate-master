@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/api_data_provider.dart';
-import 'package:rate_master/core/providers/app_state_provider.dart';
-import 'package:rate_master/core/providers/auth_provider.dart';
+import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/category_provider.dart';
+import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/providers/tag_provider.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
 import 'package:rate_master/routes/routes.dart';
 
-import '../../../generated/assets.dart';
+import '../../generated/assets.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -18,14 +19,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late AuthProvider authProvider;
-  late ApiDataProvider apiData;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     authProvider = Provider.of<AuthProvider>(context, listen: false);
-    apiData = Provider.of<ApiDataProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initApp();
@@ -33,23 +32,42 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _initApp() async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
-    if (authProvider.isAuthenticated) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-        context.goNamed(APP_PAGES.home.toName);
+    try {
+      final itemProvider = Provider.of<ItemProvider>(context, listen: false);
+      final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
+      final tagProvider = Provider.of<TagProvider>(context, listen: false);
+
+      // Auth check déjà fait
+      if (authProvider.isAuthenticated) {
+        // fetch toutes les données nécessaires en parallèle
+        await Future.wait([
+          itemProvider.fetchItems(),
+          categoryProvider.fetchCategories(),
+          tagProvider.fetchTags(),
+        ]);
+
+        if (mounted) {
+          setState(() => _isLoading = false);
+          context.goNamed(APP_PAGES.home.toName);
+        }
+      } else {
+        if (mounted) {
+          context.goNamed(APP_PAGES.welcome.toName);
+        }
       }
-    } else {
+    } catch (e) {
+      print("Erreur au lancement de l'app : $e");
       if (mounted) {
-        context.goNamed(APP_PAGES.welcome.toName);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Une erreur est survenue au lancement.'),
+        ));
+        setState(() => _isLoading = false);
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
