@@ -3,22 +3,21 @@ import 'package:http/http.dart' as http;
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/shared/api/api_routes.dart';
 
-class ItemService {
+import 'api_service.dart';
 
-  Future<List<Item>> fetchItems(String token) async {
-    final response = await http.get(
-      Uri.parse(ApiRoutes.items),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
+class ItemService {
+  final ApiService api;
+
+  ItemService(this.api);
+
+  Future<List<Item>> fetchItems() async {
+    final response = await api.get(ApiRoutes.items);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => Item.fromJson(json)).toList();
+      List jsonList = jsonDecode(response.body);
+      return jsonList.map((e) => Item.fromJson(e)).toList();
     } else {
-      throw Exception('Erreur lors du chargement des items');
+      throw Exception("Erreur lors du chargement des items");
     }
   }
 }

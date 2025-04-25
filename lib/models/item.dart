@@ -2,11 +2,17 @@ class Item {
   final int id;
   final String name; // name in API
   final String description;
+  final String? image_url;
+  final num avg_rating;
+  final num count_rating;
 
   Item({
     required this.id,
     required this.name,
-    required this.description
+    required this.description,
+    required this.avg_rating,
+    required this.count_rating,
+    this.image_url,
   });
 
   // Fonction pour convertir un Map (données JSON) en objet Item
@@ -15,6 +21,9 @@ class Item {
       id: json['id'],
       name: json['name'],
       description: json['description'],
+      avg_rating: json['avg_rating'],
+      count_rating: json['count_rating'],
+      image_url: json['image_url']
     );
   }
 
@@ -23,7 +32,10 @@ class Item {
     return {
       'id': id,
       'name': name,
-      'description': description
+      'description': description,
+      'avg_rating': avg_rating,
+      'count_rating': count_rating,
+      'image_url': image_url
     };
   }
 
@@ -36,12 +48,17 @@ class Item {
     int? id,
     String? name,
     String? description,
-    String? token,
+    num? avg_rating,
+    num? count_rating,
+    String? image_url,
   }) {
     return Item(
       id: id ?? this.id,
       name: name ?? this.name,
-      description: description ?? this.description
+      description: description ?? this.description,
+      avg_rating: avg_rating ?? this.avg_rating,
+      count_rating: count_rating ?? this.count_rating,
+      image_url: image_url ?? this.image_url
     );
   }
 }
