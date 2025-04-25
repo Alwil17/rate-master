@@ -23,9 +23,9 @@ class ItemCardVertical extends StatelessWidget {
           // Image ou placeholder
           AspectRatio(
             aspectRatio: 16 / 9,
-            child: item.image_url != null && item.image_url!.isNotEmpty
+            child: item.imageUrl != null && item.imageUrl!.isNotEmpty
                 ? Image.network(
-              item.image_url!,
+              item.imageUrl!,
               fit: BoxFit.cover,
               errorBuilder: (ctx, _, __) => _buildPlaceholder(),
               loadingBuilder: (ctx, child, progress) {
@@ -53,7 +53,7 @@ class ItemCardVertical extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
-              children: _buildStarIcons(item.avg_rating.toInt()),
+              children: _buildStarIcons(item.avgRating.toInt()),
             ),
           ),
           const SizedBox(height: 4),
@@ -61,7 +61,7 @@ class ItemCardVertical extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Text(
-              '${item.avg_rating.toStringAsFixed(1)} – ${item.count_rating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
+              '${item.avgRating.toStringAsFixed(1)} – ${item.countRating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
