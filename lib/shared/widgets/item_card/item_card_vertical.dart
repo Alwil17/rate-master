@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/item.dart';
 
 class ItemCardVertical extends StatelessWidget {
   final Item item;
-  final double rating; // ex. 4.8
-  final int votes;     // ex. 5295
 
   const ItemCardVertical({
     Key? key,
-    required this.item,
-    required this.rating,
-    required this.votes,
+    required this.item
   }) : super(key: key);
 
   @override
@@ -28,9 +23,9 @@ class ItemCardVertical extends StatelessWidget {
           // Image ou placeholder
           AspectRatio(
             aspectRatio: 16 / 9,
-            child: item.image != null && item.image!.isNotEmpty
+            child: item.image_url != null && item.image_url!.isNotEmpty
                 ? Image.network(
-              item.image!,
+              item.image_url!,
               fit: BoxFit.cover,
               errorBuilder: (ctx, _, __) => _buildPlaceholder(),
               loadingBuilder: (ctx, child, progress) {
@@ -58,7 +53,7 @@ class ItemCardVertical extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
-              children: _buildStarIcons(rating.toInt()),
+              children: _buildStarIcons(item.avg_rating.toInt()),
             ),
           ),
           const SizedBox(height: 4),
@@ -66,7 +61,7 @@ class ItemCardVertical extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Text(
-              '${rating.toStringAsFixed(1)} – ${votes.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
+              '${item.avg_rating.toStringAsFixed(1)} – ${item.count_rating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
