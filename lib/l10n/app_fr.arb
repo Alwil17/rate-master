@@ -28,5 +28,8 @@
   "password": "Mot de passe",
   "passwordText": "Changer mot de passe",
   "emailValidatorMessage": "Veillez entrez une adresse email valide !",
-  "fieldValidatorMessage": "Veillez valeur valide pour ce champ"
+  "fieldValidatorMessage": "Veillez valeur valide pour ce champ",
+  "welcome": "Bienvenue",
+  "makeASearch": "Faire une recherche...",
+  "recommandedForYou": "Recommandés pour vous"
 }

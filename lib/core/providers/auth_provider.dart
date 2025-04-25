@@ -16,7 +16,7 @@ class AuthProvider with ChangeNotifier {
 
   bool get isAuthenticated => _token != null;
   String? get token => _token;
-  User?   get user  => _user;
+  User? get user  => _user;
 
   Future<void> _loadFromPrefs() async {
     _token = prefs.getString(_kToken);
@@ -24,6 +24,8 @@ class AuthProvider with ChangeNotifier {
     if (userJson != null) {
       _user = User.fromJson(jsonDecode(userJson));
     }
+    print("loagind prefs");
+    print(user);
     notifyListeners();
   }
 

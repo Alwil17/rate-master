@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/core/theme/theme.dart';
-import 'package:rate_master/generated/assets.dart';
-import 'package:rate_master/routes/routes.dart';
 
 PreferredSizeWidget globalAppBar(BuildContext context, VoidCallback? onRefresh){
   return AppBar(
+    backgroundColor: Colors.white,
     elevation: 0,
     leading: Padding(
       padding: const EdgeInsets.only(left: 12.0),

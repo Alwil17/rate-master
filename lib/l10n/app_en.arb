@@ -28,5 +28,8 @@
   "password": "Password",
   "passwordText": "Change Password",
   "emailValidatorMessage": "Please enter a valid email address",
-  "fieldValidatorMessage": "Please enter a valid and non-empty value for this field"
+  "fieldValidatorMessage": "Please enter a valid and non-empty value for this field",
+  "welcome": "Welcome",
+  "makeASearch": "Search something...",
+  "recommandedForYou": "Recommanded for you"
 }
