@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
