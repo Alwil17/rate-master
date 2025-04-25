@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/auth_provider.dart';
-import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/global_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             _buildSectionTitle(context, AppLocalizations.of(context)!.recommandedForYou),
-            
+
           ],
         ),
       ),

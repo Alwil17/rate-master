@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/api_data_provider.dart';
-import 'package:rate_master/core/providers/app_state_provider.dart';
-import 'package:rate_master/core/providers/auth_provider.dart';
+import 'package:rate_master/providers/api_data_provider.dart';
+import 'package:rate_master/providers/app_state_provider.dart';
+import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
 import 'package:rate_master/routes/routes.dart';
 
-import '../../../generated/assets.dart';
+import '../../generated/assets.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rate_master/features/home/models/item.dart';
+import 'package:rate_master/models/item.dart';
 import 'package:rate_master/shared/api/api_routes.dart';
 
 class ItemService {

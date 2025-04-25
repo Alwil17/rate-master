@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rate_master/features/home/models/item.dart';
+import 'package:rate_master/models/item.dart';
 
 class ApiDataProvider with ChangeNotifier {
   List<Item> _items = [];

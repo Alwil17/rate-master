@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 PreferredSizeWidget globalAppBar(BuildContext context, VoidCallback? onRefresh){
   return AppBar(
