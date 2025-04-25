@@ -28,9 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Get providers withouth listening for changes
     authProvider = Provider.of<AuthProvider>(context, listen: false);
     itemProvider = Provider.of<ItemProvider>(context, listen: false);
-
-    // Load items when the screen is initialized
-    itemProvider.fetchItems();
   }
 
   @override

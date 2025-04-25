@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/providers/tag_provider.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
