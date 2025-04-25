@@ -31,5 +31,7 @@
   "fieldValidatorMessage": "Please enter a valid and non-empty value for this field",
   "welcome": "Welcome",
   "makeASearch": "Search something...",
-  "recommandedForYou": "Recommanded for you"
+  "recommandedForYou": "Recommanded for you",
+  "noItemFound": "No item for now.",
+  "recentlyRated": "Recently rated"
 }

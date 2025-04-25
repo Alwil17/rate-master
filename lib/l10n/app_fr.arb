@@ -31,5 +31,7 @@
   "fieldValidatorMessage": "Veillez valeur valide pour ce champ",
   "welcome": "Bienvenue",
   "makeASearch": "Faire une recherche...",
-  "recommandedForYou": "Recommandés pour vous"
+  "recommandedForYou": "Recommandés pour vous",
+  "noItemFound": "Aucun élément pour le moment.",
+  "recentlyRated": "Récemment notés"
 }

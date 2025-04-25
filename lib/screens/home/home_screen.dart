@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/screens/home/widgets/recommanded_list.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/global_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,27 +18,38 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late AuthProvider authProvider;
+  late final AuthProvider authProvider;
+  late final ItemProvider itemProvider;
 
   @override
   void initState() {
     super.initState();
 
+    // Get providers withouth listening for changes
     authProvider = Provider.of<AuthProvider>(context, listen: false);
+    itemProvider = Provider.of<ItemProvider>(context, listen: false);
+
+    // Load items when the screen is initialized
+    itemProvider.fetchItems();
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: globalAppBar(context, null),
+      appBar: globalAppBar(context, () {
+        // Manual Pull-to-refresh
+        itemProvider.fetchItems();
+      }),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title and Greeting
+            // Greeting
             RichText(
               text: TextSpan(
                   style: TextStyle(
@@ -45,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   children: [
                     TextSpan(
-                      text: "${AppLocalizations.of(context)!.welcome} ",
+                      text: "${locale.welcome} ",
                       style: TextStyle(
                         fontSize: 16,
                       ),
@@ -59,13 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ]),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 12),
 
-            // Search Bar
+            // Search Bar static
             TextField(
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.makeASearch,
-                prefixIcon: Icon(Icons.search),
+                hintText: locale.makeASearch,
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
@@ -74,9 +87,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 fillColor: Colors.white,
               ),
             ),
-
-            _buildSectionTitle(context, AppLocalizations.of(context)!.recommandedForYou),
-
+            const SizedBox(height: 16),
+            /// Recommanded section
+            // Title
+            _buildSectionTitle(context, locale.recommandedForYou),
+            // Content
+            SizedBox(height: 150, child: buildRecommandedList(context)),
+            const SizedBox(height: 16),
+            /// To rate section
+            // Title
+            _buildSectionTitle(context, locale.recentlyRated),
+            // Content
+            SizedBox(height: 150, child: buildRecommandedList(context)),
           ],
         ),
       ),
@@ -106,4 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
+
 }
