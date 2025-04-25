@@ -7,4 +7,5 @@ abstract class ApiRoutes {
   static const String token = "$base_api/auth/token";
   static const String me = "$base_api/auth/me";
   static const String items = "$base_api/items";
+  static const String categories = "$base_api/categories";
 }
