@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 
 PreferredSizeWidget globalAppBar(BuildContext context, VoidCallback? onRefresh){
   return AppBar(
     elevation: 0,
-    leading: IconButton(
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Color(0x30056380)),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+    leading: Padding(
+      padding: const EdgeInsets.only(left: 12.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: Image.asset(
+          "assets/images/avatar.png"
         ),
       ),
-      icon: Icon(Icons.menu, color: Color(0xff056380)),
-      onPressed: () {},
     ),
     actions: [
       IconButton(
         style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(Color(0x30056380)),
+        backgroundColor: WidgetStatePropertyAll(AppColors.accent),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(30),
             ),
           ),
         ),
-        icon: Icon(Icons.refresh, color: Color(0xff056380)),
+        icon: PhosphorIcon(PhosphorIconsRegular.arrowClockwise, color: Colors.white),
         onPressed: onRefresh,
       ),
       IconButton(
         style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(Color(0x30056380)),
+          backgroundColor: WidgetStatePropertyAll(AppColors.accent),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(30),
             ),
           ),
         ),
-        icon: Icon(Icons.notifications, color: Color(0xff056380)),
+        icon: PhosphorIcon(PhosphorIconsRegular.bellSimpleRinging, color: Colors.white),
         onPressed: () {},
       ),
     ],
