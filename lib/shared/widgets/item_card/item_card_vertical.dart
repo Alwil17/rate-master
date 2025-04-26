@@ -90,7 +90,7 @@ class ItemCardVertical extends StatelessWidget {
         child: Icon(
           Icons.movie,
           size: 48,
-          color: Colors.white70,
+          color: Colors.white,
         ),
       ),
     );
