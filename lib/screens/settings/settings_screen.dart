@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
 import 'package:rate_master/shared/constants/constants.dart';
-import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
 class SettingsScreen extends StatefulWidget {
