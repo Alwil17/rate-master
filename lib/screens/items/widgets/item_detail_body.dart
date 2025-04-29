@@ -72,20 +72,13 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.address,
+                            "Address",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff056380),
                             ),
                           ),
-                          SizedBox(height: 15),
-                          _buildContactRow(
-                              Icons.location_on, widget.item.address),
-                          SizedBox(height: 10),
-                          _buildContactRow(Icons.phone, widget.item.contact1),
-                          SizedBox(height: 10),
-                          _buildContactRow(Icons.email, widget.item.email),
                         ],
                       ),
                     ),
@@ -151,19 +144,5 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
         ),
       ),
     );
-  }
-
-  Widget _buildSecteurList() {
-    return futureSpecialites.isEmpty
-        ? Center(child: Text(AppLocalizations.of(context)!.noSpecialityFound))
-        : ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: futureSpecialites.length,
-            itemBuilder: (context, index) {
-              final specialite = futureSpecialites[index];
-              return SpecialiteCard(specialite: specialite);
-            },
-          );
   }
 }
