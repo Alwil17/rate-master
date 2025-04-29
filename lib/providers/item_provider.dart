@@ -9,10 +9,12 @@ class ItemProvider with ChangeNotifier {
   ItemProvider(this.itemService);
 
   List<Item> _items = [];
+  Item? _currentItem;
   bool _isLoading = false;
   String? _error;
 
   List<Item> get items => _items;
+  Item? get currentItem => _currentItem;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
@@ -26,6 +28,24 @@ class ItemProvider with ChangeNotifier {
       _items = await itemService.fetchItems();
     } catch (e) {
       _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// Charge un item depuis l'API et le stocke dans [_currentItem].
+  Future<void> fetchItem(num itemId) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final fetched = await itemService.fetchItem(itemId);
+      _currentItem = fetched;
+    } catch (e) {
+      _error = e.toString();
+      _currentItem = null;
     } finally {
       _isLoading = false;
       notifyListeners();

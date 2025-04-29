@@ -35,7 +35,6 @@ Widget buildRecentlyRated(BuildContext context) {
 
       // Affiche la liste horizontale
       return ListView.separated(
-        scrollDirection: Axis.vertical,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemCount: provider.items.length,
         itemBuilder: (context, index) {
