@@ -38,5 +38,6 @@
   "rateNow": "Rate Now",
   "about": "About",
   "reviews": "Reviews",
-  "reviewsInProgress": "Reviews section under construction"
+  "reviewsInProgress": "Reviews section under construction",
+  "description": "Description"
 }

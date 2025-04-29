@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/shared/theme/theme.dart';
+import 'package:rate_master/shared/widgets/average_rating_display.dart';
 import 'package:rate_master/shared/widgets/chips/category_chip.dart';
 import 'package:rate_master/shared/widgets/chips/tag_chip.dart';
 
@@ -61,17 +62,6 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Section title
-                    Text(
-                      locale.about,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff056380),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
                     // Categories & tags as chips
                     Wrap(
                       spacing: 8,
@@ -83,13 +73,24 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                           TagChip(label: tag.name),
                       ],
                     ),
-
+                    AverageRatingDisplay(
+                      averageRating: widget.item.avgRating,
+                      totalReviews: widget.item.countRating,
+                    ),
                     const SizedBox(height: 16),
-
+                    Text(
+                      locale.description,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff056380),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
                     // Detailed description
                     Text(
                       widget.item.description ?? '',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
 
                     // Add more content here if needed...
@@ -140,6 +141,7 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
               ? Colors.white
               : AppColors.secondaryBackground,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }

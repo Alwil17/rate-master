@@ -38,5 +38,6 @@
   "rateNow": "Noter maintenant",
   "about": "À propos",
   "reviews": "Avis & commentaires",
-  "reviewsInProgress": "Section des commentaires en cours de construction"
+  "reviewsInProgress": "Section des commentaires en cours de construction",
+  "description": "Description"
 }
