@@ -9,7 +9,7 @@ class CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: Colors.amber.shade100,
         border: Border.all(color: Colors.amber, width: 2),
@@ -17,7 +17,7 @@ class CategoryChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 10),
       ),
     );
   }

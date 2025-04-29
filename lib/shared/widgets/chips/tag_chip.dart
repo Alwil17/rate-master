@@ -9,7 +9,7 @@ class TagChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: Colors.blue.shade50,
         border: Border.all(color: Colors.blue.shade300, width: 2),
@@ -17,7 +17,7 @@ class TagChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 10),
       ),
     );
   }

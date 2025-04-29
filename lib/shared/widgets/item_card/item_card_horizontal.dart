@@ -15,84 +15,84 @@ class ItemCardHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: Colors.grey.shade300, width: 1),
       ),
       clipBehavior: Clip.antiAlias,
-      elevation: 2,
-      child: Row(
-        children: [
-          // Image / placeholder
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: _buildImage(),
-          ),
+      elevation: 1,
+      child: SizedBox(
+        height: 100,
+        child: Row(
+          children: [
+            // Image / placeholder
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: _buildImage(),
+            ),
 
-          // Espace et contenu texte
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Ligne de chips (catégorie + tags)
-                  Row(
-                    children: [
-                      for (var category in item.categories) ...[
-                        CategoryChip(label: category.name),
+            // Espace et contenu texte
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Ligne de chips (catégorie + tags)
+                    Row(
+                      children: [
+                        for (var category in item.categories) ...[
+                          CategoryChip(label: category.name),
+                          const SizedBox(width: 8),
+                        ],
                         const SizedBox(width: 8),
+                        for (var tag in item.tags) ...[
+                          TagChip(label: tag.name),
+                          const SizedBox(width: 8),
+                        ]
                       ],
-                      const SizedBox(width: 8),
-                      for (var tag in item.tags) ...[
-                        TagChip(label: tag.name),
-                        const SizedBox(width: 8),
-                      ]
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Titre
-                  Text(
-                    item.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
+                    // Titre
+                    Text(
+                      item.name,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                        fontSize: 14
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    // Description
+                    Text(
+                      item.description!,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Spacer(),
 
-                  // Description
-                  Text(
-                    item.description!,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-
-                  // Étoiles + note
-                  Row(
-                    children: [
-                      ..._buildStarIcons(item.avgRating.toInt()),
-                      const SizedBox(width: 8),
-                      Text(
-                        item.avgRating.toStringAsFixed(1),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                ],
+                    // Étoiles + note
+                    Row(
+                      children: [
+                        ..._buildStarIcons(item.avgRating.toInt()),
+                        const SizedBox(width: 8),
+                        Text(
+                          item.avgRating.toStringAsFixed(1),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
 
   Widget _buildImage() {
     if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
@@ -100,8 +100,9 @@ class ItemCardHorizontal extends StatelessWidget {
         item.imageUrl!,
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => _buildPlaceholder(),
-        loadingBuilder: (_, child, progress) =>
-        progress == null ? child : const Center(child: CircularProgressIndicator()),
+        loadingBuilder: (_, child, progress) => progress == null
+            ? child
+            : const Center(child: CircularProgressIndicator()),
       );
     } else {
       return _buildPlaceholder();
@@ -113,10 +114,10 @@ class ItemCardHorizontal extends StatelessWidget {
     const totalStars = 5;
     return List.generate(totalStars, (i) {
       if (i < fullStars) {
-        return PhosphorIcon(PhosphorIconsDuotone.starHalf, size: 20);
+        return PhosphorIcon(PhosphorIconsDuotone.starHalf, size: 15);
       } else {
         return PhosphorIcon(PhosphorIconsDuotone.star,
-            size: 20, color: Colors.amber);
+            size: 15, color: Colors.amber);
       }
     });
   }

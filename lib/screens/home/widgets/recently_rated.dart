@@ -36,11 +36,11 @@ Widget buildRecentlyRated(BuildContext context) {
       // Affiche la liste horizontale
       return ListView.separated(
         scrollDirection: Axis.vertical,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemCount: provider.items.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           final item = provider.items[index];
-          return SizedBox(width: MediaQuery.of(context).size.width - 40, child: ItemCardHorizontal(item: item),);
+          return ItemCardHorizontal(item: item);
         },
       );
     },

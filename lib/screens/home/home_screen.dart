@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Manual Pull-to-refresh
         itemProvider.fetchItems();
       }),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,10 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
             // Title
             _buildSectionTitle(context, locale.recentlyRated),
             // Content
-            Expanded(
+            // Par exemple :
+            SizedBox(
+              height: 220, // fixe ou calculé via MediaQuery
               child: buildRecentlyRated(context),
-            )
-
+            ),
           ],
         ),
       ),
