@@ -33,6 +33,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Consumer<ItemProvider>(
       builder: (context, provider, _) {
         // 1. Loading
@@ -57,8 +58,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         // 3. Pas d'item trouvé
         final item = provider.currentItem;
         if (item == null) {
-          return const Scaffold(
-            body: Center(child: Text('Item not found')),
+          return Scaffold(
+            body: Center(child: Text(locale.itemNotFound)),
           );
         }
 
