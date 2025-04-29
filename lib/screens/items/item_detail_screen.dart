@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_header.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   final num itemId;
@@ -74,10 +75,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
-              icon: const Icon(Icons.phone),
-              label: const Text("Call Now"),
+              icon: const Icon(Icons.star, color: Colors.white),
+              label: Text(
+                locale.rateNow,
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF056380),
+                backgroundColor: AppColors.accent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

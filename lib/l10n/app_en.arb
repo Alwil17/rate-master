@@ -34,5 +34,6 @@
   "recommandedForYou": "Recommanded for you",
   "noItemFound": "No item for now.",
   "recentlyRated": "Recently rated",
-  "itemNotFound": "The item was not found."
+  "itemNotFound": "The item was not found.",
+  "rateNow": "Rate Now"
 }

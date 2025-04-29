@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/item.dart';
 
 class ItemDetailHeader extends StatelessWidget {
@@ -36,11 +37,11 @@ class ItemDetailHeader extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(8),
-                  backgroundColor: Colors.white70,
-                  elevation: 2,
+                  backgroundColor: Colors.white,
+                  elevation: 1,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+                child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Colors.black,),
               ),
             ),
           ),

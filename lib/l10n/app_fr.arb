@@ -34,5 +34,6 @@
   "recommandedForYou": "Recommandés pour vous",
   "noItemFound": "Aucun élément pour le moment.",
   "recentlyRated": "Récemment notés",
-  "itemNotFound": "L'élément n'a pas été trouvé."
+  "itemNotFound": "L'élément n'a pas été trouvé.",
+  "rateNow": "Noter maintenant"
 }
