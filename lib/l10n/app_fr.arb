@@ -37,5 +37,6 @@
   "itemNotFound": "L'élément n'a pas été trouvé.",
   "rateNow": "Noter maintenant",
   "about": "À propos",
-  "reviews": "Avis & commentaires"
+  "reviews": "Avis & commentaires",
+  "reviewsInProgress": "Section des commentaires en cours de construction"
 }

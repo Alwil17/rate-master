@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/screens/items/widgets/item_detail_body.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_header.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
@@ -69,7 +70,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           body: Column(
             children: [
               ItemDetailHeader(item: item),
-              // TODO: ajouter ItemDetailBody(item: item)
+              Expanded(
+                child: ItemDetailBody(item: provider.currentItem!),
+              ),
             ],
           ),
           bottomNavigationBar: Padding(

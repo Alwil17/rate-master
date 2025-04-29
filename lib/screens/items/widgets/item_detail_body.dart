@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/models/item.dart';
+import 'package:rate_master/shared/theme/theme.dart';
+import 'package:rate_master/shared/widgets/chips/category_chip.dart';
+import 'package:rate_master/shared/widgets/chips/tag_chip.dart';
 
 class ItemDetailBody extends StatefulWidget {
   final Item item;
@@ -32,107 +35,100 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    return Expanded(
-        child: ClipRRect(
-      borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: SingleChildScrollView(
-          child: Column(
+    return Column(
+      children: [
+        // Navigation buttons for pages
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Boutons pour naviguer entre les pages
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+              _buildNavButton(locale.about, 0),
+              _buildNavButton(locale.reviews, 1),
+            ],
+          ),
+        ),
+
+        // PageView that fills remaining height
+        Expanded(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) => setState(() => _currentPage = index),
+            children: [
+              // ABOUT page: scrollable content
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildNavButton(locale.about, 0),
-                    _buildNavButton(locale.reviews, 1),
+                    // Section title
+                    Text(
+                      locale.about,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff056380),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Categories & tags as chips
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (var category in widget.item.categories)
+                          CategoryChip(label: category.name),
+                        for (var tag in widget.item.tags)
+                          TagChip(label: tag.name),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Detailed description
+                    Text(
+                      widget.item.description ?? '',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+
+                    // Add more content here if needed...
+                    const SizedBox(height: 200), // demo extra space
                   ],
                 ),
               ),
 
-              // Contenu du PageView
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (int index) {
-                    setState(() {
-                      _currentPage =
-                          index; // Met à jour l'indice de la page actuelle
-                    });
-                  },
-                  children: [
-                    // Page "À propos"
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Address",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff056380),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // Page "Départements"
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: _buildSecteurList())),
-                  ],
+              // REVIEWS page: scrollable placeholder
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                child: Center(
+                  child: Text(
+                    locale.reviewsInProgress, // e.g. "Reviews section under construction"
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
-              )
+              ),
             ],
-          ),
-        ),
-      ),
-    ));
-  }
-
-  // Widget pour une ligne de contact avec icône et texte
-  Widget _buildContactRow(IconData icon, String text) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 20,
-          backgroundColor: Color(0x30056380),
-          child: Icon(icon, color: Color(0xff056380)),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            text,
-            style: TextStyle(fontSize: 16),
           ),
         ),
       ],
     );
   }
 
-  // Widget pour les boutons de navigation
+  /// Builds one of the two nav buttons and updates the PageView on tap
   Widget _buildNavButton(String label, int pageIndex) {
     return ElevatedButton(
       onPressed: () {
         _pageController.animateToPage(
           pageIndex,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
       },
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(145, 30),
+        fixedSize: const Size(145, 36),
         backgroundColor:
-            _currentPage == pageIndex ? Color(0xff056380) : Colors.grey[300],
+        _currentPage == pageIndex ? AppColors.accent : Colors.grey[300],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -140,7 +136,9 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
       child: Text(
         label,
         style: TextStyle(
-          color: _currentPage == pageIndex ? Colors.white : Color(0xff056380),
+          color: _currentPage == pageIndex
+              ? Colors.white
+              : AppColors.secondaryBackground,
         ),
       ),
     );

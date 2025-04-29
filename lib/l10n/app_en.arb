@@ -37,5 +37,6 @@
   "itemNotFound": "The item was not found.",
   "rateNow": "Rate Now",
   "about": "About",
-  "reviews": "Reviews"
+  "reviews": "Reviews",
+  "reviewsInProgress": "Reviews section under construction"
 }
