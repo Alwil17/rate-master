@@ -39,18 +39,28 @@ class _SplashScreenState extends State<SplashScreen> {
       final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
       final tagProvider = Provider.of<TagProvider>(context, listen: false);
 
-      // Auth check déjà fait
       if (authProvider.isAuthenticated) {
-        // fetch toutes les données nécessaires en parallèle
-        await Future.wait([
-          itemProvider.fetchItems(),
-          categoryProvider.fetchCategories(),
-          tagProvider.fetchTags(),
-        ]);
+        // Ajoute ici la vérification réelle du token :
+        final isTokenValid = await authProvider.verifyToken();
 
-        if (mounted) {
-          setState(() => _isLoading = false);
-          context.goNamed(APP_PAGES.home.toName);
+        if (isTokenValid) {
+          await Future.wait([
+            itemProvider.fetchItems(),
+            categoryProvider.fetchCategories(),
+            tagProvider.fetchTags(),
+          ]);
+
+          if (mounted) {
+            setState(() => _isLoading = false);
+            context.goNamed(APP_PAGES.home.toName);
+          }
+        } else {
+          // Token invalide -> déconnecte l'utilisateur
+          await authProvider.logout();
+          if (mounted) {
+            setState(() => _isLoading = false);
+            context.goNamed(APP_PAGES.welcome.toName);
+          }
         }
       } else {
         if (mounted) {

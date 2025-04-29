@@ -3,6 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/screens/home/widgets/recently_rated.dart';
 import 'package:rate_master/screens/home/widgets/recommanded_list.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/global_app_bar.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Manual Pull-to-refresh
         itemProvider.fetchItems();
       }),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,13 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
             // Title
             _buildSectionTitle(context, locale.recommandedForYou),
             // Content
-            SizedBox(height: 150, child: buildRecommandedList(context)),
+            SizedBox(height: 200, child: buildRecommandedList(context)),
             const SizedBox(height: 16),
             /// To rate section
             // Title
             _buildSectionTitle(context, locale.recentlyRated),
             // Content
-            SizedBox(height: 150, child: buildRecommandedList(context)),
+            Expanded(
+              child: buildRecentlyRated(context),
+            )
+
           ],
         ),
       ),

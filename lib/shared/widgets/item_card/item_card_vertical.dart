@@ -6,68 +6,73 @@ import 'package:rate_master/models/item.dart';
 class ItemCardVertical extends StatelessWidget {
   final Item item;
 
-  const ItemCardVertical({
-    Key? key,
-    required this.item
-  }) : super(key: key);
+  const ItemCardVertical({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 4,
-      clipBehavior: Clip.antiAlias, // pour que l'image soit rognée aux coins
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image ou placeholder
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: item.imageUrl != null && item.imageUrl!.isNotEmpty
-                ? Image.network(
-              item.imageUrl!,
-              fit: BoxFit.cover,
-              errorBuilder: (ctx, _, __) => _buildPlaceholder(),
-              loadingBuilder: (ctx, child, progress) {
-                if (progress == null) return child;
-                return Center(child: CircularProgressIndicator());
-              },
-            )
-                : _buildPlaceholder(),
-          ),
-          const SizedBox(height: 8),
-          // Titre
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              item.name,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+    return SizedBox(
+      width: 150,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 1,
+        clipBehavior: Clip.antiAlias, // pour que l'image soit rognée aux coins
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image ou placeholder
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: _buildImage(),
+            ),
+            const SizedBox(height: 8),
+            // Titre
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                item.name,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          const SizedBox(height: 8),
-          // Étoiles
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              children: _buildStarIcons(item.avgRating.toInt()),
+            const SizedBox(height: 5),
+            // Étoiles
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                children: _buildStarIcons(item.avgRating.toInt()),
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          // Texte de note
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Text(
-              '${item.avgRating.toStringAsFixed(1)} – ${item.countRating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
-              style: Theme.of(context).textTheme.bodySmall,
+            const SizedBox(height: 5),
+            // Texte de note
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Text(
+                '${item.avgRating.toStringAsFixed(1)} – ${item.countRating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+      return Image.network(
+        item.imageUrl!,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => _buildPlaceholder(),
+        loadingBuilder: (_, child, progress) =>
+        progress == null ? child : const Center(child: CircularProgressIndicator()),
+      );
+    } else {
+      return _buildPlaceholder();
+    }
   }
 
   /// Génère la liste d'icônes étoiles (plein/vide) pour une note sur 5
@@ -75,9 +80,11 @@ class ItemCardVertical extends StatelessWidget {
     const totalStars = 5;
     return List.generate(totalStars, (i) {
       if (i < fullStars) {
-        return PhosphorIcon(PhosphorIconsDuotone.star, size: 20, color: Colors.amber);
+        return PhosphorIcon(PhosphorIconsDuotone.star,
+            size: 20);
       } else {
-        return PhosphorIcon(PhosphorIconsDuotone.starHalf, size: 20, color: Colors.amber);
+        return PhosphorIcon(PhosphorIconsDuotone.star,
+            size: 20, color: Colors.amber);
       }
     });
   }
@@ -96,4 +103,3 @@ class ItemCardVertical extends StatelessWidget {
     );
   }
 }
-
