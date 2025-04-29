@@ -35,5 +35,7 @@
   "noItemFound": "Aucun élément pour le moment.",
   "recentlyRated": "Récemment notés",
   "itemNotFound": "L'élément n'a pas été trouvé.",
-  "rateNow": "Noter maintenant"
+  "rateNow": "Noter maintenant",
+  "about": "À propos",
+  "reviews": "Avis & commentaires"
 }
