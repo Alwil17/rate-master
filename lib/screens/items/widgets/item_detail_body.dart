@@ -73,11 +73,12 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                           TagChip(label: tag.name),
                       ],
                     ),
+                    const SizedBox(height: 10),
                     AverageRatingDisplay(
                       averageRating: widget.item.avgRating,
                       totalReviews: widget.item.countRating,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     Text(
                       locale.description,
                       style: TextStyle(
