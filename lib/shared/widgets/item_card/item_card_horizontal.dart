@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/shared/widgets/average_rating_display.dart';
 import 'package:rate_master/shared/widgets/chips/category_chip.dart';
 import 'package:rate_master/shared/widgets/chips/tag_chip.dart';
 
@@ -74,16 +75,10 @@ class ItemCardHorizontal extends StatelessWidget {
                     const Spacer(),
 
                     // Étoiles + note
-                    Row(
-                      children: [
-                        ..._buildStarIcons(item.avgRating.toInt()),
-                        const SizedBox(width: 8),
-                        Text(
-                          item.avgRating.toStringAsFixed(1),
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+                    AverageRatingDisplay(
+                      averageRating: item.avgRating,
+                      totalReviews: item.countRating,
+                    )
                   ],
                 ),
               ),
