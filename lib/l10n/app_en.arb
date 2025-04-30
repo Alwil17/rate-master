@@ -39,5 +39,8 @@
   "about": "About",
   "reviews": "Reviews",
   "reviewsInProgress": "Reviews section under construction",
-  "description": "Description"
+  "description": "Description",
+  "leaveAComment": "Leave a comment (Optional)",
+  "cancel": "Cancel",
+  "rate": "Rate"
 }

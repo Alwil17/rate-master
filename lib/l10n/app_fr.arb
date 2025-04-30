@@ -39,5 +39,8 @@
   "about": "À propos",
   "reviews": "Avis & commentaires",
   "reviewsInProgress": "Section des commentaires en cours de construction",
-  "description": "Description"
+  "description": "Description",
+  "leaveAComment": "Écrire un commentaire (Optionnel)",
+  "cancel": "Annuler",
+  "rate": "Noter"
 }

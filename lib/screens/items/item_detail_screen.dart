@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_body.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_header.dart';
 import 'package:rate_master/shared/theme/theme.dart';
@@ -90,7 +91,15 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              onPressed: () {},
+              onPressed: () {
+                showRateNowSheet(
+                  context,
+                  onSubmit: (rating, comment) {
+                    // call your provider / service to post the rating
+                    //_itemProvider.submitRating(item.id, rating, comment);
+                  },
+                );
+              },
             ),
           ),
         );
