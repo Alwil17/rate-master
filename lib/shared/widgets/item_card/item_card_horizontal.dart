@@ -56,7 +56,7 @@ class ItemCardHorizontal extends StatelessWidget {
                           ]
                         ],
                       ),
-                      // Titre
+                      // Titre section
                       Text(
                         item.name,
                         style: Theme.of(context)
