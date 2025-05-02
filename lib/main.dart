@@ -7,11 +7,14 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
 import 'package:rate_master/services/api_service.dart';
 import 'package:rate_master/services/category_service.dart';
 import 'package:rate_master/services/category_service.dart';
 import 'package:rate_master/services/item_service.dart';
+import 'package:rate_master/services/rating_service.dart';
+import 'package:rate_master/services/rating_service.dart';
 import 'package:rate_master/services/tag_service.dart';
 import 'package:rate_master/services/tag_service.dart';
 import 'package:rate_master/shared/theme/theme.dart';
@@ -32,15 +35,10 @@ void main() async {
         create: (_) => AppStateProvider(prefs)..loadPreferences()),
     ChangeNotifierProvider(create: (_) => AuthProvider(prefs)),
     Provider<ApiService>(create: (_) => ApiService(prefs)),
-    ProxyProvider<ApiService, ItemService>(
-      update: (_, api, __) => ItemService(api),
-    ),
-    ProxyProvider<ApiService, CategoryService>(
-      update: (_, api, __) => CategoryService(api),
-    ),
-    ProxyProvider<ApiService, TagService>(
-      update: (_, api, __) => TagService(api),
-    ),
+    ProxyProvider<ApiService, ItemService>(update: (_, api, __) => ItemService(api),),
+    ProxyProvider<ApiService, CategoryService>(update: (_, api, __) => CategoryService(api),),
+    ProxyProvider<ApiService, TagService>(update: (_, api, __) => TagService(api),),
+    ProxyProvider<ApiService, RatingService>(update: (_, api, __) => RatingService(api),),
     ChangeNotifierProxyProvider<ItemService, ItemProvider>(
       create: (_) => ItemProvider(ItemService(ApiService(prefs))),
       update: (_, itemService, previous) => previous!..itemService,
@@ -52,6 +50,10 @@ void main() async {
     ChangeNotifierProxyProvider<TagService, TagProvider>(
       create: (_) => TagProvider(TagService(ApiService(prefs))),
       update: (_, tagService, previous) => previous!..tagService,
+    ),
+    ChangeNotifierProxyProvider<RatingService, RatingProvider>(
+      create: (_) => RatingProvider(RatingService(ApiService(prefs))),
+      update: (_, ratingService, previous) => previous!..ratingService,
     ),
   ], child: MyApp()));
 
