@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
+import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_body.dart';
@@ -23,11 +24,13 @@ class ItemDetailScreen extends StatefulWidget {
 
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
   late final ItemProvider _itemProvider;
+  late final AuthProvider _authProvider;
 
   @override
   void initState() {
     super.initState();
     _itemProvider = Provider.of<ItemProvider>(context, listen: false);
+    _authProvider = Provider.of<AuthProvider>(context, listen: false);
     // Schedule fetch AFTER first frame:
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _itemProvider.fetchItem(widget.itemId);
@@ -94,10 +97,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               onPressed: () {
                 showRateNowSheet(
                   context,
-                  onSubmit: (rating, comment) {
-                    // call your provider / service to post the rating
-                    //_itemProvider.submitRating(item.id, rating, comment);
-                  },
+                  itemId: item.id,
+                  userId: _authProvider.user!.id,
                 );
               },
             ),

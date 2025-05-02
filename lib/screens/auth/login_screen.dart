@@ -18,6 +18,7 @@ import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
+import 'package:rate_master/shared/widgets/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final String password = _passwordController.text.trim();
 
       if (user.isEmpty || password.isEmpty) {
-        _showError('Veuillez remplir tous les champs.');
+        Utils.showError(context, 'Veuillez remplir tous les champs.');
         return;
       }
 
@@ -71,15 +72,13 @@ class _LoginScreenState extends State<LoginScreen> {
         context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
-        _showError(errorMessages.join("\n"));
+        Utils.showError(context,errorMessages.join("\n"));
       } else {
-        _showError('Une erreur inconnue est survenue.');
+        Utils.showError(context,'Une erreur inconnue est survenue.');
       }
       await EasyLoading.dismiss();
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
