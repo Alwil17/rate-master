@@ -79,23 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _showError(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Erreur'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: Text('OK'),
-          )
-        ],
-      ),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {

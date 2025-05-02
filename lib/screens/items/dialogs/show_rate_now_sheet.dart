@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_master/models/rating.dart';
+import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
 /// Displays the “Rate Now” sheet.
 /// Call this from your “Noter maintenant” button’s onPressed.
-void showRateNowSheet(
-  BuildContext context, {
-  required Function(double rating, String comment) onSubmit,
+void showRateNowSheet({
+  required BuildContext context,
+  required int itemId,
+  required int userId,
 }) {
   double selectedRating = 0;
   final commentCtrl = TextEditingController();
@@ -95,9 +99,23 @@ void showRateNowSheet(
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.of(ctx).pop();
-                      onSubmit(selectedRating, commentCtrl.text.trim());
+
+                      final rating = Rating(
+                        value: selectedRating,
+                        comment: commentCtrl.text.trim(),
+                        userId: userId,
+                        itemId: itemId,
+                      );
+                      final provider =
+                          Provider.of<RatingProvider>(context, listen: false);
+                      final success = await provider.submitRating(rating);
+                      if (!success && provider.error != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(provider.error!)),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent),
