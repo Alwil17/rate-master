@@ -20,6 +20,17 @@ class RatingService {
     }
   }
 
+  Future<List<Rating>> fetchRatingsForItem(int itemId) async {
+    final response = await api.get("${ApiRoutes.items}/$itemId/ratings");
+
+    if (response.statusCode == 200) {
+      List jsonList = jsonDecode(response.body);
+      return jsonList.map((e) => Rating.fromJson(e)).toList();
+    } else {
+      throw Exception("Erreur lors du chargement des ratings pour l'item");
+    }
+  }
+
   Future<Rating> fetchRating(num ratingId) async {
     final response = await api.get("${ApiRoutes.ratings}/$ratingId");
 
@@ -29,5 +40,15 @@ class RatingService {
     } else {
       throw Exception("Erreur lors du chargement des ratings");
     }
+  }
+
+  /// Submit a new rating via POST /ratings
+  Future<bool> submitRating(Rating rating) async {
+    final response = await api.post(
+      ApiRoutes.ratings,
+      jsonEncode(rating.toJson()),
+    );
+
+    return response.statusCode == 201 || response.statusCode == 200;
   }
 }
