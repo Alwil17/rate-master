@@ -5,10 +5,15 @@ import 'package:rate_master/services/rating_service.dart';
 class RatingProvider with ChangeNotifier {
   final RatingService ratingService;
 
+  List<Rating> _reviews = [];
+  bool _isLoadingReviews = false;
   bool _isSubmitting = false;
   String? _error;
 
+  /// Getters
+  List<Rating> get reviews => _reviews;
   bool get isSubmitting => _isSubmitting;
+  bool get isLoadingReviews => _isLoadingReviews;
   String? get error => _error;
 
   RatingProvider(this.ratingService);
@@ -30,6 +35,23 @@ class RatingProvider with ChangeNotifier {
       return false;
     } finally {
       _isSubmitting = false;
+      notifyListeners();
+    }
+  }
+
+  /// Loads reviews for a given item and notifies listeners.
+  Future<void> fetchItemReviews(int itemId) async {
+    _isLoadingReviews = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _reviews = await ratingService.fetchItemReviews(itemId);
+    } catch (e) {
+      _error = e.toString();
+      _reviews = [];
+    } finally {
+      _isLoadingReviews = false;
       notifyListeners();
     }
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/models/item.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
@@ -23,8 +22,8 @@ class ItemDetailScreen extends StatefulWidget {
 }
 
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
-  late final ItemProvider _itemProvider;
   late final AuthProvider _authProvider;
+  late final ItemProvider _itemProvider;
 
   @override
   void initState() {

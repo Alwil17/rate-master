@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:rate_master/models/item.dart';
+import 'package:rate_master/models/rating.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
 import 'package:rate_master/shared/widgets/chips/category_chip.dart';
@@ -18,8 +20,8 @@ class ItemDetailBody extends StatefulWidget {
 
 class _ItemDetailBodyState extends State<ItemDetailBody>
     with SingleTickerProviderStateMixin {
-  int _currentPage = 0; // Indice de la page actuelle
-  late PageController _pageController; // Contrôleur du PageView
+  int _currentPage = 0; // Current page index
+  late PageController _pageController; // PageView controller
 
   @override
   void initState() {
@@ -101,7 +103,41 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
               ),
 
               // REVIEWS page: scrollable placeholder
+              // Inside your PageView’s second child:
               SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 1) Header with average + total
+                    Text(
+                      'Reviews (${widget.item.countRating})',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    AverageRatingDisplay(
+                      averageRating: widget.item.avgRating,
+                      totalReviews: widget.item.countRating,
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // 3) List of reviews
+                    ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: reviews.length, // your fetched list
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemBuilder: (context, i) {
+                        final review = reviews[i];
+                        return _buildReviewTile(review);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              /*SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
                 child: Center(
                   child: Text(
@@ -109,7 +145,7 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
@@ -146,4 +182,28 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
       ),
     );
   }
+
+  /// Builds single review tile
+  Widget _buildReviewTile(Rating review) {
+    return ListTile(
+      // optional: CircleAvatar(child: Text(review.userInitials))
+      title: AverageRatingDisplay(
+        averageRating: review.value,
+        totalReviews: 0, // show only stars for this single review
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (review.comment != null && review.comment!.isNotEmpty)
+            Text(review.comment!),
+          const SizedBox(height: 4),
+          Text(
+            DateFormat.yMMMd().format(review.createdAt!),
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
