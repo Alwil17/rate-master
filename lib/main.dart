@@ -4,14 +4,25 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/auth_provider.dart';
-import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/category_provider.dart';
+import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/providers/rating_provider.dart';
+import 'package:rate_master/providers/tag_provider.dart';
+import 'package:rate_master/services/api_service.dart';
+import 'package:rate_master/services/category_service.dart';
+import 'package:rate_master/services/category_service.dart';
+import 'package:rate_master/services/item_service.dart';
+import 'package:rate_master/services/rating_service.dart';
+import 'package:rate_master/services/rating_service.dart';
+import 'package:rate_master/services/tag_service.dart';
+import 'package:rate_master/services/tag_service.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'core/providers/api_data_provider.dart';
-import 'core/providers/app_state_provider.dart';
+import 'providers/app_state_provider.dart';
 
 final AppRouter appRouter = AppRouter();
 
@@ -22,8 +33,28 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (_) => AppStateProvider(prefs)..loadPreferences()),
-    ChangeNotifierProvider(create: (_) => ApiDataProvider()),
     ChangeNotifierProvider(create: (_) => AuthProvider(prefs)),
+    Provider<ApiService>(create: (_) => ApiService(prefs)),
+    ProxyProvider<ApiService, ItemService>(update: (_, api, __) => ItemService(api),),
+    ProxyProvider<ApiService, CategoryService>(update: (_, api, __) => CategoryService(api),),
+    ProxyProvider<ApiService, TagService>(update: (_, api, __) => TagService(api),),
+    ProxyProvider<ApiService, RatingService>(update: (_, api, __) => RatingService(api),),
+    ChangeNotifierProxyProvider<ItemService, ItemProvider>(
+      create: (_) => ItemProvider(ItemService(ApiService(prefs))),
+      update: (_, itemService, previous) => previous!..itemService,
+    ),
+    ChangeNotifierProxyProvider<CategoryService, CategoryProvider>(
+      create: (_) => CategoryProvider(CategoryService(ApiService(prefs))),
+      update: (_, categoryService, previous) => previous!..categoryService,
+    ),
+    ChangeNotifierProxyProvider<TagService, TagProvider>(
+      create: (_) => TagProvider(TagService(ApiService(prefs))),
+      update: (_, tagService, previous) => previous!..tagService,
+    ),
+    ChangeNotifierProxyProvider<RatingService, RatingProvider>(
+      create: (_) => RatingProvider(RatingService(ApiService(prefs))),
+      update: (_, ratingService, previous) => previous!..ratingService,
+    ),
   ], child: MyApp()));
 
   configLoading();
@@ -51,10 +82,10 @@ class CustomAnimation extends EasyLoadingAnimation {
 
   @override
   Widget buildWidget(
-      Widget child,
-      AnimationController controller,
-      AlignmentGeometry alignment,
-      ) {
+    Widget child,
+    AnimationController controller,
+    AlignmentGeometry alignment,
+  ) {
     return Opacity(
       opacity: controller.value,
       child: RotationTransition(
@@ -75,25 +106,25 @@ class MyApp extends StatelessWidget {
 
     return Consumer<AppStateProvider>(
         builder: (context, appStateProvider, child) {
-          return MaterialApp.router(
-            title: 'RateMaster',
-            theme: appTheme,
-            localizationsDelegates: [
-              AppLocalizations.delegate, // Add this line
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              Locale('fr'), // french
-              Locale('en'), // English
-            ],
-            locale: Locale(appStateProvider.locale),
-            routeInformationProvider: goRouter.routeInformationProvider,
-            routeInformationParser: goRouter.routeInformationParser,
-            routerDelegate: goRouter.routerDelegate,
-            builder: EasyLoading.init(),
-          );
-        });
+      return MaterialApp.router(
+        title: 'RateMaster',
+        theme: appTheme,
+        localizationsDelegates: [
+          AppLocalizations.delegate, // Add this line
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('fr'), // french
+          Locale('en'), // English
+        ],
+        locale: Locale(appStateProvider.locale),
+        routeInformationProvider: goRouter.routeInformationProvider,
+        routeInformationParser: goRouter.routeInformationParser,
+        routerDelegate: goRouter.routerDelegate,
+        builder: EasyLoading.init(),
+      );
+    });
   }
 }

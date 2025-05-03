@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:rate_master/features/auth/models/user.dart';
+import 'package:rate_master/models/user.dart';
 import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +16,7 @@ class AuthProvider with ChangeNotifier {
 
   bool get isAuthenticated => _token != null;
   String? get token => _token;
-  User?   get user  => _user;
+  User? get user  => _user;
 
   Future<void> _loadFromPrefs() async {
     _token = prefs.getString(_kToken);
@@ -24,6 +24,8 @@ class AuthProvider with ChangeNotifier {
     if (userJson != null) {
       _user = User.fromJson(jsonDecode(userJson));
     }
+    print("loagind prefs");
+    print(user);
     notifyListeners();
   }
 
@@ -47,7 +49,6 @@ class AuthProvider with ChangeNotifier {
 
   Future<dynamic> login(String email, String password) async {
     try {
-      print("try login");
       final tokenResponse = await http.post(
         Uri.parse(ApiRoutes.token),
         headers: {
@@ -59,10 +60,6 @@ class AuthProvider with ChangeNotifier {
           'password': password,
         },
       );
-      print("getting something");
-
-      print(tokenResponse.statusCode);
-      print(tokenResponse.body);
 
       if (tokenResponse.statusCode == 200) {
         final tokenBody = jsonDecode(tokenResponse.body);
@@ -127,6 +124,28 @@ class AuthProvider with ChangeNotifier {
       };
     }
   }
+
+  Future<bool> verifyToken() async {
+    try {
+      final tokenResponse = await http.get(
+        Uri.parse(ApiRoutes.me),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      if (tokenResponse.statusCode == 200) {
+        // Si tu veux, tu peux mettre à jour l'utilisateur ici
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
 
   Future<void> logout() async {
     _token = null;

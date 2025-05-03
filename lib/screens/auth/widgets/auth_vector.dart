@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rate_master/core/theme/theme.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 class AuthVector extends CustomPainter {
   @override

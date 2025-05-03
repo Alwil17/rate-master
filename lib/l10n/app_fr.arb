@@ -28,5 +28,20 @@
   "password": "Mot de passe",
   "passwordText": "Changer mot de passe",
   "emailValidatorMessage": "Veillez entrez une adresse email valide !",
-  "fieldValidatorMessage": "Veillez valeur valide pour ce champ"
+  "fieldValidatorMessage": "Veillez valeur valide pour ce champ",
+  "welcome": "Bienvenue",
+  "makeASearch": "Faire une recherche...",
+  "recommandedForYou": "Recommandés pour vous",
+  "noItemFound": "Aucun élément pour le moment.",
+  "recentlyRated": "Récemment notés",
+  "itemNotFound": "L'élément n'a pas été trouvé.",
+  "rateNow": "Noter maintenant",
+  "about": "À propos",
+  "reviews": "Avis & commentaires",
+  "reviewsInProgress": "Section des commentaires en cours de construction",
+  "description": "Description",
+  "leaveAComment": "Écrire un commentaire (Optionnel)",
+  "cancel": "Annuler",
+  "rate": "Noter",
+  "noReviewsYet": "Aucun commentaire pour le moment."
 }

@@ -5,12 +5,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/core/providers/app_state_provider.dart';
-import 'package:rate_master/core/providers/auth_provider.dart';
-import 'package:rate_master/core/theme/theme.dart';
-import 'package:rate_master/features/auth/models/user.dart';
-import 'package:rate_master/features/auth/screens/register_screen.dart';
-import 'package:rate_master/features/auth/widgets/auth_vector.dart';
+import 'package:rate_master/providers/app_state_provider.dart';
+import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/shared/theme/theme.dart';
+import 'package:rate_master/models/user.dart';
+import 'package:rate_master/screens/auth/register_screen.dart';
+import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/api/api_helper.dart';
@@ -18,6 +18,7 @@ import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
+import 'package:rate_master/shared/widgets/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final String password = _passwordController.text.trim();
 
       if (user.isEmpty || password.isEmpty) {
-        _showError('Veuillez remplir tous les champs.');
+        Utils.showError(context, 'Veuillez remplir tous les champs.');
         return;
       }
 
@@ -71,30 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
         context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
-        _showError(errorMessages.join("\n"));
+        Utils.showError(context,errorMessages.join("\n"));
       } else {
-        _showError('Une erreur inconnue est survenue.');
+        Utils.showError(context,'Une erreur inconnue est survenue.');
       }
       await EasyLoading.dismiss();
     }
-  }
-
-  void _showError(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Erreur'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: Text('OK'),
-          )
-        ],
-      ),
-    );
   }
 
   @override
