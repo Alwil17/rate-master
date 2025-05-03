@@ -6,7 +6,7 @@ class ApiHelper {
 
   ApiHelper(this.token);
 
-  // Méthode pour un GET request
+  // Method for a GET request
   Future<http.Response> get(String url) async {
     if (token == null) {
       throw Exception("Token manquant");
@@ -23,7 +23,7 @@ class ApiHelper {
     return response; // Renvoie la réponse brute pour traitement
   }
 
-  // Méthode pour un POST request
+  // Method for a POST request
   Future<http.Response> post(String url, Map<String, dynamic> body) async {
     if (token == null) {
       throw Exception("Token manquant");
@@ -41,6 +41,7 @@ class ApiHelper {
     return response;
   }
 
+  // Method for a PUT request
   Future<http.Response> put(String url, Map<String, dynamic> body) async {
     if (token == null) {
       throw Exception("Token manquant");
@@ -58,7 +59,7 @@ class ApiHelper {
     return response;
   }
 
-  // Méthode pour un DELETE request
+  // Method for a DELETE request
   Future<http.Response> delete(String url) async {
     if (token == null) {
       throw Exception("Token manquant");

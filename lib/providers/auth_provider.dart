@@ -125,6 +125,28 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> verifyToken() async {
+    try {
+      final tokenResponse = await http.get(
+        Uri.parse(ApiRoutes.me),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      if (tokenResponse.statusCode == 200) {
+        // Si tu veux, tu peux mettre à jour l'utilisateur ici
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+
   Future<void> logout() async {
     _token = null;
     _user = null;

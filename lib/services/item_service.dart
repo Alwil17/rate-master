@@ -19,4 +19,15 @@ class ItemService {
       throw Exception("Erreur lors du chargement des items");
     }
   }
+
+  Future<Item> fetchItem(num itemId) async {
+    final response = await api.get("${ApiRoutes.items}/$itemId");
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return Item.fromJson(jsonData);
+    } else {
+      throw Exception("Erreur lors du chargement des items");
+    }
+  }
 }

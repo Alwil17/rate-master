@@ -7,6 +7,7 @@ import 'package:rate_master/screens/home/home_screen.dart';
 import 'package:rate_master/screens/init/splash_screen.dart';
 import 'package:rate_master/screens/init/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/screens/items/item_detail_screen.dart';
 import 'package:rate_master/shared/error_screen.dart';
 
 class AppRouter {
@@ -42,6 +43,15 @@ class AppRouter {
         path: APP_PAGES.home.toPath,
         name: APP_PAGES.home.toName,
         builder: (context, state) => HomeScreen(),
+        routes: [
+          GoRoute(
+            path: APP_PAGES.itemDetails.toPath,
+            name: APP_PAGES.itemDetails.toName,
+            builder: (context, state) => ItemDetailScreen(
+                itemId:
+                int.parse(state.pathParameters['itemId'].toString())),
+          ),
+        ]
       )
       /*
       GoRoute(
