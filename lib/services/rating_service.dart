@@ -20,7 +20,7 @@ class RatingService {
     }
   }
 
-  Future<List<Rating>> fetchItemReviews(int itemId) async {
+  Future<List<Rating>> fetchItemReviews(num itemId) async {
     final response = await api.get("${ApiRoutes.items}/$itemId/ratings");
 
     if (response.statusCode == 200) {

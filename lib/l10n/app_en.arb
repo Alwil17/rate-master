@@ -42,5 +42,6 @@
   "description": "Description",
   "leaveAComment": "Leave a comment (Optional)",
   "cancel": "Cancel",
-  "rate": "Rate"
+  "rate": "Rate",
+  "noReviewsYet": "No reviews yet."
 }

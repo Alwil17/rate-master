@@ -40,7 +40,7 @@ class RatingProvider with ChangeNotifier {
   }
 
   /// Loads reviews for a given item and notifies listeners.
-  Future<void> fetchItemReviews(int itemId) async {
+  Future<void> fetchItemReviews(num itemId) async {
     _isLoadingReviews = true;
     _error = null;
     notifyListeners();

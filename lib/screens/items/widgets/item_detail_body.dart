@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/models/rating.dart';
+import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
 import 'package:rate_master/shared/widgets/chips/category_chip.dart';
@@ -123,14 +125,23 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                     const SizedBox(height: 24),
 
                     // 3) List of reviews
-                    ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: reviews.length, // your fetched list
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemBuilder: (context, i) {
-                        final review = reviews[i];
-                        return _buildReviewTile(review);
+                    Consumer<RatingProvider>(
+                      builder: (ctx, rp, _) {
+                        if (rp.isLoadingReviews) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (rp.error != null) {
+                          return Center(child: Text(rp.error!));
+                        } else if (rp.reviews.isEmpty) {
+                          return Center(child: Text(locale.noReviewsYet));
+                        }
+
+                        return ListView.separated(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: rp.reviews.length,
+                          separatorBuilder: (_, __) => Divider(),
+                          itemBuilder: (ctx, i) => _buildReviewTile(rp.reviews[i]),
+                        );
                       },
                     ),
                   ],

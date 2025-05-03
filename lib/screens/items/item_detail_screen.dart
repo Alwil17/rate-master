@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_body.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_header.dart';
@@ -24,15 +25,18 @@ class ItemDetailScreen extends StatefulWidget {
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
   late final AuthProvider _authProvider;
   late final ItemProvider _itemProvider;
+  late final RatingProvider _ratingProvider;
 
   @override
   void initState() {
     super.initState();
-    _itemProvider = Provider.of<ItemProvider>(context, listen: false);
     _authProvider = Provider.of<AuthProvider>(context, listen: false);
+    _itemProvider = Provider.of<ItemProvider>(context, listen: false);
+    _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
     // Schedule fetch AFTER first frame:
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _itemProvider.fetchItem(widget.itemId);
+      _ratingProvider.fetchItemReviews(widget.itemId);
     });
   }
 
