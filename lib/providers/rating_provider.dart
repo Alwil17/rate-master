@@ -12,8 +12,11 @@ class RatingProvider with ChangeNotifier {
 
   /// Getters
   List<Rating> get reviews => _reviews;
+
   bool get isSubmitting => _isSubmitting;
+
   bool get isLoadingReviews => _isLoadingReviews;
+
   String? get error => _error;
 
   RatingProvider(this.ratingService);
@@ -44,7 +47,6 @@ class RatingProvider with ChangeNotifier {
     _isLoadingReviews = true;
     _error = null;
     notifyListeners();
-
     try {
       _reviews = await ratingService.fetchItemReviews(itemId);
     } catch (e) {
