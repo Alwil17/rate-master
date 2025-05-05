@@ -101,12 +101,15 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              onPressed: () {
-                showRateNowSheet(
+              onPressed: () async {
+                final success = await showRateNowSheet(
                   context,
                   itemId: item.id,
                   userId: _authProvider.user!.id,
                 );
+                if (success) {
+                  fetchItemDatas();
+                }
               },
             ),
           ),
