@@ -101,7 +101,6 @@ void showRateNowSheet(BuildContext context, {
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () async {
-                      Navigator.of(ctx).pop();
                       await EasyLoading.show(status: "loading...");
                       final rating = Rating(
                         value: selectedRating,
@@ -116,6 +115,7 @@ void showRateNowSheet(BuildContext context, {
                         Utils.showError(context, provider.error!);
                       }
                       await EasyLoading.dismiss();
+                      Navigator.of(ctx).pop();
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent),

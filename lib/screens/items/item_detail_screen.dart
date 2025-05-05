@@ -35,9 +35,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
     // Schedule fetch AFTER first frame:
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _itemProvider.fetchItem(widget.itemId);
-      _ratingProvider.fetchItemReviews(widget.itemId);
+      fetchItemDatas();
     });
+  }
+
+  void fetchItemDatas(){
+    _itemProvider.fetchItem(widget.itemId);
+    _ratingProvider.fetchItemReviews(widget.itemId);
   }
 
   @override

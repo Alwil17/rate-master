@@ -46,9 +46,8 @@ class RatingService {
   Future<bool> submitRating(Rating rating) async {
     final response = await api.post(
       ApiRoutes.ratings,
-      jsonEncode(rating.toJson()),
+      rating.toJson(),
     );
-
     return response.statusCode == 201 || response.statusCode == 200;
   }
 }
