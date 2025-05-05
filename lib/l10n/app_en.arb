@@ -43,5 +43,9 @@
   "leaveAComment": "Leave a comment (Optional)",
   "cancel": "Cancel",
   "rate": "Rate",
-  "noReviewsYet": "No reviews yet."
+  "noReviewsYet": "No reviews yet.",
+  "delete": "Delete",
+  "deleteMyReview": "Delete my review",
+  "edit": "Edit",
+  "editMyReview": "Edit my review"
 }

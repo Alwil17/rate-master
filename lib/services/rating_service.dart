@@ -54,14 +54,13 @@ class RatingService {
   }
 
   Future<Rating> fetchUserReviewForItem(num itemId) async {
-    final response = await api.get("${ApiRoutes.items}/$itemId/my-rating");
+    final response = await api.get("${ApiRoutes.ratings}/$itemId/my-rating");
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(utf8.decode(response.bodyBytes));
-      Map<String, dynamic> jsonData = jsonDecode(decoded);
-      return Rating.fromJson(jsonData);
+      return Rating.fromJson(decoded);
     } else {
-      throw Exception("Erreur lors du chargement des items");
+      throw Exception("Erreur lors du chargement des ratings");
     }
   }
 }

@@ -43,5 +43,9 @@
   "leaveAComment": "Écrire un commentaire (Optionnel)",
   "cancel": "Annuler",
   "rate": "Noter",
-  "noReviewsYet": "Aucun commentaire pour le moment."
+  "noReviewsYet": "Aucun commentaire pour le moment.",
+  "delete": "Supprimer",
+  "deleteMyReview": "Supprimer mon avis",
+  "edit": "Modifier",
+  "editMyReview": "Modifier mon avis"
 }
