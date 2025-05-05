@@ -107,9 +107,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   itemId: item.id,
                   userId: _authProvider.user!.id,
                 );
-                if (success) {
-                  fetchItemDatas();
-                }
+                if (success) fetchItemDatas();
               },
             ),
           ),
