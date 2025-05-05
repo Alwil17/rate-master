@@ -10,14 +10,15 @@ import 'package:rate_master/shared/widgets/utils.dart';
 
 /// Displays the “Rate Now” sheet.
 /// Call this from your “Noter maintenant” button’s onPressed.
-void showRateNowSheet(BuildContext context, {
+/// Returns true if the user submitted, false if cancelled.
+Future<bool> showRateNowSheet(BuildContext context, {
   required int itemId,
   required int userId,
 }) {
   double selectedRating = 0;
   final commentCtrl = TextEditingController();
 
-  showModalBottomSheet(
+  return showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -95,7 +96,7 @@ void showRateNowSheet(BuildContext context, {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(),
+                    onPressed: () => Navigator.of(ctx).pop(false),
                     child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                   const SizedBox(width: 16),
@@ -115,7 +116,7 @@ void showRateNowSheet(BuildContext context, {
                         Utils.showError(context, provider.error!);
                       }
                       await EasyLoading.dismiss();
-                      Navigator.of(ctx).pop();
+                      Navigator.of(ctx).pop(true);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent),
@@ -132,5 +133,5 @@ void showRateNowSheet(BuildContext context, {
         },
       ),
     ),
-  );
+  ).then((value) => value ?? false);
 }
