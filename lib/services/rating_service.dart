@@ -63,4 +63,10 @@ class RatingService {
       throw Exception("Erreur lors du chargement des ratings");
     }
   }
+
+  /// Delete a rating via DELETE /ratings/{ratingId}
+  Future<bool> deleteRating(num ratingId) async {
+    final response = await api.delete("${ApiRoutes.ratings}/$ratingId");
+    return response.statusCode == 204;
+  }
 }

@@ -75,4 +75,31 @@ class RatingProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  /// Deletes the current user’s rating for the given item.
+  Future<bool> deleteReviewForItem(int ratingId) async {
+    _isSubmitting = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final response = await ratingService.deleteRating(itemId);
+
+      if (response.statusCode == 204) {
+        // clear the stored user review
+        _currentRating = null;
+        notifyListeners();
+        return true;
+      } else {
+        _error = 'Failed to delete review';
+        return false;
+      }
+    } catch (e) {
+      _error = e.toString();
+      return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
+    }
+  }
 }
