@@ -13,7 +13,8 @@ class RatingService {
     final response = await api.get(ApiRoutes.ratings);
 
     if (response.statusCode == 200) {
-      List jsonList = jsonDecode(response.body);
+      final decoded = utf8.decode(response.bodyBytes);
+      List jsonList = jsonDecode(decoded);
       return jsonList.map((e) => Rating.fromJson(e)).toList();
     } else {
       throw Exception("Erreur lors du chargement des ratings");
@@ -24,7 +25,8 @@ class RatingService {
     final response = await api.get("${ApiRoutes.items}/$itemId/ratings");
 
     if (response.statusCode == 200) {
-      List jsonList = jsonDecode(response.body);
+      final decoded = utf8.decode(response.bodyBytes);
+      List jsonList = jsonDecode(decoded);
       return jsonList.map((e) => Rating.fromJson(e)).toList();
     } else {
       throw Exception("Erreur lors du chargement des ratings pour l'item");
