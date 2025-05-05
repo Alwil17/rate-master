@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_master/models/item.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
@@ -88,30 +89,35 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton.icon(
-              icon: const Icon(Icons.star, color: Colors.white),
-              label: Text(
-                locale.rateNow,
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              onPressed: () async {
-                final success = await showRateNowSheet(
-                  context,
-                  itemId: item.id,
-                  userId: _authProvider.user!.id,
-                );
-                if (success) fetchItemDatas();
-              },
-            ),
+            child: _buildRateNowButton(item),
           ),
         );
+      },
+    );
+  }
+
+  Widget _buildRateNowButton(Item item){
+    final locale = AppLocalizations.of(context)!;
+    return ElevatedButton.icon(
+      icon: const Icon(Icons.star, color: Colors.white),
+      label: Text(
+        locale.rateNow,
+        style: TextStyle(color: Colors.white),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.accent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+      ),
+      onPressed: () async {
+        final success = await showRateNowSheet(
+          context,
+          itemId: item.id,
+          userId: _authProvider.user!.id,
+        );
+        if (success) fetchItemDatas();
       },
     );
   }
