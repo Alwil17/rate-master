@@ -47,5 +47,9 @@
   "delete": "Supprimer",
   "deleteMyReview": "Supprimer mon avis",
   "edit": "Modifier",
-  "editMyReview": "Modifier mon avis"
+  "editMyReview": "Modifier mon avis",
+  "confirmDeleteTitle": "Confirmation de suppression",
+  "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer votre avis ?",
+  "deleteSuccess": "Votre avis a été supprimé.",
+  "deleteError": "Impossible de supprimer votre avis."
 }

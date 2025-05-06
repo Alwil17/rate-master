@@ -47,5 +47,9 @@
   "delete": "Delete",
   "deleteMyReview": "Delete my review",
   "edit": "Edit",
-  "editMyReview": "Edit my review"
+  "editMyReview": "Edit my review",
+  "confirmDeleteTitle": "Confirm Deletion",
+  "confirmDeleteMessage": "Are you sure you want to delete your review?",
+  "deleteSuccess": "Your review was deleted.",
+  "deleteError": "Could not delete your review."
 }
