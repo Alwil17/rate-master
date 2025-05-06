@@ -127,6 +127,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        /// Edit button
         Expanded(
           child: ElevatedButton.icon(
             icon: const Icon(Icons.edit, color: Colors.white),
@@ -152,22 +153,45 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           ),
         ),
         const SizedBox(width: 12),
+        /// Delete button
         Expanded(
           child: ElevatedButton.icon(
             icon: const Icon(Icons.delete, color: Colors.red),
-            label: Text(
-              locale.deleteMyReview,
-              style: const TextStyle(color: Colors.red),
-            ),
+            label: Text(locale.deleteMyReview, style: const TextStyle(color: Colors.red)),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey.shade100,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            onPressed: () {
-              // TODO: implement delete logic
+            onPressed: () async {
+              // 1) show confirmation dialog
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text(locale.confirmDeleteTitle),
+                  content: Text(locale.confirmDeleteMessage),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(locale.cancel)),
+                    TextButton(onPressed: () => Navigator.of(ctx).pop(true),  child: Text(locale.delete)),
+                  ],
+                ),
+              );
+
+              if (confirm == true) {
+                // 2) call provider
+                final success = await _ratingProvider.deleteReviewForItem(item.id);
+                if (success) {
+                  // 3) refetch data and show feedback
+                  fetchItemDatas();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(locale.deleteSuccess)), // e.g. "Review deleted"
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(_ratingProvider.error ?? locale.deleteError)),
+                  );
+                }
+              }
             },
           ),
         ),
