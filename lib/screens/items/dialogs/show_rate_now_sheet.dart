@@ -10,14 +10,16 @@ import 'package:rate_master/shared/widgets/utils.dart';
 
 /// Displays the “Rate Now” sheet.
 /// Call this from your “Noter maintenant” button’s onPressed.
-void showRateNowSheet(BuildContext context, {
+/// Returns true if the user submitted, false if cancelled.
+Future<bool> showRateNowSheet(BuildContext context, {
   required int itemId,
   required int userId,
+  Rating? existingRating,
 }) {
-  double selectedRating = 0;
-  final commentCtrl = TextEditingController();
+  double selectedRating = existingRating?.value.toDouble() ?? 0;
+  final commentCtrl = TextEditingController(text: existingRating?.comment ?? "");
 
-  showModalBottomSheet(
+  return showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -95,27 +97,29 @@ void showRateNowSheet(BuildContext context, {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(),
+                    onPressed: () => Navigator.of(ctx).pop(false),
                     child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
-                    onPressed: () async {
-                      Navigator.of(ctx).pop();
+                    onPressed: (selectedRating <= 0) ? null : () async {
+                      FocusScope.of(context).requestFocus(FocusNode());
                       await EasyLoading.show(status: "loading...");
                       final rating = Rating(
+                        id: existingRating?.id,
                         value: selectedRating,
                         comment: commentCtrl.text.trim(),
                         userId: userId,
                         itemId: itemId,
                       );
                       final provider =
-                          Provider.of<RatingProvider>(context, listen: false);
+                      Provider.of<RatingProvider>(context, listen: false);
                       final success = await provider.submitRating(rating);
                       if (!success && provider.error != null) {
                         Utils.showError(context, provider.error!);
                       }
                       await EasyLoading.dismiss();
+                      Navigator.of(ctx).pop(true);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent),
@@ -132,5 +136,5 @@ void showRateNowSheet(BuildContext context, {
         },
       ),
     ),
-  );
+  ).then((value) => value ?? false);
 }

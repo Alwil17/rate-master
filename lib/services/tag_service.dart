@@ -13,7 +13,8 @@ class TagService {
     final response = await api.get(ApiRoutes.categories);
 
     if (response.statusCode == 200) {
-      List jsonList = jsonDecode(response.body);
+      final decoded = utf8.decode(response.bodyBytes);
+      List jsonList = jsonDecode(decoded);
       return jsonList.map((e) => Tag.fromJson(e)).toList();
     } else {
       throw Exception("Erreur lors du chargement des items");

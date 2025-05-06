@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
@@ -108,19 +107,6 @@ class ItemCardHorizontal extends StatelessWidget {
     } else {
       return _buildPlaceholder();
     }
-  }
-
-  /// Génère la liste d'icônes étoiles (plein/vide) pour une note sur 5
-  List<Widget> _buildStarIcons(int fullStars) {
-    const totalStars = 5;
-    return List.generate(totalStars, (i) {
-      if (i < fullStars) {
-        return PhosphorIcon(PhosphorIconsDuotone.starHalf, size: 15);
-      } else {
-        return PhosphorIcon(PhosphorIconsDuotone.star,
-            size: 15, color: Colors.amber);
-      }
-    });
   }
 
   /// Placeholder gris avec icône film

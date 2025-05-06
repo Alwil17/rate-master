@@ -1,21 +1,15 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/providers/app_state_provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/shared/theme/theme.dart';
-import 'package:rate_master/models/user.dart';
-import 'package:rate_master/screens/auth/register_screen.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/api/api_helper.dart';
-import 'package:rate_master/shared/api/api_routes.dart';
-import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 import 'package:rate_master/shared/widgets/utils.dart';

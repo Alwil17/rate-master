@@ -107,40 +107,45 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
               // REVIEWS page: scrollable placeholder
               // Inside your PageView’s second child:
               SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 1) Header with average + total
-                    Text(
-                      'Reviews (${widget.item.countRating})',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    AverageRatingDisplay(
-                      averageRating: widget.item.avgRating,
-                      totalReviews: widget.item.countRating,
+                    // Header with dynamic count
+                    Consumer<RatingProvider>(
+                      builder: (ctx, rp, _) {
+                        final totalReviews = rp.reviews.length;
+                        final reviewsWithComments = rp.reviews.where((r) => r.comment!.trim().isNotEmpty).toList();
+                        final commentCount = reviewsWithComments.length;
+
+                        return Text(
+                          '${locale.reviews}: $totalReviews – ${locale.comments}: $commentCount',
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        );
+                      },
                     ),
 
-                    const SizedBox(height: 24),
-
-                    // 3) List of reviews
+                    // List of reviews with comments only
                     Consumer<RatingProvider>(
                       builder: (ctx, rp, _) {
                         if (rp.isLoadingReviews) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         } else if (rp.error != null) {
                           return Center(child: Text(rp.error!));
-                        } else if (rp.reviews.isEmpty) {
+                        }
+
+                        final reviewsWithComments = rp.reviews.where((r) => r.comment!.trim().isNotEmpty).toList();
+
+                        if (reviewsWithComments.isEmpty) {
                           return Center(child: Text(locale.noReviewsYet));
                         }
 
                         return ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: rp.reviews.length,
-                          separatorBuilder: (_, __) => Divider(),
-                          itemBuilder: (ctx, i) => _buildReviewTile(rp.reviews[i]),
+                          itemCount: reviewsWithComments.length,
+                          separatorBuilder: (_, __) => const Divider(),
+                          itemBuilder: (ctx, i) => _buildReviewTile(reviewsWithComments[i]),
                         );
                       },
                     ),
@@ -148,15 +153,6 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
                 ),
               ),
 
-              /*SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                child: Center(
-                  child: Text(
-                    locale.reviewsInProgress, // e.g. "Reviews section under construction"
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              ),*/
             ],
           ),
         ),

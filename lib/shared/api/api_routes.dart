@@ -1,5 +1,5 @@
 abstract class ApiRoutes {
-  static const String base_url = "http://192.168.78.144:8000";
+  static const String base_url = "http://192.168.50.144:8000";
   static const String base_api = base_url;
   static const String login = "$base_api/login";
   static const String forgetpassword = "$base_api/forgetpassword";
@@ -10,4 +10,5 @@ abstract class ApiRoutes {
   static const String categories = "$base_api/categories";
   static const String tags = "$base_api/tags";
   static const String ratings = "$base_api/ratings";
+  static const String users = "$base_api/users";
 }
