@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/user.dart';
 import 'package:rate_master/providers/auth_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'widgets/profile_vector.dart';
+import 'widgets/stats_summary.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -41,26 +43,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
 
+          // 2) The avatar, centered horizontally, overlapping the header
           Positioned(
-            top: 150,
-            right: 0,
+            top: 80, // tweak this to slide up/down
             left: 0,
-            child: Consumer<AuthProvider>(
-              builder: (ctx, rp, _) {
-                if (rp.) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (rp.error != null) {
-                  return Center(child: Text(rp.error!));
-                }
+            right: 0,
+            child: Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.white,
+                    child: ClipOval(
+                      child: Image.network(
+                        _authProvider.user!.imageUrl ?? '',
+                        width: 120,
+                        height: 120,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) {
+                          // fallback to default asset
+                          return _buildPlaceholder();
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _authProvider.user!.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(_authProvider.user!.email,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(fontWeight: FontWeight.normal)),
+                ],
+              ),
+            ),
+          ),
 
-                final reviewsWithComments = rp.reviews.where((r) => r.comment!.trim().isNotEmpty).toList();
-
-                if (reviewsWithComments.isEmpty) {
-                  return Center(child: Text(locale.noReviewsYet));
-                }
-
-                return _buildImage();
-              },
+          // 3) The edit button, overlapping the avatar
+          Positioned.fill(
+            top: MediaQuery.of(context).padding.top + 230,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  StatsSummary(
+                    reviewsCount: 52,
+                    averageRating: 4.8,
+                    commentsCount: 45,
+                  ),
+                  Placeholder()
+                ],
+              ),
             ),
           ),
         ],
@@ -69,9 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildImage(User user) {
-    if (user.imageUrl != null && item.imageUrl!.isNotEmpty) {
+    if (user.imageUrl != null && user.imageUrl!.isNotEmpty) {
       return Image.network(
-        item.imageUrl!,
+        user.imageUrl!,
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => _buildPlaceholder(),
         loadingBuilder: (_, child, progress) => progress == null
@@ -85,15 +125,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   /// Placeholder gris avec icône film
   Widget _buildPlaceholder() {
-    return Container(
-      color: Colors.grey[300],
-      child: const Center(
-        child: Icon(
-          Icons.movie,
-          size: 48,
-          color: Colors.white,
-        ),
-      ),
+    return Image.asset(
+      'assets/images/avatar.png',
+      width: 120,
+      height: 120,
+      fit: BoxFit.cover,
     );
   }
 }
