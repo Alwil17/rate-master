@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/user.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/screens/profile/widgets/profile_option_card.dart';
 
 import 'widgets/profile_vector.dart';
 import 'widgets/stats_summary.dart';
@@ -26,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -40,6 +43,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               painter: ProfileVector(),
               child: SizedBox(
                   width: MediaQuery.of(context).size.width, height: 170),
+            ),
+          ),
+
+          // back button
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(8),
+                    backgroundColor: Colors.white,
+                    elevation: 1,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Colors.black,),
+                ),
+              ),
             ),
           ),
 
@@ -89,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // 3) The edit button, overlapping the avatar
           Positioned.fill(
             top: MediaQuery.of(context).padding.top + 230,
-            child: SingleChildScrollView(
+            child: Padding(
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
@@ -98,7 +121,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     averageRating: 4.8,
                     commentsCount: 45,
                   ),
-                  Placeholder()
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 2.1,
+                      // Ajust cards height to fit the screen
+                      children: [
+                        ProfileOptionCard(
+                            title: locale.learnMore,
+                            subtitle: locale.about,
+                            icon: PhosphorIconsFill.info,
+                            onTap: () {}),
+                        ProfileOptionCard(
+                            title: locale.share,
+                            subtitle: locale.share,
+                            icon: PhosphorIconsRegular.share,
+                            onTap: () {}),
+                        ProfileOptionCard(
+                            title: locale.close,
+                            subtitle: locale.close,
+                            icon: PhosphorIconsFill.x,
+                            onTap: () {}),
+                        ProfileOptionCard(
+                            title: locale.disconnect,
+                            subtitle: locale.seeYouSoon,
+                            icon: PhosphorIconsRegular.signOut,
+                            onTap: () {}),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

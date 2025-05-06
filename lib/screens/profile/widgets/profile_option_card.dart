@@ -37,7 +37,7 @@ class ProfileOptionCard extends StatelessWidget {
         child: Row(
           children: [
             // Titre et sous-titre
-            Column(
+            Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -50,10 +50,10 @@ class ProfileOptionCard extends StatelessWidget {
                   style: TextStyle(fontSize: 14, color: AppColors.accent),
                 ),
               ],
-            ),
+            )),
             // Icône
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 PhosphorIcon(

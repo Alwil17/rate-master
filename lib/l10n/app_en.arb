@@ -55,5 +55,10 @@
   "comments": "Comments",
   "reviewsAndComments": "Reviews and Comments",
   "noNotifLabel": "No notifications yet",
-  "noNotifText": "Your notifications will appear here once you receive some."
+  "noNotifText": "Your notifications will appear here once you receive some.",
+  "disconnect": "Disconnect",
+  "share": "Share",
+  "learnMore": "Learn More",
+  "seeYouSoon": "See you soon!",
+  "close": "Close"
 }
