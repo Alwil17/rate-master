@@ -9,6 +9,7 @@ class RatingProvider with ChangeNotifier {
   Rating? _currentRating;
   bool _isLoadingReviews = false;
   bool _isSubmitting = false;
+  bool _isLoadingCurrentUserRating = false;
   String? _error;
 
   /// Getters
@@ -17,6 +18,7 @@ class RatingProvider with ChangeNotifier {
   bool get isSubmitting => _isSubmitting;
 
   bool get isLoadingReviews => _isLoadingReviews;
+  bool get isLoadingCurrentUserRating => _isLoadingCurrentUserRating;
 
   String? get error => _error;
 
@@ -61,17 +63,16 @@ class RatingProvider with ChangeNotifier {
 
   /// Loads user review for a given item stores it in [_currentRating].
   Future<void> fetchUserReviewForItem(num itemId) async {
-    _isLoadingReviews = true;
-    _error = null;
+    _isLoadingCurrentUserRating = true;
     notifyListeners();
     try {
       final fetched = await ratingService.fetchUserReviewForItem(itemId);
       _currentRating = fetched;
+      _error = null;
     } catch (e) {
       _error = e.toString();
-      _reviews = [];
     } finally {
-      _isLoadingReviews = false;
+      _isLoadingCurrentUserRating = false;
       notifyListeners();
     }
   }

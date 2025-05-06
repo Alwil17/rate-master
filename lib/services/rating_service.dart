@@ -48,12 +48,8 @@ class RatingService {
   /// Submit or update a rating depending on whether the ID is present.
   Future<bool> submitRating(Rating rating) async {
     late final Response response;
-    print(rating.toJson());
-    print(rating.id);
-    print(rating);
 
     if (rating.id != null) {
-      print("HHEEEEEEEEERRRREEEEEEEEEEEEE");
       // Update existing rating
       response = await api.put(
         "${ApiRoutes.ratings}/${rating.id}",
@@ -71,13 +67,17 @@ class RatingService {
   }
 
 
-  Future<Rating> fetchUserReviewForItem(num itemId) async {
+  Future<Rating?> fetchUserReviewForItem(num itemId) async {
     final response = await api.get("${ApiRoutes.ratings}/$itemId/my-rating");
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(utf8.decode(response.bodyBytes));
       return Rating.fromJson(decoded);
+    }else if (response.statusCode == 404) {
+      // Silently return null if no review found
+      return null;
     } else {
+      // Unexpected error, can still be logged if needed
       throw Exception("Erreur lors du chargement des ratings");
     }
   }

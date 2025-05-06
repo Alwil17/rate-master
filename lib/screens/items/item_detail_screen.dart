@@ -145,7 +145,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             ),
             onPressed: () async {
               FocusScope.of(context).requestFocus(FocusNode());
-              print("RATING ID: ${_ratingProvider.currentRating?.toJson()}");
               final success = await showRateNowSheet(context,
                   itemId: item.id,
                   userId: _authProvider.user!.id,

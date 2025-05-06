@@ -51,5 +51,7 @@
   "confirmDeleteTitle": "Confirm Deletion",
   "confirmDeleteMessage": "Are you sure you want to delete your review?",
   "deleteSuccess": "Your review was deleted.",
-  "deleteError": "Could not delete your review."
+  "deleteError": "Could not delete your review.",
+  "comments": "Comments",
+  "reviewsAndComments": "Reviews and Comments"
 }

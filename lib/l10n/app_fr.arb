@@ -37,7 +37,7 @@
   "itemNotFound": "L'élément n'a pas été trouvé.",
   "rateNow": "Noter maintenant",
   "about": "À propos",
-  "reviews": "Avis & commentaires",
+  "reviews": "Avis",
   "reviewsInProgress": "Section des commentaires en cours de construction",
   "description": "Description",
   "leaveAComment": "Écrire un commentaire (Optionnel)",
@@ -51,5 +51,7 @@
   "confirmDeleteTitle": "Confirmation de suppression",
   "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer votre avis ?",
   "deleteSuccess": "Votre avis a été supprimé.",
-  "deleteError": "Impossible de supprimer votre avis."
+  "deleteError": "Impossible de supprimer votre avis.",
+  "comments": "Commentaires",
+  "reviewsAndComments": "Avis et commentaires"
 }
