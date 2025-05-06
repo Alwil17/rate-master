@@ -61,5 +61,13 @@
   "learnMore": "En savoir plus",
   "seeYouSoon": "À bientôt !",
   "close": "Fermer",
-  "editMyProfile": "Modifier mon profil"
+  "editMyProfile": "Modifier mon profil",
+  "confirmExit": "Confirmation de sortie",
+  "confirmExitMessage": "Êtes-vous sûr de vouloir quitter l'application ?",
+  "exit": "Quitter",
+  "confirmDisconnect": "Confirmer la déconnexion",
+  "confirmDisconnectMessage": "Voulez-vous vraiment vous déconnecter ?",
+  "yes": "Oui",
+  "no": "Non",
+  "disconnectedSuccessfully": "Vous avez été déconnecté avec succès."
 }

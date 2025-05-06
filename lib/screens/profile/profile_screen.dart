@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/user.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/providers/rating_provider.dart';
+import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/profile/widgets/profile_option_card.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
@@ -170,12 +173,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: locale.close,
                             subtitle: locale.close,
                             icon: PhosphorIconsFill.x,
-                            onTap: () {}),
+                            onTap: () => _showExitConfirmationDialog(context)),
                         ProfileOptionCard(
                             title: locale.disconnect,
                             subtitle: locale.seeYouSoon,
                             icon: PhosphorIconsRegular.signOut,
-                            onTap: () {}),
+                            onTap: () => _showDisconnectConfirmationDialog(context)),
                       ],
                     ),
                   ),
@@ -229,4 +232,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
       fit: BoxFit.cover,
     );
   }
+
+  void _showExitConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final locale = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(locale.confirmExit),
+          content: Text(locale.confirmExitMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(locale.cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                SystemNavigator.pop(); // Ferme l'application
+              },
+              child: Text(locale.exit),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDisconnectConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final locale = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(locale.confirmDisconnect),
+          content: Text(locale.confirmDisconnectMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(locale.cancel),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _authProvider.logout();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(locale.disconnectedSuccessfully)),
+                );
+                context.goNamed(APP_PAGES.splash.toName);
+                /*if (response["status"] == 200) {
+                  await prefs.clear();
+                  context.goNamed(APP_PAGES.splash.toName);
+                }*/
+              },
+              child: Text(locale.yes),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
