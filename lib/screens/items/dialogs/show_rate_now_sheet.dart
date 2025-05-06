@@ -102,7 +102,7 @@ Future<bool> showRateNowSheet(BuildContext context, {
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
-                    onPressed: () async {
+                    onPressed: (selectedRating <= 0) ? null : () async {
                       FocusScope.of(context).requestFocus(FocusNode());
                       await EasyLoading.show(status: "loading...");
                       final rating = Rating(
@@ -113,7 +113,7 @@ Future<bool> showRateNowSheet(BuildContext context, {
                         itemId: itemId,
                       );
                       final provider =
-                          Provider.of<RatingProvider>(context, listen: false);
+                      Provider.of<RatingProvider>(context, listen: false);
                       final success = await provider.submitRating(rating);
                       if (!success && provider.error != null) {
                         Utils.showError(context, provider.error!);
