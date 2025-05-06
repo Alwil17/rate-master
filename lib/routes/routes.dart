@@ -5,6 +5,7 @@ abstract class Routes {
   static const String home = "/home";
   static const String welcome = "/welcome";
   static const String itemDetails = "/:itemId";
+  static const String profile = "/profile";
 }
 
 enum APP_PAGES {
@@ -14,6 +15,7 @@ enum APP_PAGES {
   home,
   welcome,
   itemDetails,
+  profile,
 }
 
 extension AppPageExtension on APP_PAGES {
@@ -31,6 +33,8 @@ extension AppPageExtension on APP_PAGES {
         return Routes.welcome;
       case APP_PAGES.itemDetails:
         return Routes.itemDetails;
+      case APP_PAGES.profile:
+        return Routes.profile;
     }
   }
 

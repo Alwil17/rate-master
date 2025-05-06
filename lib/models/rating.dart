@@ -17,6 +17,7 @@ class Rating {
 
   /// Convert Dart object to JSON for the API
   Map<String, dynamic> toJson() => {
+    if (id != null) 'id': id,
     'value': value,
     'comment': comment,
     'user_id': userId,
@@ -25,6 +26,7 @@ class Rating {
 
   /// (Optional) parse from JSON if you want to display incoming ratings
   factory Rating.fromJson(Map<String, dynamic> json) => Rating(
+    id: json['id'] != null ? (json['id'] as num).toInt() : null,
     value: (json['value'] as num).toDouble(),
     comment: json['comment'] as String?,
     userId: json['user_id'] as int,

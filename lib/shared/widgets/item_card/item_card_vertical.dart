@@ -58,7 +58,7 @@ class ItemCardVertical extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Text(
-                  '${item.avgRating.toStringAsFixed(1)} – ${item.countRating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} notes',
+                  '${item.avgRating.toStringAsFixed(1)} – ${item.countRating.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ' ')} note(s)',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -71,13 +71,17 @@ class ItemCardVertical extends StatelessWidget {
 
   /// Génère la liste d'icônes étoiles (plein/vide) pour une note sur 5
   List<Widget> _buildStarIcons(int fullStars) {
-    const totalStars = 5;
-    return List.generate(totalStars, (i) {
+    bool hasHalfStar = (item.avgRating - fullStars) >= 0.5;
+    return List.generate(5, (i) {
       if (i < fullStars) {
-        return PhosphorIcon(PhosphorIconsDuotone.star, size: 20);
+        // full star
+        return const PhosphorIcon(PhosphorIconsDuotone.star, size: 20, color: Colors.amber);
+      } else if (i == fullStars && hasHalfStar) {
+        // half star
+        return const PhosphorIcon(PhosphorIconsDuotone.starHalf, color: Colors.amber, size: 20);
       } else {
-        return PhosphorIcon(PhosphorIconsDuotone.star,
-            size: 20, color: Colors.amber);
+        // empty star
+        return PhosphorIcon(PhosphorIconsFill.star, color: Colors.grey[300], size: 20);
       }
     });
   }

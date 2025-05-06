@@ -8,6 +8,7 @@ import 'package:rate_master/screens/init/splash_screen.dart';
 import 'package:rate_master/screens/init/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/items/item_detail_screen.dart';
+import 'package:rate_master/screens/profile/profile_screen.dart';
 import 'package:rate_master/shared/error_screen.dart';
 
 class AppRouter {
@@ -52,7 +53,12 @@ class AppRouter {
                 int.parse(state.pathParameters['itemId'].toString())),
           ),
         ]
-      )
+      ),
+      GoRoute(
+        path: APP_PAGES.profile.toPath,
+        name: APP_PAGES.profile.toName,
+        builder: (context, state) => ProfileScreen(),
+      ),
       /*
       GoRoute(
         path: APP_PAGES.login.toPath,

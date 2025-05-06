@@ -13,7 +13,8 @@ class ItemService {
     final response = await api.get(ApiRoutes.items);
 
     if (response.statusCode == 200) {
-      List jsonList = jsonDecode(response.body);
+      final decoded = utf8.decode(response.bodyBytes);
+      List jsonList = jsonDecode(decoded);
       return jsonList.map((e) => Item.fromJson(e)).toList();
     } else {
       throw Exception("Erreur lors du chargement des items");
@@ -24,7 +25,8 @@ class ItemService {
     final response = await api.get("${ApiRoutes.items}/$itemId");
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      final decoded = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> jsonData = jsonDecode(decoded);
       return Item.fromJson(jsonData);
     } else {
       throw Exception("Erreur lors du chargement des items");
