@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:rate_master/models/rating.dart';
 import 'package:rate_master/shared/api/api_routes.dart';
 
@@ -44,14 +45,27 @@ class RatingService {
     }
   }
 
-  /// Submit a new rating via POST /ratings
+  /// Submit or update a rating depending on whether the ID is present.
   Future<bool> submitRating(Rating rating) async {
-    final response = await api.post(
-      ApiRoutes.ratings,
-      rating.toJson(),
-    );
-    return response.statusCode == 201 || response.statusCode == 200;
+    late final Response response;
+
+    if (rating.id != null) {
+      // Update existing rating
+      response = await api.put(
+        "${ApiRoutes.ratings}/${rating.id}",
+        rating.toJson(),
+      );
+    } else {
+      // Create new rating
+      response = await api.post(
+        ApiRoutes.ratings,
+        rating.toJson(),
+      );
+    }
+
+    return response.statusCode == 200 || response.statusCode == 201;
   }
+
 
   Future<Rating> fetchUserReviewForItem(num itemId) async {
     final response = await api.get("${ApiRoutes.ratings}/$itemId/my-rating");
