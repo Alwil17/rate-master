@@ -124,6 +124,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
   Widget _buildEditOrDeleteButtons(Item item) {
     final locale = AppLocalizations.of(context)!;
+    final currentRating = _ratingProvider.currentRating;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -147,6 +149,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 context,
                 itemId: item.id,
                 userId: _authProvider.user!.id,
+                  existingRating: currentRating
               );
               if (success) fetchItemDatas();
             },

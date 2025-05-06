@@ -14,9 +14,10 @@ import 'package:rate_master/shared/widgets/utils.dart';
 Future<bool> showRateNowSheet(BuildContext context, {
   required int itemId,
   required int userId,
+  Rating? existingRating,
 }) {
-  double selectedRating = 0;
-  final commentCtrl = TextEditingController();
+  double selectedRating = existingRating?.value.toDouble() ?? 0;
+  final commentCtrl = TextEditingController(text: existingRating?.comment ?? "");
 
   return showModalBottomSheet<bool>(
     context: context,
@@ -104,6 +105,7 @@ Future<bool> showRateNowSheet(BuildContext context, {
                     onPressed: () async {
                       await EasyLoading.show(status: "loading...");
                       final rating = Rating(
+                        id: existingRating?.id,
                         value: selectedRating,
                         comment: commentCtrl.text.trim(),
                         userId: userId,
