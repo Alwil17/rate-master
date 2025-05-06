@@ -87,4 +87,17 @@ class RatingService {
     final response = await api.delete("${ApiRoutes.ratings}/$ratingId");
     return response.statusCode == 204;
   }
+
+  /// fetch all reviews for a user
+  Future<List<Rating>> fetchMyReviews() async {
+    final response = await api.get("${ApiRoutes.ratings}/my-reviews");
+
+    if (response.statusCode == 200) {
+      final decoded = utf8.decode(response.bodyBytes);
+      List jsonList = jsonDecode(decoded);
+      return jsonList.map((e) => Rating.fromJson(e)).toList();
+    } else {
+      throw Exception("Erreur lors du chargement des ratings pour l'utilisateur");
+    }
+  }
 }

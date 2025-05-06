@@ -5,6 +5,7 @@ import 'package:rate_master/models/user.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/screens/profile/widgets/profile_option_card.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 import 'widgets/profile_vector.dart';
 import 'widgets/stats_summary.dart';
@@ -104,6 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           .textTheme
                           .labelMedium
                           ?.copyWith(fontWeight: FontWeight.normal)),
+                  const SizedBox(height: 8),
+                  _buildEditButton()
                 ],
               ),
             ),
@@ -111,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           // 3) The edit button, overlapping the avatar
           Positioned.fill(
-            top: MediaQuery.of(context).padding.top + 230,
+            top: MediaQuery.of(context).padding.top + 290,
             child: Padding(
               padding: EdgeInsets.all(16.0),
               child: Column(
@@ -158,6 +161,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildEditButton() {
+    final locale = AppLocalizations.of(context)!;
+    return ElevatedButton.icon(
+      icon: const Icon(Icons.edit, color: Colors.white),
+      label: Text(
+        locale.editMyProfile,
+        style: const TextStyle(color: Colors.white),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.accent,
+        shape: StadiumBorder(),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      ),
+      onPressed: (){},
     );
   }
 

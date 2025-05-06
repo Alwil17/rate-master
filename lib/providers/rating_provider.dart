@@ -77,6 +77,21 @@ class RatingProvider with ChangeNotifier {
     }
   }
 
+  Future<void> fetchMyReviews() async {
+    _isLoadingReviews = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _reviews = await ratingService.fetchMyReviews();
+    } catch (e) {
+      _error = "An error occurred while fetching your reviews";
+    }
+    _isLoadingReviews = false;
+    notifyListeners();
+  }
+
+
   /// Deletes the current user’s rating for the given item.
   Future<bool> deleteReviewForItem(int ratingId) async {
     _isSubmitting = true;
