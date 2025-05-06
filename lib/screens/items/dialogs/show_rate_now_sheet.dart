@@ -103,6 +103,7 @@ Future<bool> showRateNowSheet(BuildContext context, {
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () async {
+                      FocusScope.of(context).requestFocus(FocusNode());
                       await EasyLoading.show(status: "loading...");
                       final rating = Rating(
                         id: existingRating?.id,

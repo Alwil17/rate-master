@@ -124,7 +124,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
   Widget _buildEditOrDeleteButtons(Item item) {
     final locale = AppLocalizations.of(context)!;
-    final currentRating = _ratingProvider.currentRating;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,10 +144,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             onPressed: () async {
+              FocusScope.of(context).requestFocus(FocusNode());
+              print("RATING ID: ${_ratingProvider.currentRating?.toJson()}");
               final success = await showRateNowSheet(context,
                   itemId: item.id,
                   userId: _authProvider.user!.id,
-                  existingRating: currentRating);
+                  existingRating: _ratingProvider.currentRating);
               if (success) fetchItemDatas();
             },
           ),

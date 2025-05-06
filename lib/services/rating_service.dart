@@ -48,8 +48,12 @@ class RatingService {
   /// Submit or update a rating depending on whether the ID is present.
   Future<bool> submitRating(Rating rating) async {
     late final Response response;
+    print(rating.toJson());
+    print(rating.id);
+    print(rating);
 
     if (rating.id != null) {
+      print("HHEEEEEEEEERRRREEEEEEEEEEEEE");
       // Update existing rating
       response = await api.put(
         "${ApiRoutes.ratings}/${rating.id}",
