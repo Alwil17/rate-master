@@ -3,12 +3,14 @@ class User {
   final String name; // name in API
   final String email;
   final String? token;
+  final String? imageUrl;
 
   User({
     required this.id,
     required this.name,
     required this.email,
     this.token,
+    this.imageUrl,
   });
 
   // Fonction pour convertir un Map (données JSON) en objet User
@@ -18,6 +20,7 @@ class User {
       name: json['name'],
       email: json['email'],
       token: json['token'],
+      imageUrl: json['image_url'] as String?,
     );
   }
 
@@ -28,6 +31,7 @@ class User {
       'name': name,
       'email': email,
       'token': token,
+      'image_url': imageUrl,
     };
   }
 
@@ -41,12 +45,13 @@ class User {
     String? name,
     String? email,
     String? token,
+    String? imageUrl,
   }) {
     return User(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      token: token ?? this.token,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        token: token ?? this.token,
+        imageUrl: imageUrl ?? this.imageUrl);
   }
 }
