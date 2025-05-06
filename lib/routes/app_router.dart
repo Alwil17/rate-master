@@ -59,6 +59,11 @@ class AppRouter {
         name: APP_PAGES.profile.toName,
         builder: (context, state) => ProfileScreen(),
       ),
+      GoRoute(
+        path: APP_PAGES.search.toPath,
+        name: APP_PAGES.search.toName,
+        builder: (context, state) => ProfileScreen(),
+      ),
       /*
       GoRoute(
         path: APP_PAGES.login.toPath,

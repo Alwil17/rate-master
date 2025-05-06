@@ -34,6 +34,10 @@ Widget buildRecentlyRated(BuildContext context) {
         );
       }
 
+      final validRatings = ratingProvider.userReviews
+          .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
+          .toList();
+
       // Affiche la liste horizontale
       return ListView.separated(
         shrinkWrap: true,
@@ -43,10 +47,6 @@ Widget buildRecentlyRated(BuildContext context) {
             .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
             .length,
         itemBuilder: (context, index) {
-          final validRatings = ratingProvider.userReviews
-              .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
-              .toList();
-
           final rating = validRatings[index];
           final item = itemProvider.items.firstWhere((i) => i.id == rating.itemId);
           return ItemCardHorizontal(item: item);

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/home/widgets/recently_rated.dart';
 import 'package:rate_master/screens/home/widgets/recommanded_list.dart';
 import 'package:rate_master/shared/theme/theme.dart';
@@ -72,19 +74,30 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 12),
 
-            // Search Bar static
-            TextField(
-              decoration: InputDecoration(
-                hintText: locale.makeASearch,
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
+            // Search Bar (clickable)
+            InkWell(
+              onTap: () => context.pushNamed(APP_PAGES.search.toName),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
+                  border: Border.all(color: Colors.grey.shade300),
                 ),
-                filled: true,
-                fillColor: Colors.white,
+                child: Row(
+                  children: [
+                    Icon(Icons.search, color: Colors.grey),
+                    SizedBox(width: 10),
+                    Text(
+                      locale.makeASearch,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
             ),
+
+
             const SizedBox(height: 16),
             /// Recommanded section
             // Title
