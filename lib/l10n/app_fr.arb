@@ -53,5 +53,7 @@
   "deleteSuccess": "Votre avis a été supprimé.",
   "deleteError": "Impossible de supprimer votre avis.",
   "comments": "Commentaires",
-  "reviewsAndComments": "Avis et commentaires"
+  "reviewsAndComments": "Avis et commentaires",
+  "noNotifLabel": "Aucune notification pour le moment",
+  "noNotifText": "Vos notifications apparaitrons ici une fois que vous en recevrez."
 }

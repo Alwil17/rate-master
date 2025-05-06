@@ -14,6 +14,8 @@ class Assets {
   static const String fontsOpenSansRegular = 'assets/fonts/OpenSans-Regular.ttf';
   static const String fontsOpenSansSemiBold = 'assets/fonts/OpenSans-SemiBold.ttf';
   static const String fontsOpenSansSemiBoldItalic = 'assets/fonts/OpenSans-SemiBoldItalic.ttf';
+  static const String imagesAvatar = 'assets/images/avatar.png';
+  static const String imagesNoNotification = 'assets/images/no_notification.jpg';
   static const String imagesRateEase = 'assets/images/rate_ease.png';
   static const String imagesShootingStar = 'assets/images/shooting-star.png';
   static const String imagesShootingStar2x = 'assets/images/shooting-star@2x.png';

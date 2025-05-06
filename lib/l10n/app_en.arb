@@ -53,5 +53,7 @@
   "deleteSuccess": "Your review was deleted.",
   "deleteError": "Could not delete your review.",
   "comments": "Comments",
-  "reviewsAndComments": "Reviews and Comments"
+  "reviewsAndComments": "Reviews and Comments",
+  "noNotifLabel": "No notifications yet",
+  "noNotifText": "Your notifications will appear here once you receive some."
 }
