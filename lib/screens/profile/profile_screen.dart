@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/models/user.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/screens/profile/widgets/profile_option_card.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
@@ -19,17 +20,25 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late final AuthProvider _authProvider;
+  late final RatingProvider _ratingProvider;
 
   @override
   void initState() {
     super.initState();
 
     _authProvider = Provider.of<AuthProvider>(context, listen: false);
+    _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+
+    // Fetch all reviews for current user
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _ratingProvider.fetchMyReviews(_authProvider.user!.id);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -119,10 +128,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  StatsSummary(
-                    reviewsCount: 52,
-                    averageRating: 4.8,
-                    commentsCount: 45,
+                  Consumer2<AuthProvider, RatingProvider>(
+                    builder: (ctx, auth, ratings, _) {
+                      // Stats
+                      final totalReviews = ratings.reviews.length;
+                      final reviewsWithComments = ratings.reviews
+                          .where((r) => r.comment!.trim().isNotEmpty)
+                          .toList();
+                      final commentCount = reviewsWithComments.length;
+                      final avgRating = ratings.reviews.isNotEmpty
+                          ? ratings.reviews.map((r) => r.value).reduce((a, b) => a + b) /
+                          ratings.reviews.length
+                          : 0.0;
+
+                      return StatsSummary(
+                        reviewsCount: totalReviews,
+                        averageRating: avgRating,
+                        commentsCount: commentCount,
+                      );
+                    },
                   ),
                   Expanded(
                     child: GridView.count(
@@ -140,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileOptionCard(
                             title: locale.share,
                             subtitle: locale.share,
-                            icon: PhosphorIconsRegular.share,
+                            icon: PhosphorIconsFill.shareNetwork,
                             onTap: () {}),
                         ProfileOptionCard(
                             title: locale.close,

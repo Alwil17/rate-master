@@ -10,4 +10,5 @@ abstract class ApiRoutes {
   static const String categories = "$base_api/categories";
   static const String tags = "$base_api/tags";
   static const String ratings = "$base_api/ratings";
+  static const String users = "$base_api/users";
 }

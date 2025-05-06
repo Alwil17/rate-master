@@ -89,8 +89,8 @@ class RatingService {
   }
 
   /// fetch all reviews for a user
-  Future<List<Rating>> fetchMyReviews() async {
-    final response = await api.get("${ApiRoutes.ratings}/my-reviews");
+  Future<List<Rating>> fetchMyReviews(num userId) async {
+    final response = await api.get("${ApiRoutes.users}/$userId/ratings");
 
     if (response.statusCode == 200) {
       final decoded = utf8.decode(response.bodyBytes);

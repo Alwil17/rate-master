@@ -77,13 +77,13 @@ class RatingProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchMyReviews() async {
+  Future<void> fetchMyReviews(num userId) async {
     _isLoadingReviews = true;
     _error = null;
     notifyListeners();
 
     try {
-      _reviews = await ratingService.fetchMyReviews();
+      _reviews = await ratingService.fetchMyReviews(userId);
     } catch (e) {
       _error = "An error occurred while fetching your reviews";
     }
