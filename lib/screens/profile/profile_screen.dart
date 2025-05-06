@@ -134,14 +134,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Consumer2<AuthProvider, RatingProvider>(
                     builder: (ctx, auth, ratings, _) {
                       // Stats
-                      final totalReviews = ratings.reviews.length;
-                      final reviewsWithComments = ratings.reviews
+                      final totalReviews = ratings.userReviews.length;
+                      final reviewsWithComments = ratings.userReviews
                           .where((r) => r.comment!.trim().isNotEmpty)
                           .toList();
                       final commentCount = reviewsWithComments.length;
-                      final avgRating = ratings.reviews.isNotEmpty
-                          ? ratings.reviews.map((r) => r.value).reduce((a, b) => a + b) /
-                          ratings.reviews.length
+                      final avgRating = ratings.userReviews.isNotEmpty
+                          ? ratings.userReviews.map((r) => r.value).reduce((a, b) => a + b) /
+                          ratings.userReviews.length
                           : 0.0;
 
                       return StatsSummary(

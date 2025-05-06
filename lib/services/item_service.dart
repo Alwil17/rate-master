@@ -32,4 +32,16 @@ class ItemService {
       throw Exception("Erreur lors du chargement des items");
     }
   }
+
+  Future<List<Item>> fetchRecommandations(num userId) async {
+    final response = await api.get("${ApiRoutes.users}/$userId/recommandations");
+
+    if (response.statusCode == 200) {
+      final decoded = utf8.decode(response.bodyBytes);
+      List jsonList = jsonDecode(decoded);
+      return jsonList.map((e) => Item.fromJson(e)).toList();
+    } else {
+      throw Exception("Erreur lors du chargement des recommendations pour l'utilisateur");
+    }
+  }
 }

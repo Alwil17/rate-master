@@ -69,5 +69,6 @@
   "confirmDisconnectMessage": "Voulez-vous vraiment vous déconnecter ?",
   "yes": "Oui",
   "no": "Non",
-  "disconnectedSuccessfully": "Vous avez été déconnecté avec succès."
+  "disconnectedSuccessfully": "Vous avez été déconnecté avec succès.",
+  "rateAverage": "Note moyenne"
 }

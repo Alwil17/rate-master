@@ -9,11 +9,13 @@ class ItemProvider with ChangeNotifier {
   ItemProvider(this.itemService);
 
   List<Item> _items = [];
+  List<Item> _recommandations = [];
   Item? _currentItem;
   bool _isLoading = false;
   String? _error;
 
   List<Item> get items => _items;
+  List<Item> get recommandations => _recommandations;
   Item? get currentItem => _currentItem;
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -52,8 +54,23 @@ class ItemProvider with ChangeNotifier {
     }
   }
 
+  Future<void> fetchRecommandations(num userId) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _recommandations = await itemService.fetchRecommandations(userId);
+    } catch (e) {
+      _error = "An error occurred while fetching your reviews";
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
   void clear() {
     _items = [];
+    _recommandations = [];
     notifyListeners();
   }
 }

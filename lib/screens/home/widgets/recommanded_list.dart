@@ -25,7 +25,7 @@ Widget buildRecommandedList(BuildContext context) {
         );
       }
 
-      if (provider.items.isEmpty) {
+      if (provider.recommandations.isEmpty) {
         // Aucun item trouvé
         return Center(
           child: Text(locale.noItemFound),
@@ -35,10 +35,10 @@ Widget buildRecommandedList(BuildContext context) {
       // Affiche la liste horizontale
       return ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: provider.items.length,
+        itemCount: provider.recommandations.length,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
-          final item = provider.items[index];
+          final item = provider.recommandations[index];
           return ItemCardVertical(item: item);
         },
       );
