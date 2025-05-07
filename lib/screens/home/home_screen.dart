@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.grey.shade300),
+                  border: Border.all(color: AppColors.accent),
                 ),
                 child: Row(
                   children: [

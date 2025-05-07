@@ -9,6 +9,7 @@ import 'package:rate_master/screens/init/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/items/item_detail_screen.dart';
 import 'package:rate_master/screens/profile/profile_screen.dart';
+import 'package:rate_master/screens/search/search_screen.dart';
 import 'package:rate_master/shared/error_screen.dart';
 
 class AppRouter {
@@ -62,7 +63,7 @@ class AppRouter {
       GoRoute(
         path: APP_PAGES.search.toPath,
         name: APP_PAGES.search.toName,
-        builder: (context, state) => ProfileScreen(),
+        builder: (context, state) => SearchScreen(),
       ),
       /*
       GoRoute(
