@@ -159,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<List<String>?> _openFilterSheet(BuildContext context) async {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
-      builder: (context) => FilterBottomSheet(),
+      builder: (context) => FilterBottomSheet()
     );
 
     if (result != null) {
@@ -168,7 +168,6 @@ class _SearchScreenState extends State<SearchScreen> {
         final selectedTags = result['selectedTags'];
         final sortBy = result['sortBy'];
         final isAscending = result['isAscending'];
-
         print(selectedTags);
         print(sortBy);
         print(isAscending);
