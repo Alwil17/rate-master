@@ -26,14 +26,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           // Filter by Tags section
           _buildTitle('Filter by Categories', Icons.filter_alt),
           const SizedBox(height: 8),
-          // Wrap with Consumer to access the TagProvider
+          // Wrap with Consumer to access the CategoryProvider
           Consumer<CategoryProvider>(
             builder: (context, categoryProvider, child) {
-              return SingleChildScrollView(
+               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: categoryProvider.categorys.map((category) {
-                    final isSelected = selectedCats.contains(category.name);
+                    final isSelected = selectedTags.contains(category.name);
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: FilterChip(
@@ -42,19 +42,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         selected: isSelected,
-                        onSelected: (isSelected) {
+                        onSelected: (_) {
                           setState(() {
-                            if (isSelected) {
-                              if (category.name == 'All') {
-                                selectedCats.clear();
-                                selectedCats.add(category.name);
-                              } else {
-                                selectedCats.remove('All');
-                                selectedCats.add(category.name);
-                              }
-                            } else {
-                              selectedCats.remove(category.name);
-                            }
+                            selectedTags = [category.name]; // Single selection
                           });
                         },
                       ),
@@ -62,6 +52,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   }).toList(),
                 ),
               );
+              ;
             },
           ),
           const SizedBox(height: 16),
