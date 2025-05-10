@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
 
 class FilterBottomSheet extends StatefulWidget {
@@ -10,6 +11,7 @@ class FilterBottomSheet extends StatefulWidget {
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
   List<String> selectedTags = [];
+  List<String> selectedCats = [];
   String sortBy = 'Date';
   String ascendingString = 'Ascending';
 
@@ -22,57 +24,88 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Filter by Tags section
-          _buildTitle('Filter by Tags', Icons.filter_alt),
+          _buildTitle('Filter by Categories', Icons.filter_alt),
           const SizedBox(height: 8),
-          Consumer<TagProvider>(
-            builder: (context, tagProvider, child) {
-              return Wrap(
-                spacing: 8.0,
-                children: tagProvider.tags
-                    .map((tag) {
-                  return FilterChip(
-                    label: Text(tag.name),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    selected: selectedTags.contains(tag),
-                    onSelected: (isSelected) {
-                      setState(() {
-                        if (isSelected) {
-                          if (tag == 'All') {
-                            selectedTags.clear();
-                            selectedTags.add(tag.name);
-                          } else {
-                            if (selectedTags.contains('All')) {
-                              selectedTags.remove('All');
+          // Wrap with Consumer to access the TagProvider
+          Consumer<CategoryProvider>(
+            builder: (context, categoryProvider, child) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: categoryProvider.categorys.map((category) {
+                    final isSelected = selectedCats.contains(category.name);
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: FilterChip(
+                        label: Text(category.name),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        selected: isSelected,
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              if (category.name == 'All') {
+                                selectedCats.clear();
+                                selectedCats.add(category.name);
+                              } else {
+                                selectedCats.remove('All');
+                                selectedCats.add(category.name);
+                              }
+                            } else {
+                              selectedCats.remove(category.name);
                             }
-                            selectedTags.add(tag.name);
-                          }
-                        } else {
-                          selectedTags.remove(tag.name);
-                        }
-                      });
-                    },
-                  );
-                }).toList(),
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
               );
             },
           ),
           const SizedBox(height: 16),
 
-          // Sort by section
-          _buildTitle('Sort by', Icons.sort_by_alpha),
+          // Filter by Tags section
+          _buildTitle('Filter by Tags', Icons.filter_alt),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              _buildClickableTextOption('Date'),
-              Container(
-                  height: 8, child: VerticalDivider(color: Colors.black38)),
-              _buildClickableTextOption('Name'),
-              Container(
-                  height: 8, child: VerticalDivider(color: Colors.black38)),
-              _buildClickableTextOption('Company'),
-            ],
+          // Wrap with Consumer to access the TagProvider
+          Consumer<TagProvider>(
+            builder: (context, tagProvider, child) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: tagProvider.tags.map((tag) {
+                    final isSelected = selectedTags.contains(tag.name);
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: FilterChip(
+                        label: Text(tag.name),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        selected: isSelected,
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              if (tag.name == 'All') {
+                                selectedTags.clear();
+                                selectedTags.add(tag.name);
+                              } else {
+                                selectedTags.remove('All');
+                                selectedTags.add(tag.name);
+                              }
+                            } else {
+                              selectedTags.remove(tag.name);
+                            }
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 16),
 
