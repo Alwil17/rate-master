@@ -33,7 +33,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: categoryProvider.categorys.map((category) {
-                    final isSelected = selectedTags.contains(category.name);
+                    final isSelected = selectedCats.contains(category.name);
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: FilterChip(
@@ -44,7 +44,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         selected: isSelected,
                         onSelected: (_) {
                           setState(() {
-                            selectedTags = [category.name]; // Single selection
+                            if (isSelected) {
+                              selectedCats.clear(); // Deselect
+                            } else {
+                              selectedCats = [category.name]; // Select new one
+                            }
                           });
                         },
                       ),
