@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
@@ -56,7 +55,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   }).toList(),
                 ),
               );
-              ;
             },
           ),
           const SizedBox(height: 16),
@@ -152,29 +150,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
     ]));
   }
-
-  // Build clickable text for Sort By options
-  Widget _buildClickableTextOption(String label) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          sortBy = label;
-        });
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            color: sortBy == label ? Colors.blue : Colors.black,
-            fontWeight: sortBy == label ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
-
   // Build clickable text for Sort By options
   Widget _buildClickableSortOption(String label, IconData icon) {
     return InkWell(
