@@ -10,14 +10,14 @@ class TagService {
   TagService(this.api);
 
   Future<List<Tag>> fetchTags() async {
-    final response = await api.get(ApiRoutes.categories);
+    final response = await api.get(ApiRoutes.tags);
 
     if (response.statusCode == 200) {
       final decoded = utf8.decode(response.bodyBytes);
       List jsonList = jsonDecode(decoded);
       return jsonList.map((e) => Tag.fromJson(e)).toList();
     } else {
-      throw Exception("Erreur lors du chargement des items");
+      throw Exception("Erreur lors du chargement des tags");
     }
   }
 }

@@ -42,7 +42,7 @@ class StatsSummary extends StatelessWidget {
           Expanded(
             child: StatItem(
               value: averageRating.toStringAsFixed(1),
-              label: 'Moyenne notes',
+              label: locale.rateAverage,
             ),
           ),
           const VerticalDivider(
