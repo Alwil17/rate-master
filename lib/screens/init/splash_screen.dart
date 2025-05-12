@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
+import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
@@ -38,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       final itemProvider = Provider.of<ItemProvider>(context, listen: false);
       final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
       final tagProvider = Provider.of<TagProvider>(context, listen: false);
+      final ratingProvider = Provider.of<RatingProvider>(context, listen: false);
 
       if (authProvider.isAuthenticated) {
         // Ajoute ici la vérification réelle du token :
@@ -46,8 +48,10 @@ class _SplashScreenState extends State<SplashScreen> {
         if (isTokenValid) {
           await Future.wait([
             itemProvider.fetchItems(),
+            itemProvider.fetchRecommandations(authProvider.user!.id),
             categoryProvider.fetchCategories(),
             tagProvider.fetchTags(),
+            ratingProvider.fetchMyReviews(authProvider.user!.id)
           ]);
 
           if (mounted) {

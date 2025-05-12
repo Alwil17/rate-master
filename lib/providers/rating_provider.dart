@@ -6,6 +6,7 @@ class RatingProvider with ChangeNotifier {
   final RatingService ratingService;
 
   List<Rating> _reviews = [];
+  List<Rating> _userReviews = [];
   Rating? _currentRating;
   bool _isLoadingReviews = false;
   bool _isSubmitting = false;
@@ -14,6 +15,7 @@ class RatingProvider with ChangeNotifier {
 
   /// Getters
   List<Rating> get reviews => _reviews;
+  List<Rating> get userReviews => _userReviews;
   Rating? get currentRating => _currentRating;
   bool get isSubmitting => _isSubmitting;
 
@@ -83,14 +85,13 @@ class RatingProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _reviews = await ratingService.fetchMyReviews(userId);
+      _userReviews = await ratingService.fetchMyReviews(userId);
     } catch (e) {
       _error = "An error occurred while fetching your reviews";
     }
     _isLoadingReviews = false;
     notifyListeners();
   }
-
 
   /// Deletes the current user’s rating for the given item.
   Future<bool> deleteReviewForItem(int ratingId) async {
