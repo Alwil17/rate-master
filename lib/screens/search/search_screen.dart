@@ -159,6 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<List<String>?> _openFilterSheet(BuildContext context) async {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
+      backgroundColor: Colors.white,
       builder: (context) => FilterBottomSheet()
     );
 

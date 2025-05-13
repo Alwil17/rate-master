@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   @override
@@ -9,13 +10,13 @@ class FilterBottomSheet extends StatefulWidget {
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
+  int selectedCat = 0;
   List<String> selectedTags = [];
-  List<String> selectedCats = [];
-  String sortBy = 'Date';
   String ascendingString = 'Ascending';
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -23,7 +24,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Filter by Tags section
-          _buildTitle('Filter by Categories', Icons.filter_alt),
+          _buildTitle(locale.filterByCategory, Icons.filter_alt),
           const SizedBox(height: 8),
           // Wrap with Consumer to access the CategoryProvider
           Consumer<CategoryProvider>(
@@ -32,7 +33,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: categoryProvider.categorys.map((category) {
-                    final isSelected = selectedCats.contains(category.name);
+                    final isSelected = selectedCat == category.id;
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: FilterChip(
@@ -44,9 +45,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         onSelected: (_) {
                           setState(() {
                             if (isSelected) {
-                              selectedCats.clear(); // Deselect
+                              selectedCat = 0; // Deselect
                             } else {
-                              selectedCats = [category.name]; // Select new one
+                              selectedCat = category.id; // Select new one
                             }
                           });
                         },
@@ -60,7 +61,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 16),
 
           // Filter by Tags section
-          _buildTitle('Filter by Tags', Icons.filter_alt),
+          _buildTitle(locale.filterByTag, Icons.filter_alt),
           const SizedBox(height: 8),
           // Wrap with Consumer to access the TagProvider
           Consumer<TagProvider>(
@@ -103,15 +104,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 16),
 
           // Sort Order section
-          _buildTitle('Sort Order', Icons.swap_vert),
+          _buildTitle(locale.sortOrder, Icons.swap_vert),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildClickableSortOption('Ascending', Icons.arrow_upward_sharp),
+              _buildClickableSortOption(locale.ascending, Icons.arrow_upward_sharp),
               _buildClickableSortOption(
-                  'Descending', Icons.arrow_downward_sharp),
-              /*_buildSortOrderButton('Ascending', isAscending),
-              _buildSortOrderButton('Descending', !isAscending),*/
+                  locale.descending, Icons.arrow_downward_sharp),
             ],
           ),
           const SizedBox(height: 16),
@@ -121,12 +120,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context, {
+                  'selectedCat': selectedCat,
                   'selectedTags': selectedTags,
-                  'sortBy': sortBy,
                   'isAscending': ascendingString == 'Ascending',
                 });
               },
-              child: const Text('Apply filters'),
+              child: Text(locale.applyFilters),
             ),
           ),
         ],
@@ -150,6 +149,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
     ]));
   }
+
   // Build clickable text for Sort By options
   Widget _buildClickableSortOption(String label, IconData icon) {
     return InkWell(
