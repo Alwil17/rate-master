@@ -20,6 +20,12 @@ class ApiService {
     return http.get(Uri.parse(url), headers: headers);
   }
 
+  /// GET using a pre-built Uri (with queryParameters, etc.).
+  Future<http.Response> getUri(Uri uri, {bool withAuth = true}) async {
+    final headers = await _getHeaders(withAuth: withAuth);
+    return http.get(uri, headers: headers);
+  }
+
   Future<http.Response> post(String url, dynamic body, {bool withAuth = true}) async {
     final headers = await _getHeaders(withAuth: withAuth);
     return http.post(Uri.parse(url), headers: headers, body: jsonEncode(body));

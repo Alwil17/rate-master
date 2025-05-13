@@ -86,75 +86,6 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void _openFilterSheet1(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) {
-        return StatefulBuilder(
-          builder: (context, setModalState) {
-            // Variables de filtre locales
-            String? selectedCategory;
-            double minRating = 0;
-
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Filtres", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  const SizedBox(height: 16),
-
-                  // Catégorie (dropdown)
-                  DropdownButton<String>(
-                    value: selectedCategory,
-                    isExpanded: true,
-                    hint: Text("Catégorie"),
-                    items: ["Film", "Série", "Livre"]
-                        .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                        .toList(),
-                    onChanged: (val) {
-                      setModalState(() => selectedCategory = val);
-                    },
-                  ),
-
-                  // Note minimale
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Note minimale: ${minRating.toInt()}"),
-                      Slider(
-                        min: 0,
-                        max: 5,
-                        divisions: 5,
-                        value: minRating,
-                        onChanged: (val) {
-                          setModalState(() => minRating = val);
-                        },
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: appliquer les filtres à ton provider ou localement
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.filter_alt),
-                    label: Text("Appliquer"),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
 
   Future<List<String>?> _openFilterSheet(BuildContext context) async {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
@@ -164,16 +95,23 @@ class _SearchScreenState extends State<SearchScreen> {
     );
 
     if (result != null) {
+      // Apply filters depending on results
+      final selectedCat = result['selectedCat'] as int?;
+      final selectedTags = List<String>.from(result['selectedTags'] ?? []);
+      final isAscending = result['isAscending'] as bool;
+
+      // Trigger fetch from the provider (which uses the service)
+      await Provider.of<ItemProvider>(context, listen: false).fetchItemsFiltered(
+        categoryId: selectedCat,
+        tags: selectedTags,
+        ascending: isAscending,
+      );
+
+      // Optionally reset the search query
       setState(() {
-        // Appliquer les filtres et tri en fonction des résultats
-        final selectedTags = result['selectedTags'];
-        final sortBy = result['sortBy'];
-        final isAscending = result['isAscending'];
-        print(selectedTags);
-        print(sortBy);
-        print(isAscending);
-        // Utilisez ces valeurs pour filtrer et trier vos cartes
+        query = "";
       });
     }
+    return null;
   }
 }

@@ -21,6 +21,32 @@ class ItemProvider with ChangeNotifier {
   String? get error => _error;
 
 
+  Future<void> fetchItemsFiltered({
+    String? query,
+    int? categoryId,
+    List<String>? tags,
+    bool ascending = true,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final response = await itemService.fetchItems(
+        categoryId: categoryId,
+        tags: tags,
+        ascending: ascending,
+      );
+      _items = response;
+
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> fetchItems() async {
     _isLoading = true;
     _error = null;
