@@ -23,18 +23,43 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    // Initially load all filters
-    _doFetch();
+    // Load items from backend using current filters
+    _fetchFromBackend();
   }
 
-  void _doFetch() {
+  /// Calls the provider to fetch items with category/tags/ordering
+  void _fetchFromBackend() {
     Provider.of<ItemProvider>(context, listen: false).fetchItemsFiltered(
-      query: query,
       categoryId: selectedCat,
       tags: selectedTags,
       ascending: isAscending,
     );
   }
+
+  /// Opens the filter bottom sheet and reapplies the backend fetch
+  Future<void> _onFilterPressed() async {
+    final result = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (_) => FilterBottomSheet(
+        selectedCat: selectedCat ?? 0,
+        selectedTags: selectedTags,
+        isAscending: isAscending,
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedCat = result['selectedCat'] as int?;
+        selectedTags = List<String>.from(result['selectedTags'] as List);
+        isAscending = result['isAscending'] as bool;
+        // Clear the text search so we see the full filtered list
+        query = "";
+      });
+      _fetchFromBackend();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             Row(
               children: [
-                // Search field
+                // Search field: only filters locally on 'name'
                 Expanded(
                   child: TextField(
                     autofocus: true,
@@ -63,37 +88,18 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(width: 8),
                 // Filter button (3 dots)
                 SizedBox(
-                  height: 24.0,
-                  width: 24.0,
+                  height: 25.0,
+                  width: 25.0,
                   child: IconButton(
                     icon: const PhosphorIcon(PhosphorIconsDuotone.funnel),
                     padding: EdgeInsets.zero,
-                    onPressed: () {},
-                  ),
-                ),
-                SizedBox(
-                  height: 24.0,
-                  width: 24.0,
-                  child: IconButton(
-                    icon: const PhosphorIcon(
-                        PhosphorIconsDuotone.slidersHorizontal),
-                    padding: EdgeInsets.zero,
-                    onPressed: () async {
-                      final result = await _openFilterSheet(context);
-                      if (result != null) {
-                        setState(() {
-                          selectedCat = result['selectedCat'];
-                          selectedTags = result['selectedTags'];
-                          isAscending = result['isAscending'];
-                        });
-                        _doFetch();
-                      }
-                    },
+                    onPressed: _onFilterPressed,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
+            // Results
             Expanded(
               child: Consumer<ItemProvider>(
                 builder: (ctx, provider, _) {
@@ -103,14 +109,19 @@ class _SearchScreenState extends State<SearchScreen> {
                   if (provider.error != null) {
                     return Center(child: Text(provider.error!));
                   }
-                  if (provider.items.isEmpty) {
+                  // Local search filter over the backend-filtered items
+                  final displayed = provider.items.where((item) {
+                    return item.name.toLowerCase()
+                        .contains(query.toLowerCase());
+                  }).toList();
+
+                  if (displayed.isEmpty) {
                     return Center(child: Text(locale.noItemFound));
                   }
                   return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: provider.items.length,
+                    itemCount: displayed.length,
                     itemBuilder: (_, i) =>
-                        ItemCardHorizontal(item: provider.items[i]),
+                        ItemCardHorizontal(item: displayed[i]),
                   );
                 },
               ),
@@ -120,15 +131,4 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-
-  Future<Map<String, dynamic>?> _openFilterSheet(BuildContext ctx) =>
-      showModalBottomSheet<Map<String, dynamic>>(
-        context: ctx,
-        backgroundColor: Colors.white,
-        builder: (_) => FilterBottomSheet(
-          selectedCat: selectedCat ?? 0,
-          selectedTags: selectedTags,
-          isAscending: isAscending,
-        ),
-      );
 }

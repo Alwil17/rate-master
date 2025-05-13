@@ -22,7 +22,6 @@ class ItemProvider with ChangeNotifier {
 
 
   Future<void> fetchItemsFiltered({
-    String? query,
     int? categoryId,
     List<String>? tags,
     bool ascending = true,
