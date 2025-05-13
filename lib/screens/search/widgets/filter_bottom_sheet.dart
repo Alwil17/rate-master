@@ -5,14 +5,33 @@ import 'package:rate_master/providers/tag_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterBottomSheet extends StatefulWidget {
+  final int selectedCat;
+  final List<String> selectedTags;
+  final bool isAscending;
+
+  const FilterBottomSheet({
+    Key? key,
+    required this.selectedCat,
+    required this.selectedTags,
+    required this.isAscending,
+  }) : super(key: key);
+
   @override
   _FilterBottomSheetState createState() => _FilterBottomSheetState();
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  int selectedCat = 0;
-  List<String> selectedTags = [];
-  String ascendingString = 'Ascending';
+  late int selectedCat;
+  late List<String> selectedTags;
+  late String ascendingString;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCat = widget.selectedCat;
+    selectedTags = List.from(widget.selectedTags);
+    ascendingString = widget.isAscending ? 'Ascending' : 'Descending';
+  }
 
   @override
   Widget build(BuildContext context) {

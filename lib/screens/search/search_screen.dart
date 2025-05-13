@@ -16,17 +16,29 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String query = "";
+  int? selectedCat;
+  List<String> selectedTags = [];
+  bool isAscending = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initially load all filters
+    _doFetch();
+  }
+
+  void _doFetch() {
+    Provider.of<ItemProvider>(context, listen: false).fetchItemsFiltered(
+      query: query,
+      categoryId: selectedCat,
+      tags: selectedTags,
+      ascending: isAscending,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    final itemProvider = Provider.of<ItemProvider>(context);
-
-    final filteredItems = itemProvider.items
-        .where(
-          (item) => item.name.toLowerCase().contains(query.toLowerCase()),
-        )
-        .toList();
 
     return Scaffold(
       appBar: AppBar(),
@@ -66,18 +78,41 @@ class _SearchScreenState extends State<SearchScreen> {
                     icon: const PhosphorIcon(
                         PhosphorIconsDuotone.slidersHorizontal),
                     padding: EdgeInsets.zero,
-                    onPressed: () => _openFilterSheet(context),
+                    onPressed: () async {
+                      final result = await _openFilterSheet(context);
+                      if (result != null) {
+                        setState(() {
+                          selectedCat = result['selectedCat'];
+                          selectedTags = result['selectedTags'];
+                          isAscending = result['isAscending'];
+                        });
+                        _doFetch();
+                      }
+                    },
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: filteredItems.length,
-                itemBuilder: (_, i) =>
-                    ItemCardHorizontal(item: filteredItems[i]),
+              child: Consumer<ItemProvider>(
+                builder: (ctx, provider, _) {
+                  if (provider.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (provider.error != null) {
+                    return Center(child: Text(provider.error!));
+                  }
+                  if (provider.items.isEmpty) {
+                    return Center(child: Text(locale.noItemFound));
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: provider.items.length,
+                    itemBuilder: (_, i) =>
+                        ItemCardHorizontal(item: provider.items[i]),
+                  );
+                },
               ),
             )
           ],
@@ -86,32 +121,14 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-
-  Future<List<String>?> _openFilterSheet(BuildContext context) async {
-    final result = await showModalBottomSheet<Map<String, dynamic>>(
-      context: context,
-      backgroundColor: Colors.white,
-      builder: (context) => FilterBottomSheet()
-    );
-
-    if (result != null) {
-      // Apply filters depending on results
-      final selectedCat = result['selectedCat'] as int?;
-      final selectedTags = List<String>.from(result['selectedTags'] ?? []);
-      final isAscending = result['isAscending'] as bool;
-
-      // Trigger fetch from the provider (which uses the service)
-      await Provider.of<ItemProvider>(context, listen: false).fetchItemsFiltered(
-        categoryId: selectedCat,
-        tags: selectedTags,
-        ascending: isAscending,
+  Future<Map<String, dynamic>?> _openFilterSheet(BuildContext ctx) =>
+      showModalBottomSheet<Map<String, dynamic>>(
+        context: ctx,
+        backgroundColor: Colors.white,
+        builder: (_) => FilterBottomSheet(
+          selectedCat: selectedCat ?? 0,
+          selectedTags: selectedTags,
+          isAscending: isAscending,
+        ),
       );
-
-      // Optionally reset the search query
-      setState(() {
-        query = "";
-      });
-    }
-    return null;
-  }
 }
