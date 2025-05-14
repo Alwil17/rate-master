@@ -17,12 +17,12 @@ class ProfileOptionCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const ProfileOptionCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

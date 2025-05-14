@@ -6,9 +6,9 @@ class ItemDetailHeader extends StatelessWidget {
   final Item item;
 
   const ItemDetailHeader({
-    Key? key,
+    super.key,
     required this.item,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
