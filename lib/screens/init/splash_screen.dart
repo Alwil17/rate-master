@@ -14,6 +14,8 @@ import 'package:rate_master/routes/routes.dart';
 import '../../generated/assets.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }

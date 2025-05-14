@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class NavbarExpandingWidget extends StatefulWidget {
   const NavbarExpandingWidget({super.key});
