@@ -3,6 +3,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/shared/constants/constants.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 import 'package:rate_master/shared/widgets/item_card/item_card_horizontal.dart';
 
 import 'widgets/filter_bottom_sheet.dart';
@@ -73,6 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       title: Text(locale.makeASearch,),
       centerTitle: true,),
+      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

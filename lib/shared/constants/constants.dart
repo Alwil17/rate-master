@@ -7,7 +7,7 @@ class Constants {
 
   static const String appName = "RateMaster";
 
-  final navItems = [
+  static List<NavItem> navItems = [
     NavItem(name: APP_PAGES.home.toName, icon: PhosphorIconsDuotone.house, label: 'Home'),
     NavItem(name: APP_PAGES.search.toName, icon: PhosphorIconsDuotone.listStar, label: 'Search'),
     NavItem(name: APP_PAGES.splash.toName, icon: PhosphorIconsDuotone.chartBar, label: 'Home'),

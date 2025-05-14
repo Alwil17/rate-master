@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/nav_item.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 /// Reusable expanding bottom nav
 class ExpandingBottomNav extends StatelessWidget {
@@ -23,48 +24,46 @@ class ExpandingBottomNav extends StatelessWidget {
       shape: const CircularNotchedRectangle(),
       elevation: 8,
       color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(items.length, (i) {
-            final nav = items[i];
-            final isSelected = i == selectedIndex;
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(items.length, (i) {
+          final nav = items[i];
+          final isSelected = i == selectedIndex;
 
-            return InkWell(
-              onTap: () {
-                if (!isSelected) router.goNamed(nav.name);
-              },
-              splashColor: Colors.transparent,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                width: isSelected ? 100 : 40,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFFD0E9FF) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    PhosphorIcon(nav.icon, color: isSelected ? Colors.blue : Colors.grey),
-                    if (isSelected) ...[
-                      const SizedBox(width: 6),
-                      Text(
-                        nav.label,
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
+          return InkWell(
+            onTap: () {
+              if (!isSelected) router.pushNamed(nav.name);
+            },
+            splashColor: Colors.transparent,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              width: isSelected ? 100 : 40,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColors.accent : Colors.transparent,
+                borderRadius: BorderRadius.circular(30),
               ),
-            );
-          }),
-        ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PhosphorIcon(nav.icon, color: isSelected ? Colors.white : Colors.black),
+                  if (isSelected) ...[
+                    const SizedBox(width: 6),
+                    Text(
+                      nav.label,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
