@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:go_router/go_router.dart';
 import 'package:rate_master/screens/auth/login_screen.dart';
 import 'package:rate_master/screens/auth/register_screen.dart';

@@ -10,6 +10,7 @@ class NavbarExpandingWidget extends StatefulWidget {
 
 class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
     with TickerProviderStateMixin {
+  int selectedItem = 0;
 
   @override
   void setState(VoidCallback callback) {
@@ -33,7 +34,7 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFFFFFFFF),
           boxShadow: [
             BoxShadow(
               blurRadius: 15,
@@ -52,7 +53,8 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _menuButton(Icons.home, 'Home')
+              _menuButton(Icons.home, 'Home', 0, selectedItem),
+              _menuButton(Icons.abc, 'Test', 1, selectedItem),
             ],
           ),
         ),
@@ -60,19 +62,19 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
     );
   }
 
-  Widget _menuButton(IconData icon, String label){
+  Widget _menuButton(IconData icon, String label, int id, int selected){
     return InkWell(
       splashColor: Colors.transparent,
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: () async {},
+      onTap: () => setState(() => selectedItem = id),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        width: 0 == 0 ? 88.0 : 41.0,
+        width: selected == id ? 88.0 : 41.0,
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: selectedItem == id ? Color(0xFFD0E9FF) : Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           shape: BoxShape.rectangle,
         ),
@@ -85,13 +87,13 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
                 icon,
                 size: 23,
               ),
-              if (0 == 0)
+              if (selected == id)
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(6, 0, 7, 0),
                   child: Text(
                     label,
                     style: TextStyle(
-                      color: Colors.accents[0],
+                      color: Color(0xFF0F0F0F),
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.w500,
                     ),

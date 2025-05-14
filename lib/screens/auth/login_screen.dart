@@ -51,11 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       await EasyLoading.show(status: "loading...");
 
-      // Créer le corps de la requête
-      final Map<String, String> body = {
-        'username': user,
-        'password': password,
-      };
       final response = await auth.login(user, password);
 
       await EasyLoading.dismiss();
