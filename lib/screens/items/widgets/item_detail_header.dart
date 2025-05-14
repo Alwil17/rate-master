@@ -55,7 +55,7 @@ class ItemDetailHeader extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withAlpha((0.5 * 255).round()),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

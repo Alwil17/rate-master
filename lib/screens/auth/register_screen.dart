@@ -14,6 +14,8 @@ import 'package:rate_master/shared/api/api_helper.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }

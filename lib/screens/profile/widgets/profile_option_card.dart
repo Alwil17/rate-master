@@ -58,7 +58,7 @@ class ProfileOptionCard extends StatelessWidget {
               children: [
                 PhosphorIcon(
                   icon,
-                  color: AppColors.accent.withOpacity(0.3),
+                  color: AppColors.accent.withAlpha((0.3 * 255).round()),
                   size: 30,
                 )
               ],
