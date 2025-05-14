@@ -10,12 +10,14 @@ class ItemProvider with ChangeNotifier {
 
   List<Item> _items = [];
   List<Item> _recommandations = [];
+  List<Item> _filtered = [];
   Item? _currentItem;
   bool _isLoading = false;
   String? _error;
 
   List<Item> get items => _items;
   List<Item> get recommandations => _recommandations;
+  List<Item> get filtered => _filtered;
   Item? get currentItem => _currentItem;
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -36,7 +38,7 @@ class ItemProvider with ChangeNotifier {
         tags: tags,
         ascending: ascending,
       );
-      _items = response;
+      _filtered = response;
 
     } catch (e) {
       _error = e.toString();

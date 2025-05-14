@@ -127,8 +127,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildClickableSortOption(locale.ascending, Icons.arrow_upward_sharp),
-              _buildClickableSortOption(
+              _buildClickableSortOption('Ascending', locale.ascending, Icons.arrow_upward_sharp),
+              _buildClickableSortOption('Descending',
                   locale.descending, Icons.arrow_downward_sharp),
             ],
           ),
@@ -170,11 +170,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   }
 
   // Build clickable text for Sort By options
-  Widget _buildClickableSortOption(String label, IconData icon) {
+  Widget _buildClickableSortOption(String id, String label, IconData icon) {
     return InkWell(
       onTap: () {
         setState(() {
-          ascendingString = label;
+          ascendingString = id;
         });
       },
       child: Padding(
@@ -195,8 +195,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 style: TextStyle(
                     fontSize: 15,
                     color:
-                        (ascendingString == label) ? Colors.blue : Colors.black,
-                    fontWeight: (ascendingString == label)
+                        (ascendingString == id) ? Colors.blue : Colors.black,
+                    fontWeight: (ascendingString == id)
                         ? FontWeight.bold
                         : FontWeight.normal)),
           ]),

@@ -66,7 +66,13 @@ class _SearchScreenState extends State<SearchScreen> {
     final locale = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: Colors.white,
+      leading: IconButton(
+        icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft, color: Colors.black),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      title: Text(locale.makeASearch,),
+      centerTitle: true,),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -110,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     return Center(child: Text(provider.error!));
                   }
                   // Local search filter over the backend-filtered items
-                  final displayed = provider.items.where((item) {
+                  final displayed = provider.filtered.where((item) {
                     return item.name.toLowerCase()
                         .contains(query.toLowerCase());
                   }).toList();
