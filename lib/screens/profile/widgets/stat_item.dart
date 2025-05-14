@@ -10,10 +10,10 @@ class StatItem extends StatelessWidget {
   final String label;
 
   const StatItem({
-    Key? key,
+    super.key,
     required this.value,
     required this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

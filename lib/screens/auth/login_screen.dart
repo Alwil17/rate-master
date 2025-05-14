@@ -15,6 +15,8 @@ import 'package:rate_master/shared/widgets/text_field_builder.dart';
 import 'package:rate_master/shared/widgets/utils.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -22,7 +24,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
-  bool _isLoading = false;
   late AuthProvider auth;
 
   // Controllers for text fields to keep the state
@@ -46,16 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      setState(() {
-        _isLoading = true;
-      });
       await EasyLoading.show(status: "loading...");
 
-      // Créer le corps de la requête
-      final Map<String, String> body = {
-        'username': user,
-        'password': password,
-      };
       final response = await auth.login(user, password);
 
       await EasyLoading.dismiss();

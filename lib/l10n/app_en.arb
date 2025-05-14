@@ -70,5 +70,13 @@
   "yes": "Yes",
   "no": "No",
   "disconnectedSuccessfully": "You have been disconnected successfully.",
-  "rateAverage": "Rate Average"
+  "rateAverage": "Rate Average",
+  "filter": "Filter",
+  "filterByTag": "Filter by tag",
+  "filterByCategory": "Filter by category",
+  "sortOrder": "Sort Order",
+  "ascending": "Ascending",
+  "descending": "Descending",
+  "applyFilters": "Apply Filters",
+  "explore": "Explore"
 }

@@ -14,6 +14,8 @@ import 'package:rate_master/shared/api/api_helper.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -21,7 +23,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
-  bool _isLoading = false;
   late AuthProvider auth;
 
   // Controllers for text fields to keep the state
@@ -46,10 +47,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _showError('Veuillez remplir tous les champs.');
         return;
       }
-
-      setState(() {
-        _isLoading = true;
-      });
       await EasyLoading.show(status: "loading...");
 
       // Créer le corps de la requête
@@ -62,8 +59,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final response = await auth.register(body);
 
       await EasyLoading.dismiss();
-
-      print(response);
 
       if (response is bool && response == true) {
         await EasyLoading.showSuccess("Inscription réussie.");

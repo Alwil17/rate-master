@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_master/models/user.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/providers/rating_provider.dart';
@@ -206,21 +205,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       onPressed: (){},
     );
-  }
-
-  Widget _buildImage(User user) {
-    if (user.imageUrl != null && user.imageUrl!.isNotEmpty) {
-      return Image.network(
-        user.imageUrl!,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(),
-        loadingBuilder: (_, child, progress) => progress == null
-            ? child
-            : const Center(child: CircularProgressIndicator()),
-      );
-    } else {
-      return _buildPlaceholder();
-    }
   }
 
   /// Placeholder gris avec icône film

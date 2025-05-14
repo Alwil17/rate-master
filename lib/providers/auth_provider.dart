@@ -24,8 +24,6 @@ class AuthProvider with ChangeNotifier {
     if (userJson != null) {
       _user = User.fromJson(jsonDecode(userJson));
     }
-    print("loagind prefs");
-    print(user);
     notifyListeners();
   }
 
@@ -39,11 +37,6 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> _setString(String key, String value) async {
     await prefs.setString(key, value);
-    notifyListeners();
-  }
-
-  Future<void> _setBool(String key, bool value) async {
-    await prefs.setBool(key, value);
     notifyListeners();
   }
 
