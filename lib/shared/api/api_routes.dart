@@ -1,14 +1,14 @@
 abstract class ApiRoutes {
-  static const String base_url = "http://192.168.93.144:8000";
-  static const String base_api = base_url;
-  static const String login = "$base_api/login";
-  static const String forgetpassword = "$base_api/forgetpassword";
-  static const String register = "$base_api/auth/register";
-  static const String token = "$base_api/auth/token";
-  static const String me = "$base_api/auth/me";
-  static const String items = "$base_api/items";
-  static const String categories = "$base_api/categories";
-  static const String tags = "$base_api/tags";
-  static const String ratings = "$base_api/ratings";
-  static const String users = "$base_api/users";
+  static const String baseUrl = "http://192.168.93.144:8000";
+  static const String baseApi = baseUrl;
+  static const String login = "$baseApi/login";
+  static const String forgetPassword = "$baseApi/forgetpassword";
+  static const String register = "$baseApi/auth/register";
+  static const String token = "$baseApi/auth/token";
+  static const String me = "$baseApi/auth/me";
+  static const String items = "$baseApi/items";
+  static const String categories = "$baseApi/categories";
+  static const String tags = "$baseApi/tags";
+  static const String ratings = "$baseApi/ratings";
+  static const String users = "$baseApi/users";
 }

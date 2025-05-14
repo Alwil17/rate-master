@@ -15,6 +15,8 @@ import 'package:rate_master/shared/widgets/text_field_builder.dart';
 import 'package:rate_master/shared/widgets/utils.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
