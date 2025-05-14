@@ -18,16 +18,6 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Align(
       alignment: AlignmentDirectional(0, 1),

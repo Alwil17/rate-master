@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class TagChip extends StatelessWidget {
   final String label;
 
-  const TagChip({Key? key, required this.label}) : super(key: key);
+  const TagChip({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
