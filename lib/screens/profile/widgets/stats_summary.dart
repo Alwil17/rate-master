@@ -15,11 +15,11 @@ class StatsSummary extends StatelessWidget {
   final int commentsCount;
 
   const StatsSummary({
-    Key? key,
+    super.key,
     required this.reviewsCount,
     required this.averageRating,
     required this.commentsCount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

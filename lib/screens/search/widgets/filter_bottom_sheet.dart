@@ -10,11 +10,11 @@ class FilterBottomSheet extends StatefulWidget {
   final bool isAscending;
 
   const FilterBottomSheet({
-    Key? key,
+    super.key,
     required this.selectedCat,
     required this.selectedTags,
     required this.isAscending,
-  }) : super(key: key);
+  });
 
   @override
   _FilterBottomSheetState createState() => _FilterBottomSheetState();
