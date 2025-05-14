@@ -48,7 +48,7 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -79,9 +79,8 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
           shape: BoxShape.rectangle,
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(9, 7, 9, 7),
+          padding: EdgeInsets.fromLTRB(9, 7, 9, 7),
           child: Row(
-            mainAxisSize: MainAxisSize.max,
             children: [
               Icon(
                 icon,
@@ -89,7 +88,7 @@ class _NavbarExpandingWidgetState extends State<NavbarExpandingWidget>
               ),
               if (selected == id)
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(6, 0, 7, 0),
+                  padding: EdgeInsets.fromLTRB(6, 0, 7, 0),
                   child: Text(
                     label,
                     style: TextStyle(
