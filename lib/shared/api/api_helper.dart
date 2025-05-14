@@ -8,10 +8,6 @@ class ApiHelper {
 
   // Method for a GET request
   Future<http.Response> get(String url) async {
-    if (token == null) {
-      throw Exception("Token manquant");
-    }
-
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -25,17 +21,13 @@ class ApiHelper {
 
   // Method for a POST request
   Future<http.Response> post(String url, Map<String, dynamic> body) async {
-    if (token == null) {
-      throw Exception("Token manquant");
-    }
-
     final response = await http.post(
       Uri.parse(url),
       headers: {
         'Authorization': 'Bearer $token', // Utilise le token stocké
         'Content-Type': 'application/json',
       },
-      body: body != null ? jsonEncode(body) : null,
+      body: jsonEncode(body),
     );
 
     return response;
@@ -43,17 +35,13 @@ class ApiHelper {
 
   // Method for a PUT request
   Future<http.Response> put(String url, Map<String, dynamic> body) async {
-    if (token == null) {
-      throw Exception("Token manquant");
-    }
-
     final response = await http.put(
       Uri.parse(url),
       headers: {
         'Authorization': 'Bearer $token', // Utilise le token stocké
         'Content-Type': 'application/json',
       },
-      body: body != null ? jsonEncode(body) : null,
+      body: jsonEncode(body),
     );
 
     return response;
@@ -61,10 +49,6 @@ class ApiHelper {
 
   // Method for a DELETE request
   Future<http.Response> delete(String url) async {
-    if (token == null) {
-      throw Exception("Token manquant");
-    }
-
     final response = await http.delete(
       Uri.parse(url),
       headers: {

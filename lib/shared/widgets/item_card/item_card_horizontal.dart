@@ -9,7 +9,7 @@ import 'package:rate_master/shared/widgets/chips/tag_chip.dart';
 class ItemCardHorizontal extends StatelessWidget {
   final Item item;
 
-  const ItemCardHorizontal({Key? key, required this.item}) : super(key: key);
+  const ItemCardHorizontal({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

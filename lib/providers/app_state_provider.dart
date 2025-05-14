@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:rate_master/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStateProvider with ChangeNotifier {
@@ -19,10 +16,6 @@ class AppStateProvider with ChangeNotifier {
   // Generic methods for storing data in SharedPreferences
   Future<void> _setString(String key, String value) async {
     await sharedPreferences.setString(key, value);
-    notifyListeners();
-  }
-  Future<void> _setBool(String key, bool value) async {
-    await sharedPreferences.setBool(key, value);
     notifyListeners();
   }
 

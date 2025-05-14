@@ -14,7 +14,7 @@ import 'package:rate_master/shared/widgets/chips/tag_chip.dart';
 class ItemDetailBody extends StatefulWidget {
   final Item item;
 
-  const ItemDetailBody({Key? key, required this.item}) : super(key: key);
+  const ItemDetailBody({super.key, required this.item});
 
   @override
   _ItemDetailBodyState createState() => _ItemDetailBodyState();

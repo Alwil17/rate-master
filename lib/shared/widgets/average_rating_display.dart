@@ -6,10 +6,10 @@ class AverageRatingDisplay extends StatelessWidget {
   final int totalReviews;     // e.g. 128
 
   const AverageRatingDisplay({
-    Key? key,
+    super.key,
     required this.averageRating,
     required this.totalReviews,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

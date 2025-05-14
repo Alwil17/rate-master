@@ -14,6 +14,8 @@ import 'package:rate_master/routes/routes.dart';
 import '../../generated/assets.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -72,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     } catch (e) {
-      print("Erreur au lancement de l'app : $e");
+      debugPrint("Erreur au lancement de l'app : $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Une erreur est survenue au lancement.'),

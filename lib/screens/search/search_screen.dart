@@ -3,6 +3,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/shared/constants/constants.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 import 'package:rate_master/shared/widgets/item_card/item_card_horizontal.dart';
 
 import 'widgets/filter_bottom_sheet.dart';
@@ -16,20 +18,69 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String query = "";
+  int? selectedCat;
+  List<String> selectedTags = [];
+  bool isAscending = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load items from backend using current filters
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchFromBackend();
+    });
+
+  }
+
+  /// Calls the provider to fetch items with category/tags/ordering
+  void _fetchFromBackend() {
+    Provider.of<ItemProvider>(context, listen: false).fetchItemsFiltered(
+      categoryId: selectedCat,
+      tags: selectedTags,
+      ascending: isAscending,
+    );
+  }
+
+  /// Opens the filter bottom sheet and reapplies the backend fetch
+  Future<void> _onFilterPressed() async {
+    final result = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (_) => FilterBottomSheet(
+        selectedCat: selectedCat ?? 0,
+        selectedTags: selectedTags,
+        isAscending: isAscending,
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedCat = result['selectedCat'] as int?;
+        selectedTags = List<String>.from(result['selectedTags'] as List);
+        isAscending = result['isAscending'] as bool;
+        // Clear the text search so we see the full filtered list
+        query = "";
+      });
+      _fetchFromBackend();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    final itemProvider = Provider.of<ItemProvider>(context);
-
-    final filteredItems = itemProvider.items
-        .where(
-          (item) => item.name.toLowerCase().contains(query.toLowerCase()),
-        )
-        .toList();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(locale.explore),
+        centerTitle: true,
+      ),
+      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -37,7 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             Row(
               children: [
-                // Search field
+                // Search field: only filters locally on 'name'
                 Expanded(
                   child: TextField(
                     autofocus: true,
@@ -51,128 +102,48 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(width: 8),
                 // Filter button (3 dots)
                 SizedBox(
-                  height: 24.0,
-                  width: 24.0,
+                  height: 25.0,
+                  width: 25.0,
                   child: IconButton(
                     icon: const PhosphorIcon(PhosphorIconsDuotone.funnel),
                     padding: EdgeInsets.zero,
-                    onPressed: () {},
-                  ),
-                ),
-                SizedBox(
-                  height: 24.0,
-                  width: 24.0,
-                  child: IconButton(
-                    icon: const PhosphorIcon(
-                        PhosphorIconsDuotone.slidersHorizontal),
-                    padding: EdgeInsets.zero,
-                    onPressed: () => _openFilterSheet(context),
+                    onPressed: _onFilterPressed,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
+            // Results
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: filteredItems.length,
-                itemBuilder: (_, i) =>
-                    ItemCardHorizontal(item: filteredItems[i]),
+              child: Consumer<ItemProvider>(
+                builder: (ctx, provider, _) {
+                  if (provider.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (provider.error != null) {
+                    return Center(child: Text(provider.error!));
+                  }
+                  // Local search filter over the backend-filtered items
+                  final displayed = provider.filtered.where((item) {
+                    return item.name
+                        .toLowerCase()
+                        .contains(query.toLowerCase());
+                  }).toList();
+
+                  if (displayed.isEmpty) {
+                    return Center(child: Text(locale.noItemFound));
+                  }
+                  return ListView.builder(
+                    itemCount: displayed.length,
+                    itemBuilder: (_, i) =>
+                        ItemCardHorizontal(item: displayed[i]),
+                  );
+                },
               ),
             )
           ],
         ),
       ),
     );
-  }
-
-  void _openFilterSheet1(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) {
-        return StatefulBuilder(
-          builder: (context, setModalState) {
-            // Variables de filtre locales
-            String? selectedCategory;
-            double minRating = 0;
-
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Filtres", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  const SizedBox(height: 16),
-
-                  // Catégorie (dropdown)
-                  DropdownButton<String>(
-                    value: selectedCategory,
-                    isExpanded: true,
-                    hint: Text("Catégorie"),
-                    items: ["Film", "Série", "Livre"]
-                        .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                        .toList(),
-                    onChanged: (val) {
-                      setModalState(() => selectedCategory = val);
-                    },
-                  ),
-
-                  // Note minimale
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Note minimale: ${minRating.toInt()}"),
-                      Slider(
-                        min: 0,
-                        max: 5,
-                        divisions: 5,
-                        value: minRating,
-                        onChanged: (val) {
-                          setModalState(() => minRating = val);
-                        },
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: appliquer les filtres à ton provider ou localement
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.filter_alt),
-                    label: Text("Appliquer"),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Future<List<String>?> _openFilterSheet(BuildContext context) async {
-    final result = await showModalBottomSheet<Map<String, dynamic>>(
-      context: context,
-      builder: (context) => FilterBottomSheet()
-    );
-
-    if (result != null) {
-      setState(() {
-        // Appliquer les filtres et tri en fonction des résultats
-        final selectedTags = result['selectedTags'];
-        final sortBy = result['sortBy'];
-        final isAscending = result['isAscending'];
-        print(selectedTags);
-        print(sortBy);
-        print(isAscending);
-        // Utilisez ces valeurs pour filtrer et trier vos cartes
-      });
-    }
   }
 }

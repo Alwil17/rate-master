@@ -7,7 +7,9 @@ import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/home/widgets/recently_rated.dart';
 import 'package:rate_master/screens/home/widgets/recommanded_list.dart';
+import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/theme/theme.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 import 'package:rate_master/shared/widgets/global_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -44,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Manual Pull-to-refresh
         itemProvider.fetchItems();
       }),
+      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(

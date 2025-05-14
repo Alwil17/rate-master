@@ -5,7 +5,7 @@ class ErrorScreen extends StatelessWidget {
   final Exception? error;
   late String message;
 
-  ErrorScreen({Key? key, this.error}) : super(key: key) {
+  ErrorScreen({super.key, this.error}) {
     if (error != null) {
       message = error.toString();
     } else {

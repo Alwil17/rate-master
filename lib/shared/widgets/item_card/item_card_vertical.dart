@@ -8,7 +8,7 @@ import 'package:rate_master/routes/routes.dart';
 class ItemCardVertical extends StatelessWidget {
   final Item item;
 
-  const ItemCardVertical({Key? key, required this.item}) : super(key: key);
+  const ItemCardVertical({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

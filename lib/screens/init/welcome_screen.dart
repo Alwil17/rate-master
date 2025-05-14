@@ -11,6 +11,8 @@ import '../../shared/theme/theme.dart';
 import '../../generated/assets.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
