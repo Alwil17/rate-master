@@ -77,5 +77,6 @@
   "sortOrder": "Ordre de tri",
   "ascending": "Croissant",
   "descending": "Décroissant",
-  "applyFilters": "Appliquer les filtres"
+  "applyFilters": "Appliquer les filtres",
+  "explore": "Explorer"
 }

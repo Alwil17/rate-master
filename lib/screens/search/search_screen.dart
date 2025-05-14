@@ -26,7 +26,10 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     // Load items from backend using current filters
-    _fetchFromBackend();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchFromBackend();
+    });
+
   }
 
   /// Calls the provider to fetch items with category/tags/ordering
@@ -62,19 +65,21 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white,
-      leading: IconButton(
-        icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(locale.explore),
+        centerTitle: true,
       ),
-      title: Text(locale.makeASearch,),
-      centerTitle: true,),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -120,7 +125,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   }
                   // Local search filter over the backend-filtered items
                   final displayed = provider.filtered.where((item) {
-                    return item.name.toLowerCase()
+                    return item.name
+                        .toLowerCase()
                         .contains(query.toLowerCase());
                   }).toList();
 

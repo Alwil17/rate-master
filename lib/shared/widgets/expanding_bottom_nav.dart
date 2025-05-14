@@ -14,9 +14,9 @@ class ExpandingBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final router = GoRouter.of(context);
-    final location = router.routerDelegate.currentConfiguration.uri.toString();
+    final location = ModalRoute.of(context)?.settings.name;
     // Find which index matches current route
-    final currentIndex = items.indexWhere((item) => location.startsWith(item.name));
+    final currentIndex = items.indexWhere((item) => location == item.name);
     // if no match, default to 0
     final selectedIndex = currentIndex < 0 ? 0 : currentIndex;
 
