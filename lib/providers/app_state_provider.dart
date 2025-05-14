@@ -18,10 +18,6 @@ class AppStateProvider with ChangeNotifier {
     await sharedPreferences.setString(key, value);
     notifyListeners();
   }
-  Future<void> _setBool(String key, bool value) async {
-    await sharedPreferences.setBool(key, value);
-    notifyListeners();
-  }
 
   // Load preferences from SharedPreferences at startup
   Future<void> loadPreferences() async {

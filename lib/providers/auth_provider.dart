@@ -42,11 +42,6 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _setBool(String key, bool value) async {
-    await prefs.setBool(key, value);
-    notifyListeners();
-  }
-
   Future<dynamic> login(String email, String password) async {
     try {
       final tokenResponse = await http.post(
