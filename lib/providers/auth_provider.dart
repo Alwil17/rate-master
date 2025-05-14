@@ -24,8 +24,6 @@ class AuthProvider with ChangeNotifier {
     if (userJson != null) {
       _user = User.fromJson(jsonDecode(userJson));
     }
-    print("loagind prefs");
-    print(user);
     notifyListeners();
   }
 

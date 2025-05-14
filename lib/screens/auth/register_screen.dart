@@ -58,8 +58,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       await EasyLoading.dismiss();
 
-      print(response);
-
       if (response is bool && response == true) {
         await EasyLoading.showSuccess("Inscription réussie.");
         // return back to login

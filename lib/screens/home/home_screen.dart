@@ -12,7 +12,6 @@ import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 import 'package:rate_master/shared/widgets/global_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rate_master/shared/widgets/navbar_expanding.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     } catch (e) {
-      print("Erreur au lancement de l'app : $e");
+      debugPrint("Erreur au lancement de l'app : $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Une erreur est survenue au lancement.'),
