@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/nav_item.dart';
 
 /// Reusable expanding bottom nav
@@ -32,7 +33,7 @@ class ExpandingBottomNav extends StatelessWidget {
 
             return InkWell(
               onTap: () {
-                if (!isSelected) router.go(nav.name);
+                if (!isSelected) router.goNamed(nav.name);
               },
               splashColor: Colors.transparent,
               child: AnimatedContainer(
@@ -47,7 +48,7 @@ class ExpandingBottomNav extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(nav.icon, color: isSelected ? Colors.blue : Colors.grey),
+                    PhosphorIcon(nav.icon, color: isSelected ? Colors.blue : Colors.grey),
                     if (isSelected) ...[
                       const SizedBox(width: 6),
                       Text(
