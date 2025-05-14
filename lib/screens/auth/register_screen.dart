@@ -21,7 +21,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
-  bool _isLoading = false;
   late AuthProvider auth;
 
   // Controllers for text fields to keep the state
@@ -46,10 +45,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _showError('Veuillez remplir tous les champs.');
         return;
       }
-
-      setState(() {
-        _isLoading = true;
-      });
       await EasyLoading.show(status: "loading...");
 
       // Créer le corps de la requête
