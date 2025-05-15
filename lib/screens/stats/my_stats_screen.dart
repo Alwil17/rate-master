@@ -58,6 +58,7 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
 
           // 1. Distribution
           Text("Distribution des notes"),
+
           /*RatingHistogram(data: stats.byRating),
 
           const SizedBox(height: 20),
