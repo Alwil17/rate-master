@@ -202,7 +202,7 @@ class _ItemDetailBodyState extends State<ItemDetailBody>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (review.comment != null && review.comment!.isNotEmpty)
-            Text(review.comment!),
+            Text(review.comment!, style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic)),
           const SizedBox(height: 4),
           Text(
             DateFormat.yMMMd().format(review.createdAt!),

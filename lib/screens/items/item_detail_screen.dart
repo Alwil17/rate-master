@@ -11,6 +11,8 @@ import 'package:rate_master/screens/items/widgets/item_detail_body.dart';
 import 'package:rate_master/screens/items/widgets/item_detail_header.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
+import 'dialogs/show_delete_review_dialog.dart';
+
 class ItemDetailScreen extends StatefulWidget {
   final num itemId;
 
@@ -44,6 +46,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     _itemProvider.fetchItem(widget.itemId);
     _ratingProvider.fetchItemReviews(widget.itemId);
     _ratingProvider.fetchUserReviewForItem(widget.itemId);
+  }
+
+  Future<void> _refreshItemDatas() async {
+    await _itemProvider.fetchRecommandations(_authProvider.user!.id);
+    await  _ratingProvider.fetchMyReviews(_authProvider.user!.id);
   }
 
   @override
@@ -117,7 +124,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           itemId: item.id,
           userId: _authProvider.user!.id,
         );
-        if (success) fetchItemDatas();
+        if (success) {
+          fetchItemDatas();
+          await _refreshItemDatas();
+        }
       },
     );
   }
@@ -149,7 +159,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   itemId: item.id,
                   userId: _authProvider.user!.id,
                   existingRating: _ratingProvider.currentRating);
-              if (success) fetchItemDatas();
+              if (success) {
+                fetchItemDatas();
+                await _refreshItemDatas();
+              }
             },
           ),
         ),
@@ -168,43 +181,14 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             onPressed: () async {
-              // 1) show confirmation dialog
-              final confirm = await showDialog<bool>(
+              showDeleteReviewDialog(
                 context: context,
-                builder: (ctx) => AlertDialog(
-                  title: Text(locale.confirmDeleteTitle),
-                  content: Text(locale.confirmDeleteMessage),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(false),
-                        child: Text(locale.cancel)),
-                    TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(true),
-                        child: Text(locale.delete)),
-                  ],
-                ),
+                ratingProvider: _ratingProvider,
+                itemId: item.id,
+                onSuccess: () => _ratingProvider.fetchMyReviews(_authProvider.user!.id),
               );
 
-              if (confirm == true) {
-                // 2) call provider
-                final success =
-                    await _ratingProvider.deleteReviewForItem(item.id);
-                if (success) {
-                  // 3) refetch data and show feedback
-                  fetchItemDatas();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            locale.deleteSuccess)), // e.g. "Review deleted"
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content:
-                            Text(_ratingProvider.error ?? locale.deleteError)),
-                  );
-                }
-              }
+              await _refreshItemDatas();
             },
           ),
         ),
