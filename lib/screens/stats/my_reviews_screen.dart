@@ -82,8 +82,15 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
   Widget _buildReviewTile(Rating review, Item item) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      elevation: 0,
+      elevation: 1,
       color: Colors.white,
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(
+          color: Colors.grey,
+          width: 0.3,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
       child: ListTile(
         title: Text(
           item.name,
