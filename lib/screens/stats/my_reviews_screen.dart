@@ -82,6 +82,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
   Widget _buildReviewTile(Rating review, Item item) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
+      elevation: 0,
       child: ListTile(
         title: Text(
           item.name,
