@@ -80,6 +80,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
   }
 
   Widget _buildReviewTile(Rating review, Item item) {
+    final locale = AppLocalizations.of(context)!;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       elevation: 0,
@@ -103,7 +104,9 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
                 children: [
                   Text(
                     item.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   AverageRatingDisplay(
@@ -127,6 +130,10 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
             ),
             // Trailing menu
             PopupMenuButton<String>(
+              color: Colors.white, // Background color of the menu
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               onSelected: (value) {
                 if (value == 'edit') {
                   // TODO: open edit form
@@ -134,9 +141,33 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
                   // TODO: confirm and delete
                 }
               },
-              itemBuilder: (context) => const [
-                PopupMenuItem(value: 'edit', child: Text('Modifier')),
-                PopupMenuItem(value: 'delete', child: Text('Supprimer')),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.edit, color: Colors.blue),
+                      const SizedBox(width: 8),
+                      Text(
+                        locale.edit,
+                        style: const TextStyle(color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.delete, color: Colors.red),
+                      const SizedBox(width: 8),
+                      Text(
+                        locale.delete,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
