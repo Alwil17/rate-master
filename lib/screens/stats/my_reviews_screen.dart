@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_master/models/item.dart';
 import 'package:rate_master/models/rating.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
@@ -33,46 +34,52 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
         ),
       ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
-      body: Padding(padding: EdgeInsets.symmetric(horizontal: 8),
-      child: Consumer2<RatingProvider, ItemProvider>(
-        builder: (context, ratingProvider, itemProvider, _) {
-          if (ratingProvider.isLoadingReviews) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (ratingProvider.error != null) {
-            // Error message
-            return Center(child: Text(ratingProvider.error!, style: const TextStyle(color: Colors.red)));
-          }
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        child: Consumer2<RatingProvider, ItemProvider>(
+          builder: (context, ratingProvider, itemProvider, _) {
+            if (ratingProvider.isLoadingReviews) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (ratingProvider.error != null) {
+              // Error message
+              return Center(
+                  child: Text(ratingProvider.error!,
+                      style: const TextStyle(color: Colors.red)));
+            }
 
-          if (ratingProvider.userReviews.isEmpty || itemProvider.items.isEmpty) {
-            // No item found
-            return Center(
-              child: Text(locale.noItemFound),
+            if (ratingProvider.userReviews.isEmpty ||
+                itemProvider.items.isEmpty) {
+              // No item found
+              return Center(
+                child: Text(locale.noItemFound),
+              );
+            }
+
+            final validRatings = ratingProvider.userReviews
+                .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
+                .toList();
+
+            // Affiche la liste horizontale
+            return ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (_, __) => const SizedBox(height: 5),
+              itemCount: validRatings.length,
+              itemBuilder: (context, index) {
+                final rating = validRatings[index];
+                final item =
+                    itemProvider.items.firstWhere((i) => i.id == rating.itemId);
+                return _buildReviewTile(rating, item);
+              },
             );
-          }
-
-          final validRatings = ratingProvider.userReviews
-              .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
-              .toList();
-
-          // Affiche la liste horizontale
-          return ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemCount: validRatings.length,
-            itemBuilder: (context, index) {
-              final rating = validRatings[index];
-              final item = itemProvider.items.firstWhere((i) => i.id == rating.itemId);
-              return _buildReviewTile(rating);
-            },
-          );
-        },
-      ),),
+          },
+        ),
+      ),
     );
   }
 
-  Widget _buildReviewTile(Rating review) {
+  Widget _buildReviewTile(Rating review, Item item) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
@@ -118,5 +125,4 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
       ),
     );
   }
-
 }
