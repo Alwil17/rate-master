@@ -146,7 +146,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
                       existingRating: review);
                   if (success) ratingProvider.fetchMyReviews(userId);
                 } else if (value == 'delete') {
-                  // TODO: confirm and delete
+                  deleteRating(context, review);
                 }
               },
               itemBuilder: (context) => [
