@@ -17,6 +17,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
       appBar: AppBar(
         title: Text("Mes avis"),
         centerTitle: true,
+        backgroundColor: Colors.white,
       ),
       /*body: FutureBuilder<List<Rating>>(
         future: _fetchReviews(), // Replace with your data fetching method
