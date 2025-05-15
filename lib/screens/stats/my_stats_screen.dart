@@ -55,6 +55,30 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
               );
             },
           ),
+
+          // 1. Distribution
+          Text("Distribution des notes"),
+          /*RatingHistogram(data: stats.byRating),
+
+          const SizedBox(height: 20),
+          // 2. Répartition catégories
+          Text("Avis par catégorie"),
+          CategoryPieChart(data: stats.byCategory),
+
+          const SizedBox(height: 20),
+          // 3. Évolution
+          Text("Avis par mois"),
+          ReviewsLineChart(data: stats.overTime),
+
+          const SizedBox(height: 20),
+          // 4. Avis récents
+          SectionHeader(title: "Avis récents", onViewAll: () => ...),
+          RecentReviewsList(reviews: stats.recentReviews),
+
+          const SizedBox(height: 20),
+          // 5. Top 3
+          SectionHeader(title: "Top 3 de mes coups de cœur"),
+          TopRatedItemsCarousel(items: stats.topItems),*/
         ],),
       ),
     );
