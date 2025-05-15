@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/rating.dart';
+import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
 class MyReviewsScreen extends StatefulWidget {
   const MyReviewsScreen({super.key});
@@ -25,6 +27,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
+      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       /*body: FutureBuilder<List<Rating>>(
         future: _fetchReviews(), // Replace with your data fetching method
         builder: (context, snapshot) {
