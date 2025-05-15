@@ -10,16 +10,43 @@ class ItemProvider with ChangeNotifier {
 
   List<Item> _items = [];
   List<Item> _recommandations = [];
+  List<Item> _filtered = [];
   Item? _currentItem;
   bool _isLoading = false;
   String? _error;
 
   List<Item> get items => _items;
   List<Item> get recommandations => _recommandations;
+  List<Item> get filtered => _filtered;
   Item? get currentItem => _currentItem;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+
+  Future<void> fetchItemsFiltered({
+    int? categoryId,
+    List<String>? tags,
+    bool ascending = true,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final response = await itemService.fetchItems(
+        categoryId: categoryId,
+        tags: tags,
+        ascending: ascending,
+      );
+      _filtered = response;
+
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   Future<void> fetchItems() async {
     _isLoading = true;

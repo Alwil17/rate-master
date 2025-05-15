@@ -17,12 +17,12 @@ class ProfileOptionCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const ProfileOptionCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class ProfileOptionCard extends StatelessWidget {
               children: [
                 PhosphorIcon(
                   icon,
-                  color: AppColors.accent.withOpacity(0.3),
+                  color: AppColors.accent.withAlpha((0.3 * 255).round()),
                   size: 30,
                 )
               ],

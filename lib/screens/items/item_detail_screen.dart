@@ -15,9 +15,9 @@ class ItemDetailScreen extends StatefulWidget {
   final num itemId;
 
   const ItemDetailScreen({
-    Key? key,
+    super.key,
     required this.itemId,
-  }) : super(key: key);
+  });
 
   @override
   _ItemDetailScreenState createState() => _ItemDetailScreenState();

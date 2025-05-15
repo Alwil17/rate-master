@@ -2,20 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterBottomSheet extends StatefulWidget {
+  final int selectedCat;
+  final List<String> selectedTags;
+  final bool isAscending;
+
+  const FilterBottomSheet({
+    super.key,
+    required this.selectedCat,
+    required this.selectedTags,
+    required this.isAscending,
+  });
+
   @override
   _FilterBottomSheetState createState() => _FilterBottomSheetState();
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  List<String> selectedTags = [];
-  List<String> selectedCats = [];
-  String sortBy = 'Date';
-  String ascendingString = 'Ascending';
+  late int selectedCat;
+  late List<String> selectedTags;
+  late String ascendingString;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCat = widget.selectedCat;
+    selectedTags = List.from(widget.selectedTags);
+    ascendingString = widget.isAscending ? 'Ascending' : 'Descending';
+  }
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -23,7 +43,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Filter by Tags section
-          _buildTitle('Filter by Categories', Icons.filter_alt),
+          _buildTitle(locale.filterByCategory, Icons.filter_alt),
           const SizedBox(height: 8),
           // Wrap with Consumer to access the CategoryProvider
           Consumer<CategoryProvider>(
@@ -32,7 +52,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: categoryProvider.categorys.map((category) {
-                    final isSelected = selectedCats.contains(category.name);
+                    final isSelected = selectedCat == category.id;
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: FilterChip(
@@ -44,9 +64,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         onSelected: (_) {
                           setState(() {
                             if (isSelected) {
-                              selectedCats.clear(); // Deselect
+                              selectedCat = 0; // Deselect
                             } else {
-                              selectedCats = [category.name]; // Select new one
+                              selectedCat = category.id; // Select new one
                             }
                           });
                         },
@@ -60,7 +80,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 16),
 
           // Filter by Tags section
-          _buildTitle('Filter by Tags', Icons.filter_alt),
+          _buildTitle(locale.filterByTag, Icons.filter_alt),
           const SizedBox(height: 8),
           // Wrap with Consumer to access the TagProvider
           Consumer<TagProvider>(
@@ -103,15 +123,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 16),
 
           // Sort Order section
-          _buildTitle('Sort Order', Icons.swap_vert),
+          _buildTitle(locale.sortOrder, Icons.swap_vert),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildClickableSortOption('Ascending', Icons.arrow_upward_sharp),
-              _buildClickableSortOption(
-                  'Descending', Icons.arrow_downward_sharp),
-              /*_buildSortOrderButton('Ascending', isAscending),
-              _buildSortOrderButton('Descending', !isAscending),*/
+              _buildClickableSortOption('Ascending', locale.ascending, Icons.arrow_upward_sharp),
+              _buildClickableSortOption('Descending',
+                  locale.descending, Icons.arrow_downward_sharp),
             ],
           ),
           const SizedBox(height: 16),
@@ -121,12 +139,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context, {
+                  'selectedCat': selectedCat,
                   'selectedTags': selectedTags,
-                  'sortBy': sortBy,
                   'isAscending': ascendingString == 'Ascending',
                 });
               },
-              child: const Text('Apply filters'),
+              child: Text(locale.applyFilters),
             ),
           ),
         ],
@@ -150,12 +168,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
     ]));
   }
+
   // Build clickable text for Sort By options
-  Widget _buildClickableSortOption(String label, IconData icon) {
+  Widget _buildClickableSortOption(String id, String label, IconData icon) {
     return InkWell(
       onTap: () {
         setState(() {
-          ascendingString = label;
+          ascendingString = id;
         });
       },
       child: Padding(
@@ -176,8 +195,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 style: TextStyle(
                     fontSize: 15,
                     color:
-                        (ascendingString == label) ? Colors.blue : Colors.black,
-                    fontWeight: (ascendingString == label)
+                        (ascendingString == id) ? Colors.blue : Colors.black,
+                    fontWeight: (ascendingString == id)
                         ? FontWeight.bold
                         : FontWeight.normal)),
           ]),
