@@ -84,7 +84,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
         title: Text(
-          "review.item.name",
+          item.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
