@@ -91,44 +91,54 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
         ),
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      child: ListTile(
-        title: Text(
-          item.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Column(
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 4),
-            AverageRatingDisplay(
-              averageRating: review.value,
-              totalReviews: 0, // show only stars for this single review
-            ),
-            if (review.comment != null && review.comment!.isNotEmpty) ...[
-              const SizedBox(height: 6),
-              Text(
-                review.comment!,
-                style: const TextStyle(fontStyle: FontStyle.italic),
+            // Expanded column for the main content (title, subtitle, etc.)
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  AverageRatingDisplay(
+                    averageRating: review.value,
+                    totalReviews: 0, // show only stars for this single review
+                  ),
+                  if (review.comment != null && review.comment!.isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      review.comment!,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                  const SizedBox(height: 6),
+                  Text(
+                    DateFormat.yMMMd().format(review.createdAt!),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
               ),
-            ],
-            const SizedBox(height: 6),
-            Text(
-              DateFormat.yMMMd().format(review.createdAt!),
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
-          ],
-        ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) {
-            if (value == 'edit') {
-              // TODO: open edit form
-            } else if (value == 'delete') {
-              // TODO: confirm and delete
-            }
-          },
-          itemBuilder: (context) => const [
-            PopupMenuItem(value: 'edit', child: Text('Modifier')),
-            PopupMenuItem(value: 'delete', child: Text('Supprimer')),
+            // Trailing menu
+            PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'edit') {
+                  // TODO: open edit form
+                } else if (value == 'delete') {
+                  // TODO: confirm and delete
+                }
+              },
+              itemBuilder: (context) => const [
+                PopupMenuItem(value: 'edit', child: Text('Modifier')),
+                PopupMenuItem(value: 'delete', child: Text('Supprimer')),
+              ],
+            ),
           ],
         ),
       ),
