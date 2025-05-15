@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/rating_provider.dart';
+import 'package:rate_master/screens/profile/widgets/stats_summary.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
@@ -28,6 +32,31 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
         ),
       ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(children: [
+          Consumer2<AuthProvider, RatingProvider>(
+            builder: (ctx, auth, ratings, _) {
+              // Stats
+              final totalReviews = ratings.userReviews.length;
+              final reviewsWithComments = ratings.userReviews
+                  .where((r) => r.comment!.trim().isNotEmpty)
+                  .toList();
+              final commentCount = reviewsWithComments.length;
+              final avgRating = ratings.userReviews.isNotEmpty
+                  ? ratings.userReviews.map((r) => r.value).reduce((a, b) => a + b) /
+                  ratings.userReviews.length
+                  : 0.0;
+
+              return StatsSummary(
+                reviewsCount: totalReviews,
+                averageRating: avgRating,
+                commentsCount: commentCount,
+              );
+            },
+          ),
+        ],),
+      ),
     );
   }
 }
