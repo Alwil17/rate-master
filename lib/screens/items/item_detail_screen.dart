@@ -167,48 +167,54 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   borderRadius: BorderRadius.circular(20)),
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            onPressed: () async {
-              // 1) show confirmation dialog
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  title: Text(locale.confirmDeleteTitle),
-                  content: Text(locale.confirmDeleteMessage),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(false),
-                        child: Text(locale.cancel)),
-                    TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(true),
-                        child: Text(locale.delete)),
-                  ],
-                ),
-              );
-
-              if (confirm == true) {
-                // 2) call provider
-                final success =
-                    await _ratingProvider.deleteReviewForItem(item.id);
-                if (success) {
-                  // 3) refetch data and show feedback
-                  fetchItemDatas();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            locale.deleteSuccess)), // e.g. "Review deleted"
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content:
-                            Text(_ratingProvider.error ?? locale.deleteError)),
-                  );
-                }
-              }
-            },
+            onPressed: () => deleteRating(context, item),
           ),
         ),
       ],
     );
+  }
+
+  Future<bool> deleteRating(context, Item item) async {
+    final locale = AppLocalizations.of(context)!;
+    // 1) show confirmation dialog
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(locale.confirmDeleteTitle),
+        content: Text(locale.confirmDeleteMessage),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(locale.cancel)),
+          TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(locale.delete)),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      // 2) call provider
+      final success =
+          await _ratingProvider.deleteReviewForItem(item.id);
+      if (success) {
+        // 3) refetch data and show feedback
+        fetchItemDatas();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  locale.deleteSuccess)), // e.g. "Review deleted"
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+              Text(_ratingProvider.error ?? locale.deleteError)),
+        );
+      }
+
+      return true;
+    }
+    return false;
   }
 }

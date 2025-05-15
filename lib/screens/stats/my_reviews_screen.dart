@@ -4,8 +4,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/models/rating.dart';
+import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
+import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
@@ -70,7 +72,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
                 final rating = validRatings[index];
                 final item =
                     itemProvider.items.firstWhere((i) => i.id == rating.itemId);
-                return _buildReviewTile(rating, item);
+                return _buildReviewTile(rating, item, ratingProvider);
               },
             );
           },
@@ -79,7 +81,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
     );
   }
 
-  Widget _buildReviewTile(Rating review, Item item) {
+  Widget _buildReviewTile(Rating review, Item item, RatingProvider ratingProvider) {
     final locale = AppLocalizations.of(context)!;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -134,9 +136,15 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              onSelected: (value) {
+              onSelected: (value) async {
                 if (value == 'edit') {
-                  // TODO: open edit form
+                  final userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  final success = await showRateNowSheet(context,
+                      itemId: item.id,
+                      userId: userId,
+                      existingRating: review);
+                  if (success) ratingProvider.fetchMyReviews(userId);
                 } else if (value == 'delete') {
                   // TODO: confirm and delete
                 }
