@@ -7,6 +7,7 @@ import 'package:rate_master/models/rating.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
+import 'package:rate_master/screens/items/dialogs/show_delete_review_dialog.dart';
 import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
@@ -146,7 +147,13 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
                       existingRating: review);
                   if (success) ratingProvider.fetchMyReviews(userId);
                 } else if (value == 'delete') {
-                  deleteRating(context, review);
+                  final userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
+                  showDeleteReviewDialog(
+                    context: context,
+                    ratingProvider: ratingProvider,
+                    itemId: item.id,
+                    onSuccess: () => ratingProvider.fetchMyReviews(userId),
+                  );
                 }
               },
               itemBuilder: (context) => [
