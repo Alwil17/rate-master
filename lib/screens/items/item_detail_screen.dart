@@ -124,7 +124,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           itemId: item.id,
           userId: _authProvider.user!.id,
         );
-        if (success) fetchItemDatas();
+        if (success) {
+          fetchItemDatas();
+          await _refreshItemDatas();
+        }
       },
     );
   }
@@ -156,7 +159,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   itemId: item.id,
                   userId: _authProvider.user!.id,
                   existingRating: _ratingProvider.currentRating);
-              if (success) fetchItemDatas();
+              if (success) {
+                fetchItemDatas();
+                await _refreshItemDatas();
+              }
             },
           ),
         ),
