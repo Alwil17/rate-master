@@ -48,6 +48,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     _ratingProvider.fetchUserReviewForItem(widget.itemId);
   }
 
+  Future<void> _refreshItemDatas() async {
+    await _itemProvider.fetchRecommandations(_authProvider.user!.id);
+    await  _ratingProvider.fetchMyReviews(_authProvider.user!.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -176,6 +181,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 itemId: item.id,
                 onSuccess: () => _ratingProvider.fetchMyReviews(_authProvider.user!.id),
               );
+
+              await _refreshItemDatas();
             },
           ),
         ),
