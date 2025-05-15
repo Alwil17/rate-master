@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/rating.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
 
@@ -18,6 +19,11 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
         title: Text("Mes avis"),
         centerTitle: true,
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       /*body: FutureBuilder<List<Rating>>(
         future: _fetchReviews(), // Replace with your data fetching method
