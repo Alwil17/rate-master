@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:rate_master/shared/constants/constants.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
 class MyStatsScreen extends StatefulWidget {
   const MyStatsScreen({super.key});
@@ -16,7 +18,7 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mes avis"),
+        title: Text("Mes stats"),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -25,6 +27,7 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
+      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
     );
   }
 }
