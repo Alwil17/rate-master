@@ -13,6 +13,6 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    return const Placeholder();
+    return Scaffold();
   }
 }
