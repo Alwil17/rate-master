@@ -33,7 +33,8 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
         ),
       ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
-      body: Consumer2<RatingProvider, ItemProvider>(
+      body: Padding(padding: EdgeInsets.symmetric(horizontal: 8),
+      child: Consumer2<RatingProvider, ItemProvider>(
         builder: (context, ratingProvider, itemProvider, _) {
           if (ratingProvider.isLoadingReviews) {
             return const Center(child: CircularProgressIndicator());
@@ -67,7 +68,7 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
             },
           );
         },
-      ),
+      ),),
     );
   }
 
