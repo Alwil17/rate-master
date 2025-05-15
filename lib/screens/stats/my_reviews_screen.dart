@@ -13,7 +13,32 @@ class MyReviewsScreen extends StatefulWidget {
 class _MyReviewsScreenState extends State<MyReviewsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Mes avis"),
+        centerTitle: true,
+      ),
+      /*body: FutureBuilder<List<Rating>>(
+        future: _fetchReviews(), // Replace with your data fetching method
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Erreur : ${snapshot.error}"));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("Aucun avis trouvé."));
+          }
+
+          final reviews = snapshot.data!;
+          return ListView.builder(
+            itemCount: reviews.length,
+            itemBuilder: (context, index) {
+              return _buildReviewTile(reviews[index]);
+            },
+          );
+        },
+      ),*/
+    );
   }
 
   Widget _buildReviewTile(Rating review) {
