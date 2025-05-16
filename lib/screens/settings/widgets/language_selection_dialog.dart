@@ -33,6 +33,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Sort by section
+          const SizedBox(height: 10),
           _buildTitle(context,
               AppLocalizations.of(context)!
                   .selectThe(AppLocalizations.of(context)!.language),
@@ -89,7 +90,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
       children: [
         /// Edit button
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Navigator.of(context).pop(),
           child: Text(AppLocalizations.of(context)!.cancel),
         ),
 
