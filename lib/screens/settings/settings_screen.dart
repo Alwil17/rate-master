@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/app_state_provider.dart';
@@ -53,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 8),
           _buildSettingTileContainer([
             SwitchListTile(
-              secondary: const Icon(Icons.brightness_6),
+              secondary: const PhosphorIcon(PhosphorIconsRegular.circleHalf),
               title: Text(locale.darkMode),
               value: Theme.of(context).brightness == Brightness.dark,
               onChanged: (value) {
@@ -63,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSettingTile(
               locale.language,
               null,
-              PhosphorIconsDuotone.globe, () {},
+              PhosphorIconsRegular.globe, () {},
             ),
           ]),
           const SizedBox(height: 24),
@@ -122,4 +121,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
           : null,
     );
   }
+
+  /*void _showLanguageDialog(BuildContext context) async {
+    final result = await showModalBottomSheet<String>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        // <-- SEE HERE
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      isScrollControlled: true,
+      builder: (context) => LanguageSelectionDialog(
+        defaultLocale: AppLocalizations.of(context)!.localeName,
+      ),
+    );
+
+    if (result != null) {
+      //print(result);
+      if (result.isNotEmpty &&
+          result != AppLocalizations.of(context)!.localeName) {
+        prefs.locale = result;
+      }
+    }
+  }*/
+
 }
