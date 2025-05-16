@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/screens/profile/widgets/stats_summary.dart';
+import 'package:rate_master/screens/stats/widgets/rating_histogram.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
@@ -59,9 +60,9 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
           // 1. Distribution
           Text("Distribution des notes"),
 
-          /*RatingHistogram(data: stats.byRating),
+          RatingHistogram(ratings: Provider.of<RatingProvider>(context).userReviews),
 
-          const SizedBox(height: 20),
+          /*const SizedBox(height: 20),
           // 2. Répartition catégories
           Text("Avis par catégorie"),
           CategoryPieChart(data: stats.byCategory),
