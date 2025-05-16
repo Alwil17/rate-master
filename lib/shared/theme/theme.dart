@@ -27,42 +27,6 @@ const errorInputBorder = OutlineInputBorder(
   ),
 );
 
-final ThemeData appTheme = ThemeData(
-  scaffoldBackgroundColor: AppColors.primaryBackground,
-  primaryColor: AppColors.accent,
-  hintColor: AppColors.secondaryAccent,
-  fontFamily: 'Roboto',
-  textTheme: TextTheme(
-    displayLarge: TextStyle(color: AppColors.secondaryBackground, fontSize: 32, fontWeight: FontWeight.bold),
-    titleLarge: TextStyle(color: AppColors.secondaryBackground, fontSize: 20),
-    bodyLarge: TextStyle(color: AppColors.secondaryBackground, fontSize: 16),
-    bodyMedium: TextStyle(color: AppColors.secondaryBackground, fontSize: 14),
-  ),
-  buttonTheme: ButtonThemeData(
-    buttonColor: AppColors.accent,
-    textTheme: ButtonTextTheme.primary,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  ),
-  appBarTheme: AppBarTheme(
-    color: AppColors.secondaryBackground,
-    iconTheme: IconThemeData(color: AppColors.primaryText),
-  ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: AppColors.accent,
-    foregroundColor: AppColors.primaryText,
-  ),
-  inputDecorationTheme: const InputDecorationTheme(
-      filled: true,
-      fillColor: Colors.white,
-      errorStyle: TextStyle(height: 0),
-      border: defaultInputBorder,
-      enabledBorder: defaultInputBorder,
-      focusedBorder: defaultInputBorder,
-      errorBorder: errorInputBorder,
-      labelStyle: TextStyle(color: Color(0xff3A3A3B), fontSize: 13),
-      hintStyle: TextStyle(color: Colors.grey)),
-);
-
 // light theme
 final lightTheme = ThemeData(
   brightness: Brightness.light,
