@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_master/providers/app_state_provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final user = authProvider.user;
-    final info = PackageInfo.fromPlatform();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
           _buildSettingTileContainer([
             _buildSettingTile(
               locale.appVersion,
-              "1.0.0",
+              context.read<AppStateProvider>().appVersion,
               PhosphorIconsRegular.info,
               null,
             ),

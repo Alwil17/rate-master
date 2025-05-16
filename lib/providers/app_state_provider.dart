@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStateProvider with ChangeNotifier {
   late SharedPreferences sharedPreferences;
 
   String _locale = "fr";
+  String _appVersion = "1.0.0";
 
   // Getters
   String get locale => _locale;
+  String get appVersion => _appVersion;
 
 
   // Initialize SharedPreferences
@@ -23,6 +26,10 @@ class AppStateProvider with ChangeNotifier {
   Future<void> loadPreferences() async {
     // Use jsonDecode for user data stored in SharedPreferences
     _locale = sharedPreferences.getString(_kLocale) ?? "fr";
+
+    // Get app version
+    PackageInfo info = await PackageInfo.fromPlatform();
+    _appVersion = info.version;
 
     notifyListeners();
   }
