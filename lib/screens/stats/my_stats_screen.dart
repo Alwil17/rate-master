@@ -23,7 +23,6 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
-      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SingleChildScrollView(
