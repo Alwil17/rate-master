@@ -121,5 +121,11 @@
   "exitApp": "Quitter l'application",
   "exitConfirmation": "Êtes-vous sûr de vouloir quitter l'application ?",
   "notifications": "Notifications",
-  "noNotifications": "Aucune notification pour le moment."
+  "noNotifications": "Aucune notification pour le moment.",
+  "fillAllFields": "Veuillez remplir tous les champs.",
+  "unknownError": "Une erreur inconnue est survenue.",
+  "error": "Erreur",
+  "registerSuccess": "Inscription réussie",
+  "loginSuccess": "Connexion réussie",
+  "loading": "Chargement..."
 }
