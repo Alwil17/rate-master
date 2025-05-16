@@ -51,7 +51,6 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
           // Affiche la liste horizontale
           return ListView.separated(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (_, __) => const SizedBox(height: 5),
             itemCount: validRatings.length,
             itemBuilder: (context, index) {
