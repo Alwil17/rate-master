@@ -10,8 +10,9 @@ import 'package:rate_master/screens/home/widgets/recommanded_list.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
-import 'package:rate_master/shared/widgets/global_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'widgets/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: globalAppBar(context, null),
+      appBar: homeAppBar(context, null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
