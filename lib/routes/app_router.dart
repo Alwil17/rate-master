@@ -8,6 +8,7 @@ import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/items/item_detail_screen.dart';
 import 'package:rate_master/screens/profile/profile_screen.dart';
 import 'package:rate_master/screens/search/search_screen.dart';
+import 'package:rate_master/screens/settings/settings_screen.dart';
 import 'package:rate_master/screens/stats/my_activity_screen.dart';
 import 'package:rate_master/shared/error_screen.dart';
 
@@ -69,19 +70,11 @@ class AppRouter {
         name: APP_PAGES.stats.toName,
         builder: (context, state) => MyActivityScreen(),
       ),
-      /*
       GoRoute(
-        path: APP_PAGES.login.toPath,
-        name: APP_PAGES.login.toName,
-        builder: (context, state) => LoginScreen(),
-        routes: [
-          GoRoute(
-            path: APP_PAGES.forgetPassword.toPath,
-            name: APP_PAGES.forgetPassword.toName,
-            builder: (context, state) => ForgetPasswordScreen(),
-          ),
-        ]
-      ),*/
+        path: APP_PAGES.settings.toPath,
+        name: APP_PAGES.settings.toName,
+        builder: (context, state) => SettingsScreen(),
+      ),
     ],
     debugLogDiagnostics: true,
     errorBuilder: (context, state) => ErrorScreen(error: state.error),

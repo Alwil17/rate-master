@@ -4,7 +4,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
-PreferredSizeWidget globalAppBar(
+PreferredSizeWidget homeAppBar(
     BuildContext context, VoidCallback? onRefresh) {
   return AppBar(
     backgroundColor: Colors.white,
