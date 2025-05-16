@@ -42,10 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: globalAppBar(context, () {
-        // Manual Pull-to-refresh
-        itemProvider.fetchItems();
-      }),
+      appBar: globalAppBar(context, null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -100,17 +97,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-
             const SizedBox(height: 16),
+
             /// Recommanded section
             // Title
             _buildSectionTitle(context, locale.recommandedForYou),
             // Content
             SizedBox(height: 200, child: buildRecommandedList(context)),
             const SizedBox(height: 16),
+
             /// To rate section
             // Title
-            _buildSectionTitle(context, locale.recentlyRated),
+            _buildSectionTitle(context, locale.recentlyRated,
+                onViewAllPressed: () =>
+                    context.pushNamed(APP_PAGES.stats.toName)),
             // Content
             // Par exemple :
             SizedBox(
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSectionTitle(BuildContext context, String title,
       {VoidCallback? onViewAllPressed}) {
     return Padding(
-      padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 0),
+      padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -138,15 +138,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
-          TextButton(
-            onPressed: onViewAllPressed,
-            child: Row(children: [PhosphorIcon(PhosphorIconsRegular.caretLeft),PhosphorIcon(PhosphorIconsRegular.caretRight)],),
-          ),
+          onViewAllPressed != null
+              ? TextButton(
+                  onPressed: onViewAllPressed,
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.viewAll,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      PhosphorIcon(
+                        PhosphorIconsRegular.arrowRight,
+                        size: 12,
+                        color: Colors.blue,
+                      )
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );
   }
-
-
-
 }

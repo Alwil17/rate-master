@@ -40,7 +40,6 @@ Widget buildRecentlyRated(BuildContext context) {
       // Affiche la liste horizontale
       return ListView.separated(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemCount: ratingProvider.userReviews
             .where((r) => itemProvider.items.any((i) => i.id == r.itemId))

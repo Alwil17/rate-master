@@ -20,7 +20,7 @@ PreferredSizeWidget globalAppBar(
       ),
     ),
     actions: [
-      IconButton(
+      /*IconButton(
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(AppColors.accent),
           shape: WidgetStatePropertyAll(
@@ -32,7 +32,7 @@ PreferredSizeWidget globalAppBar(
         icon: PhosphorIcon(PhosphorIconsRegular.arrowClockwise,
             color: Colors.white),
         onPressed: onRefresh,
-      ),
+      ),*/
       IconButton(
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(AppColors.accent),

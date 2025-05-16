@@ -79,5 +79,11 @@
   "descending": "Décroissant",
   "applyFilters": "Appliquer les filtres",
   "explore": "Explorer",
-  "myReviews": "Mes avis"
+  "myReviews": "Mes avis",
+  "summary": "Résumé",
+  "perCategory": "Par catégorie",
+  "perRating": "Par note",
+  "myStats": "Mes statistiques",
+  "myActivity": "Mon activité",
+  "viewAll": "Tout voir"
 }

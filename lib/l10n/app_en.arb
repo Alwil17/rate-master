@@ -79,5 +79,11 @@
   "descending": "Descending",
   "applyFilters": "Apply Filters",
   "explore": "Explore",
-  "myReviews": "My Reviews"
+  "myReviews": "My Reviews",
+  "summary": "Summary",
+  "perCategory": "Per Category",
+  "perRating": "Per Rating",
+  "myStats": "My Stats",
+  "myActivity": "My Activity",
+  "viewAll": "View All"
 }
