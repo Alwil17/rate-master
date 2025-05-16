@@ -62,3 +62,83 @@ final ThemeData appTheme = ThemeData(
       labelStyle: TextStyle(color: Color(0xff3A3A3B), fontSize: 13),
       hintStyle: TextStyle(color: Colors.grey)),
 );
+
+// light theme
+final lightTheme = ThemeData(
+  brightness: Brightness.light,
+  scaffoldBackgroundColor: AppColors.primaryBackground,
+  primaryColor: AppColors.accent,
+  hintColor: AppColors.secondaryAccent,
+  fontFamily: 'Roboto',
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(color: AppColors.secondaryBackground, fontSize: 32, fontWeight: FontWeight.bold),
+    titleLarge:   TextStyle(color: AppColors.secondaryBackground, fontSize: 20),
+    bodyLarge:    TextStyle(color: AppColors.secondaryBackground, fontSize: 16),
+    bodyMedium:   TextStyle(color: AppColors.secondaryBackground, fontSize: 14),
+  ),
+  buttonTheme: ButtonThemeData(
+    buttonColor: AppColors.accent,
+    textTheme: ButtonTextTheme.primary,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: AppColors.secondaryBackground,
+    iconTheme: IconThemeData(color: AppColors.primaryText),
+    titleTextStyle: TextStyle(color: AppColors.primaryText, fontSize: 20),
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: AppColors.accent,
+    foregroundColor: AppColors.primaryText,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.white,
+    errorStyle: TextStyle(height: 0),
+    border: defaultInputBorder,
+    enabledBorder: defaultInputBorder,
+    focusedBorder: defaultInputBorder,
+    errorBorder: errorInputBorder,
+    labelStyle: TextStyle(color: Color(0xff3A3A3B), fontSize: 13),
+    hintStyle: TextStyle(color: Colors.grey),
+  ),
+);
+
+// dark theme
+final darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: Colors.black,
+  primaryColor: AppColors.accent,
+  hintColor: AppColors.secondaryAccent,
+  fontFamily: 'Roboto',
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(color: AppColors.primaryText, fontSize: 32, fontWeight: FontWeight.bold),
+    titleLarge:   TextStyle(color: AppColors.primaryText, fontSize: 20),
+    bodyLarge:    TextStyle(color: AppColors.primaryText, fontSize: 16),
+    bodyMedium:   TextStyle(color: AppColors.primaryText, fontSize: 14),
+  ),
+  buttonTheme: ButtonThemeData(
+    buttonColor: AppColors.accent,
+    textTheme: ButtonTextTheme.primary,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: Colors.grey,
+    iconTheme: IconThemeData(color: AppColors.primaryText),
+    titleTextStyle: TextStyle(color: AppColors.primaryText, fontSize: 20),
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: AppColors.accent,
+    foregroundColor: AppColors.primaryText,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    filled: true,
+    fillColor: Color(0xFF1E1E1E),
+    errorStyle: TextStyle(height: 0),
+    border: defaultInputBorder,
+    enabledBorder: defaultInputBorder,
+    focusedBorder: defaultInputBorder,
+    errorBorder: errorInputBorder,
+    labelStyle: TextStyle(color: Colors.white70, fontSize: 13),
+    hintStyle: TextStyle(color: Colors.white54),
+  ),
+);
