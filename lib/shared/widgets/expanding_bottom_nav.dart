@@ -22,8 +22,6 @@ class ExpandingBottomNav extends StatelessWidget {
 
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
-      elevation: 8,
-      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(items.length, (i) {
@@ -48,7 +46,7 @@ class ExpandingBottomNav extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PhosphorIcon(nav.icon, color: isSelected ? Colors.white : Colors.black),
+                  PhosphorIcon(nav.icon, color: isSelected ? Colors.white : Theme.of(context).iconTheme.color),
                   if (isSelected) ...[
                     const SizedBox(width: 6),
                     Text(

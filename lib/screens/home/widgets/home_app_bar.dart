@@ -32,7 +32,7 @@ PreferredSizeWidget homeAppBar(
             color: Colors.white),
         onPressed: onRefresh,
       ),*/
-      /*IconButton(
+      IconButton(
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(AppColors.accent),
           shape: WidgetStatePropertyAll(
@@ -44,7 +44,7 @@ PreferredSizeWidget homeAppBar(
         icon: PhosphorIcon(PhosphorIconsRegular.bellSimpleRinging,
             color: Colors.white),
         onPressed: () {},
-      ),*/
+      ),
     ],
   );
 }
