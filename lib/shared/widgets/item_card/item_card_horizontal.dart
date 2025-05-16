@@ -16,13 +16,6 @@ class ItemCardHorizontal extends StatelessWidget {
     return InkWell(
       onTap: () => context.pushNamed(APP_PAGES.itemDetails.toName, pathParameters: {'itemId': "${item.id}"}),
       child: Card(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: Colors.grey.shade300, width: 1),
-        ),
-        clipBehavior: Clip.antiAlias,
-        elevation: 1,
         child: SizedBox(
           height: 100,
           child: Row(
@@ -31,7 +24,7 @@ class ItemCardHorizontal extends StatelessWidget {
               SizedBox(
                 width: 100,
                 height: 100,
-                child: _buildImage(),
+                child: _buildImage(context),
               ),
 
               // Espace et contenu texte
@@ -94,25 +87,27 @@ class ItemCardHorizontal extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
       return Image.network(
         item.imageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(),
+        errorBuilder: (_, __, ___) => _buildPlaceholder(context),
         loadingBuilder: (_, child, progress) => progress == null
             ? child
             : const Center(child: CircularProgressIndicator()),
       );
     } else {
-      return _buildPlaceholder();
+      return _buildPlaceholder(context);
     }
   }
 
   /// Placeholder gris avec icône film
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      color: Colors.grey[300],
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.blueGrey[900]
+          : Colors.grey[300],
       child: const Center(
         child: Icon(
           Icons.movie,

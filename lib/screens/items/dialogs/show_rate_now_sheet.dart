@@ -25,7 +25,6 @@ Future<bool> showRateNowSheet(BuildContext context, {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    backgroundColor: Colors.white,
     builder: (ctx) => Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(ctx).viewInsets.bottom,

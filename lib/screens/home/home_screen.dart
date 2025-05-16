@@ -10,8 +10,9 @@ import 'package:rate_master/screens/home/widgets/recommanded_list.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
-import 'package:rate_master/shared/widgets/global_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'widgets/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,11 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      appBar: globalAppBar(context, () {
-        // Manual Pull-to-refresh
-        itemProvider.fetchItems();
-      }),
+      appBar: homeAppBar(context, null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -62,14 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     TextSpan(
                       text: "${locale.welcome} ",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextSpan(
                       text: "${authProvider.user!.name},",
-                      style: TextStyle(
-                        fontSize: 18,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -83,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(color: AppColors.accent),
                 ),
@@ -100,17 +93,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-
             const SizedBox(height: 16),
+
             /// Recommanded section
             // Title
             _buildSectionTitle(context, locale.recommandedForYou),
             // Content
             SizedBox(height: 200, child: buildRecommandedList(context)),
             const SizedBox(height: 16),
+
             /// To rate section
             // Title
-            _buildSectionTitle(context, locale.recentlyRated),
+            _buildSectionTitle(context, locale.recentlyRated,
+                onViewAllPressed: () =>
+                    context.pushNamed(APP_PAGES.stats.toName)),
             // Content
             // Par exemple :
             SizedBox(
@@ -127,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSectionTitle(BuildContext context, String title,
       {VoidCallback? onViewAllPressed}) {
     return Padding(
-      padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 0),
+      padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -138,15 +134,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
-          TextButton(
-            onPressed: onViewAllPressed,
-            child: Row(children: [PhosphorIcon(PhosphorIconsRegular.caretLeft),PhosphorIcon(PhosphorIconsRegular.caretRight)],),
-          ),
+          onViewAllPressed != null
+              ? TextButton(
+                  onPressed: onViewAllPressed,
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.viewAll,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      PhosphorIcon(
+                        PhosphorIconsRegular.arrowRight,
+                        size: 12,
+                        color: Colors.blue,
+                      )
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );
   }
-
-
-
 }

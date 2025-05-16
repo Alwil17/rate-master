@@ -104,7 +104,9 @@ class MyApp extends StatelessWidget {
         builder: (context, appStateProvider, child) {
       return MaterialApp.router(
         title: 'RateMaster',
-        theme: appTheme,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: appStateProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
         localizationsDelegates: [
           AppLocalizations.delegate, // Add this line
           GlobalMaterialLocalizations.delegate,

@@ -68,11 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(8),
-                    backgroundColor: Colors.white,
                     elevation: 1,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
-                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Colors.black,),
+                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,),
                 ),
               ),
             ),
@@ -88,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     child: ClipOval(
                       child: Image.network(
                         _authProvider.user!.imageUrl ?? '',

@@ -79,5 +79,45 @@
   "descending": "Descending",
   "applyFilters": "Apply Filters",
   "explore": "Explore",
-  "myReviews": "My Reviews"
+  "myReviews": "My Reviews",
+  "summary": "Summary",
+  "perCategory": "Per Category",
+  "perRating": "Per Rating",
+  "myStats": "My Stats",
+  "myActivity": "My Activity",
+  "viewAll": "View All",
+  "settings": "Settings",
+  "account": "Account",
+  "changePassword": "Change Password",
+  "logout": "Logout",
+  "appearance": "Appearance",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "systemMode": "System Mode",
+  "language": "Language",
+  "appVersion": "App Version",
+  "privacyPolicy": "Privacy Policy",
+  "contactSupport": "Contact Support",
+  "end": "Finish",
+  "selectThe": "Select the {selectOption}...",
+  "@selectThe": {
+    "description": "Label of the selection option.",
+    "placeholders": {
+      "selectOption": {
+        "type": "String",
+        "example": "Patient"
+      }
+    }
+  },
+  "french": "French",
+  "english": "English",
+  "languageValue": "{code, select, fr{French} en{English} other{Unknow}}",
+  "@languageValue": {
+    "description": "the label corresponding to language",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  }
 }

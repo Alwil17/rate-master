@@ -11,6 +11,6 @@ class Constants {
     NavItem(name: APP_PAGES.home.toName, icon: PhosphorIconsDuotone.house, label: 'Home'),
     NavItem(name: APP_PAGES.search.toName, icon: PhosphorIconsDuotone.listStar, label: 'Search'),
     NavItem(name: APP_PAGES.stats.toName, icon: PhosphorIconsDuotone.chartBar, label: 'Stats'),
-    NavItem(name: APP_PAGES.profile.toName, icon: PhosphorIconsDuotone.gear, label: 'Home'),
+    NavItem(name: APP_PAGES.settings.toName, icon: PhosphorIconsDuotone.gear, label: 'Settings'),
   ];
 }
