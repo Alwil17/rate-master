@@ -30,7 +30,7 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
           children: [
             Text(
               locale.summary,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.blue),
             ),
             const SizedBox(height: 10),
             Consumer2<AuthProvider, RatingProvider>(
@@ -61,7 +61,7 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
             // 1. Distribution
             Text(
               locale.perRating,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.blue),
             ),
             const SizedBox(height: 10),
             _buildChartWrapper(
@@ -74,7 +74,7 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
             // 2. By categories
             Text(
               locale.perCategory,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.blue),
             ),
             const SizedBox(height: 10),
             _buildChartWrapper(
