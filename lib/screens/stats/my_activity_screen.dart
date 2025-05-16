@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rate_master/shared/constants/constants.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
 import 'my_reviews_screen.dart';
 import 'my_stats_screen.dart';
@@ -24,6 +26,7 @@ class MyActivityScreen extends StatelessWidget {
             ],
           ),
         ),
+        bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
         body: const TabBarView(
           children: [
             MyReviewsScreen(),
