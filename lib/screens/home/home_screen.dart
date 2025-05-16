@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
       appBar: homeAppBar(context, null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(

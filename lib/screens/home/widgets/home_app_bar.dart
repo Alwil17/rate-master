@@ -7,7 +7,6 @@ import 'package:rate_master/shared/theme/theme.dart';
 PreferredSizeWidget homeAppBar(
     BuildContext context, VoidCallback? onRefresh) {
   return AppBar(
-    backgroundColor: Colors.white,
     elevation: 0,
     leading: InkWell(
       onTap: () => context.pushNamed(APP_PAGES.profile.toName),
