@@ -16,7 +16,7 @@ class MyActivityScreen extends StatelessWidget {
       length: 2, // Nombre d'onglets
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Mon activité'),
+          title: Text(AppLocalizations.of(context)!.myActivity),
           centerTitle: true,
           backgroundColor: Colors.white,
           leading: IconButton(

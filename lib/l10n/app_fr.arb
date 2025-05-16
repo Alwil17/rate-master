@@ -83,5 +83,6 @@
   "summary": "Résumé",
   "perCategory": "Par catégorie",
   "perRating": "Par note",
-  "myStats": "Mes statistiques"
+  "myStats": "Mes statistiques",
+  "myActivity": "Mon activité"
 }
