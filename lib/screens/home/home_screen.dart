@@ -108,7 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
             /// To rate section
             // Title
-            _buildSectionTitle(context, locale.recentlyRated),
+            _buildSectionTitle(context, locale.recentlyRated,
+                onViewAllPressed: () =>
+                    context.pushNamed(APP_PAGES.stats.toName)),
             // Content
             // Par exemple :
             SizedBox(
@@ -125,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSectionTitle(BuildContext context, String title,
       {VoidCallback? onViewAllPressed}) {
     return Padding(
-      padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 0),
+      padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -136,22 +138,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
-          TextButton(
-            onPressed: onViewAllPressed,
-            child: Row(
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.viewAll,
-                  style: TextStyle(color: Colors.blue),
-                ),
-                PhosphorIcon(
-                  PhosphorIconsRegular.arrowRight,
-                  size: 12,
-                  color: Colors.blue,
+          onViewAllPressed != null
+              ? TextButton(
+                  onPressed: onViewAllPressed,
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.viewAll,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      PhosphorIcon(
+                        PhosphorIconsRegular.arrowRight,
+                        size: 12,
+                        color: Colors.blue,
+                      )
+                    ],
+                  ),
                 )
-              ],
-            ),
-          ),
+              : const SizedBox.shrink(),
         ],
       ),
     );
