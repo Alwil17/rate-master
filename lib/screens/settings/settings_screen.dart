@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,29 +27,17 @@ class SettingsScreen extends StatelessWidget {
           Text(locale.account, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
           Card(
+            color: Colors.white,
+            borderOnForeground: true,
+            elevation: 0,
             child: Column(
               children: [
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text(user?.name ?? 'Utilisateur'),
-                  subtitle: Text(user?.email ?? ''),
-                ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.lock),
-                  title: Text(locale.changePassword),
-                  onTap: () {
-                    // Navigation vers change password
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: Text(locale.logout),
-                  onTap: () async {
-                    await authProvider.logout();
-                    Navigator.of(context).pushReplacementNamed('/login');
-                  },
-                ),
+                _buildSettingTile(
+                  user?.name ?? 'Utilisateur',
+                  user?.email ?? '',
+                  PhosphorIconsDuotone.user,
+                  null,
+                )
               ],
             ),
           ),
@@ -56,7 +45,8 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Apparence
-          Text(locale.appearance, style: Theme.of(context).textTheme.titleLarge),
+          Text(locale.appearance,
+              style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
           Card(
             child: Column(
@@ -113,6 +103,16 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSettingTile(String title, String? subtitle,
+      PhosphorIconData icon, VoidCallback? onTap) {
+    return ListTile(
+      onTap: onTap,
+      leading: PhosphorIcon(icon),
+      title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle) : null,
     );
   }
 }
