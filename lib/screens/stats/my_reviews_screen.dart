@@ -69,15 +69,6 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
     final locale = AppLocalizations.of(context)!;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      elevation: 0,
-      color: Colors.white,
-      shape: const RoundedRectangleBorder(
-        side: BorderSide(
-          color: Colors.grey,
-          width: 0.3,
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Row(
