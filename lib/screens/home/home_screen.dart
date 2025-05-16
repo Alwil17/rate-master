@@ -100,14 +100,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-
             const SizedBox(height: 16),
+
             /// Recommanded section
             // Title
             _buildSectionTitle(context, locale.recommandedForYou),
             // Content
             SizedBox(height: 200, child: buildRecommandedList(context)),
             const SizedBox(height: 16),
+
             /// To rate section
             // Title
             _buildSectionTitle(context, locale.recentlyRated),
@@ -140,13 +141,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TextButton(
             onPressed: onViewAllPressed,
-            child: Row(children: [Text("AppLocalizations.of(context)"),PhosphorIcon(PhosphorIconsRegular.caretRight)],),
+            child: Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.viewAll,
+                  style: TextStyle(color: Colors.blue),
+                ),
+                PhosphorIcon(
+                  PhosphorIconsRegular.arrowRight,
+                  size: 12,
+                  color: Colors.blue,
+                )
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-
-
-
 }
