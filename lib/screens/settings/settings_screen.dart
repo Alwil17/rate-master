@@ -104,10 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSettingTileContainer(List<Widget> childs) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: AppColors.accent, width: 0.5),
-      ),
+      shape: Theme.of(context).cardTheme.shape,
       child: Column(
         children: childs,
       ),
@@ -129,7 +126,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showLanguageDialog(BuildContext context) async {
     final result = await showModalBottomSheet<String>(
       context: context,
-      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         // <-- SEE HERE
         borderRadius: BorderRadius.vertical(

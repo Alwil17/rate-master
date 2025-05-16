@@ -56,9 +56,9 @@ final lightTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
   appBarTheme: const AppBarTheme(
-    color: AppColors.secondaryBackground,
+    color: Colors.white,
     iconTheme: IconThemeData(color: AppColors.primaryText),
-    titleTextStyle: TextStyle(color: AppColors.primaryText, fontSize: 20),
+    titleTextStyle: TextStyle(color: AppColors.darkBackground, fontSize: 20),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.accent,
