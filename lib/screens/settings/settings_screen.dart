@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
@@ -13,6 +14,7 @@ class SettingsScreen extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final user = authProvider.user;
+    final info = PackageInfo.fromPlatform();
 
     return Scaffold(
       appBar: AppBar(
