@@ -97,5 +97,27 @@
   "language": "Language",
   "appVersion": "App Version",
   "privacyPolicy": "Privacy Policy",
-  "contactSupport": "Contact Support"
+  "contactSupport": "Contact Support",
+  "end": "Finish",
+  "selectThe": "Select {selectOption}...",
+  "@selectThe": {
+    "description": "Label of the selection option.",
+    "placeholders": {
+      "selectOption": {
+        "type": "String",
+        "example": "Patient"
+      }
+    }
+  },
+  "french": "French",
+  "english": "English",
+  "languageValue": "{code, select, fr{French} en{English} other{Unknow}}",
+  "@languageValue": {
+    "description": "the label corresponding to language",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  }
 }
