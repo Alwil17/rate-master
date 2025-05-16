@@ -82,17 +82,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: MediaQuery.of(context).size.width, height: 434),
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            left: 15,
-            child: SizedBox(
-              child: IconButton(
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(8),
+                    elevation: 1,
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
-                  icon: PhosphorIcon(
-                      PhosphorIconsRegular.arrowLeft,
-                    size: 30,
-                    color: Colors.black,
-                  )),
+                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,),
+                ),
+              ),
             ),
           ),
           Center(
