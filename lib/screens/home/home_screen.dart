@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TextButton(
             onPressed: onViewAllPressed,
-            child: Row(children: [PhosphorIcon(PhosphorIconsRegular.caretLeft),PhosphorIcon(PhosphorIconsRegular.caretRight)],),
+            child: Row(children: [Text("AppLocalizations.of(context)"),PhosphorIcon(PhosphorIconsRegular.caretRight)],),
           ),
         ],
       ),
