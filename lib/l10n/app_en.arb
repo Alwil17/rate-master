@@ -85,5 +85,17 @@
   "perRating": "Per Rating",
   "myStats": "My Stats",
   "myActivity": "My Activity",
-  "viewAll": "View All"
+  "viewAll": "View All",
+  "settings": "Settings",
+  "account": "Account",
+  "changePassword": "Change Password",
+  "logout": "Logout",
+  "appearance": "Appearance",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "systemMode": "System Mode",
+  "language": "Language",
+  "appVersion": "App Version",
+  "privacyPolicy": "Privacy Policy",
+  "contactSupport": "Contact Support"
 }

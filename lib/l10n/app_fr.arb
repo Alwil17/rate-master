@@ -85,5 +85,15 @@
   "perRating": "Par note",
   "myStats": "Mes statistiques",
   "myActivity": "Mon activité",
-  "viewAll": "Tout voir"
+  "viewAll": "Tout voir",
+  "settings": "Paramètres",
+  "account": "Compte",
+  "changePassword": "Modifier le mot de passe",
+  "logout": "Déconnexion",
+  "appearance": "Apparence",
+  "darkMode": "Mode sombre",
+  "language": "Langue",
+  "appVersion": "Version de l'app",
+  "privacyPolicy": "Politique de confidentialité",
+  "contactSupport": "Contacter le support"
 }
