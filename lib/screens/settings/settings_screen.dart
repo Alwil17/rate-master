@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/app_state_provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
+import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/theme/theme.dart';
+import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,9 +22,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final user = authProvider.user;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(locale.settings),
@@ -28,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         foregroundColor: Colors.black,
         centerTitle: true,
       ),
+      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -36,10 +38,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 8),
           _buildSettingTileContainer([
             _buildSettingTile(
-              user?.name ?? 'Utilisateur',
-              user?.email ?? '',
-              PhosphorIconsDuotone.user,
-              null,
+              context.read<AuthProvider>().user?.name ?? 'Utilisateur',
+              context.read<AuthProvider>().user?.email ?? '',
+              PhosphorIconsDuotone.user, () => context.pushNamed(APP_PAGES.profile.toName),
             )
           ]),
 
@@ -122,6 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showLanguageDialog(BuildContext context) async {
     final result = await showModalBottomSheet<String>(
       context: context,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         // <-- SEE HERE
         borderRadius: BorderRadius.vertical(
@@ -130,12 +132,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       isScrollControlled: true,
       builder: (context) => LanguageSelectionDialog(
-        defaultLocale: AppLocalizations.of(context)!.localeName,
+        defaultLocale: context.read<AppStateProvider>().locale,
       ),
     );
 
     if (result != null) {
-      print(result);
+      // 1) Save to the provider
+      context.read<AppStateProvider>().locale = result;
     }
   }
 }
