@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/models/item.dart';
 import 'package:rate_master/models/rating.dart';
@@ -9,9 +8,7 @@ import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/screens/items/dialogs/show_delete_review_dialog.dart';
 import 'package:rate_master/screens/items/dialogs/show_rate_now_sheet.dart';
-import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/average_rating_display.dart';
-import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyReviewsScreen extends StatefulWidget {
