@@ -97,7 +97,7 @@
   "privacyPolicy": "Politique de confidentialité",
   "contactSupport": "Contacter le support",
   "end": "Terminer",
-  "selectThe": "Sélectionnez {selectOption}...",
+  "selectThe": "Sélectionnez la {selectOption}...",
   "@selectThe": {
     "description": "Label de l'option de sélection.",
     "placeholders": {

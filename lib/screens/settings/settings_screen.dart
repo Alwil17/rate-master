@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_master/providers/app_state_provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -62,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSettingTile(
               locale.language,
               null,
-              PhosphorIconsRegular.globe, () {},
+              PhosphorIconsRegular.globe, () => _showLanguageDialog(context),
             ),
           ]),
           const SizedBox(height: 24),
@@ -122,7 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /*void _showLanguageDialog(BuildContext context) async {
+  void _showLanguageDialog(BuildContext context) async {
     final result = await showModalBottomSheet<String>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -138,12 +139,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (result != null) {
-      //print(result);
-      if (result.isNotEmpty &&
-          result != AppLocalizations.of(context)!.localeName) {
-        prefs.locale = result;
-      }
+      print(result);
+
     }
-  }*/
+  }
 
 }

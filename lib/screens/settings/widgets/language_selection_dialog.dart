@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class LanguageSelectionDialog extends StatefulWidget {
   final String defaultLocale;
@@ -7,7 +8,8 @@ class LanguageSelectionDialog extends StatefulWidget {
   const LanguageSelectionDialog({super.key, required this.defaultLocale});
 
   @override
-  _LanguageSelectionDialogState createState() => _LanguageSelectionDialogState();
+  _LanguageSelectionDialogState createState() =>
+      _LanguageSelectionDialogState();
 }
 
 class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
@@ -16,8 +18,8 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
   @override
   void initState() {
     super.initState();
-    if(widget.defaultLocale != null && widget.defaultLocale!.isNotEmpty){
-      selecttedlanguage = widget.defaultLocale!;
+    if (widget.defaultLocale.isNotEmpty) {
+      selecttedlanguage = widget.defaultLocale;
     }
   }
 
@@ -30,11 +32,15 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Sort by section
-          _buildTitle(AppLocalizations.of(context)!.selectThe(AppLocalizations.of(context)!.language), Icons.flag),
+          _buildTitle(context,
+              AppLocalizations.of(context)!
+                  .selectThe(AppLocalizations.of(context)!.language),
+              PhosphorIconsRegular.flagCheckered),
           const SizedBox(height: 8),
           ...AppLocalizations.supportedLocales.map((e) {
             return RadioListTile<String>(
-              title: Text(AppLocalizations.of(context)!.languageValue(e.languageCode)),
+              title: Text(
+                  AppLocalizations.of(context)!.languageValue(e.languageCode)),
               value: e.languageCode,
               groupValue: selecttedlanguage,
               onChanged: (String? value) {
@@ -49,48 +55,64 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
           // Apply Button
           Center(
               child: SizedBox(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff79a5b4),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      ),
-                      icon: Icon(Icons.close, color: Color(0xff056380)),
-                      label: Text(
-                        AppLocalizations.of(context)!.cancel,
-                        style: const TextStyle(fontSize: 18, color: Color(0xff056380)),
-                      ),
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () => Navigator.pop(context, selecttedlanguage),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffd9e8ee),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      ),
-                      icon: Icon(Icons.save, color: Color(0xff056380)),
-                      label: Text(
-                        AppLocalizations.of(context)!.end,
-                        style: const TextStyle(fontSize: 18, color: Color(0xff056380)),
-                      ),
-                    )
-                  ],
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xff79a5b4),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  icon: Icon(Icons.close, color: Color(0xff056380)),
+                  label: Text(
+                    AppLocalizations.of(context)!.cancel,
+                    style:
+                        const TextStyle(fontSize: 18, color: Color(0xff056380)),
+                  ),
                 ),
-              )
-          ),
+                ElevatedButton.icon(
+                  onPressed: () => Navigator.pop(context, selecttedlanguage),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xffd9e8ee),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  icon: Icon(Icons.save, color: Color(0xff056380)),
+                  label: Text(
+                    AppLocalizations.of(context)!.end,
+                    style:
+                        const TextStyle(fontSize: 18, color: Color(0xff056380)),
+                  ),
+                )
+              ],
+            ),
+          )),
         ],
       ),
     );
   }
 
-  Widget _buildTitle(String label, IconData icon){
+  Widget _buildTitle(
+      BuildContext context, String label, PhosphorIconData icon) {
     return Text.rich(TextSpan(children: [
-      WidgetSpan(child: Icon(icon, size: 20,)),
-      WidgetSpan(child: SizedBox(width: 5,)),
-      TextSpan(text: label, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      WidgetSpan(
+          child: PhosphorIcon(
+        icon,
+        size: 24,
+      )),
+      WidgetSpan(
+          child: SizedBox(
+        width: 8,
+      )),
+      TextSpan(
+          text: label,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: FontWeight.bold, fontSize: 22)),
     ]));
   }
 }

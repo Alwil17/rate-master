@@ -99,7 +99,7 @@
   "privacyPolicy": "Privacy Policy",
   "contactSupport": "Contact Support",
   "end": "Finish",
-  "selectThe": "Select {selectOption}...",
+  "selectThe": "Select the {selectOption}...",
   "@selectThe": {
     "description": "Label of the selection option.",
     "placeholders": {
