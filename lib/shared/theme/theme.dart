@@ -35,7 +35,15 @@ final lightTheme = ThemeData(
   primaryColor: AppColors.accent,
   hintColor: AppColors.secondaryAccent,
   fontFamily: 'Roboto',
-  cardColor: const Color(0xffF1F3F6),
+  cardTheme: CardTheme(
+    color: Colors.white,
+    elevation: 1,
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+      side: BorderSide(color: Colors.grey.shade300, width: 1),
+    ),
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(color: AppColors.secondaryBackground, fontSize: 32, fontWeight: FontWeight.bold),
     titleLarge:   TextStyle(color: AppColors.secondaryBackground, fontSize: 20),

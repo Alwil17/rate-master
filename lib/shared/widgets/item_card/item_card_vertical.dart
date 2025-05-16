@@ -23,7 +23,7 @@ class ItemCardVertical extends StatelessWidget {
               // Image or placeholder
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: _buildImage(),
+                child: _buildImage(context),
               ),
               const SizedBox(height: 8),
               // Titre
@@ -80,25 +80,27 @@ class ItemCardVertical extends StatelessWidget {
     });
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
       return Image.network(
         item.imageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(),
+        errorBuilder: (_, __, ___) => _buildPlaceholder(context),
         loadingBuilder: (_, child, progress) => progress == null
             ? child
             : const Center(child: CircularProgressIndicator()),
       );
     } else {
-      return _buildPlaceholder();
+      return _buildPlaceholder(context);
     }
   }
 
   /// Placeholder gris avec icône film
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      color: Colors.grey[300],
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.blueGrey[900]
+          : Colors.grey[300],
       child: const Center(
         child: Icon(
           Icons.movie,
