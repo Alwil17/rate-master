@@ -26,7 +26,6 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
-      bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8),
         child: Consumer2<RatingProvider, ItemProvider>(
