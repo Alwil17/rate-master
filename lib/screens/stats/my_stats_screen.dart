@@ -3,8 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/screens/profile/widgets/stats_summary.dart';
+import 'package:rate_master/screens/stats/widgets/category_pie_chart.dart';
 import 'package:rate_master/screens/stats/widgets/rating_histogram.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
@@ -65,12 +67,12 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
           const SizedBox(height: 20),
           // 2. Répartition catégories
           Text("Avis par catégorie"),
-          /*CategoryPieChart(data: stats.byCategory),
+          CategoryPieChart(reviews: Provider.of<RatingProvider>(context).userReviews, items: Provider.of<ItemProvider>(context).items),
 
           const SizedBox(height: 20),
           // 3. Évolution
           Text("Avis par mois"),
-          ReviewsLineChart(data: stats.overTime),
+          /*ReviewsLineChart(data: stats.overTime),
 
           const SizedBox(height: 20),
           // 4. Avis récents
