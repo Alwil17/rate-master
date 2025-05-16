@@ -18,15 +18,12 @@ class MyActivityScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.myActivity),
           centerTitle: true,
-          backgroundColor: Colors.white,
           leading: IconButton(
-            icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
-                color: Colors.black),
+            icon: PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+                color: Theme.of(context).iconTheme.color),
             onPressed: () => Navigator.of(context).pop(),
           ),
           bottom: TabBar(
-            labelColor: Colors.black,
-            indicatorColor: Colors.blue,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.myReviews),
               Tab(text: AppLocalizations.of(context)!.myStats),

@@ -9,6 +9,7 @@ class AppColors {
   static const Color error = Color(0xFFF44336);
   static const Color secondaryAccent = Color(0xFF7E57C2);
   static const Color vectorsBackground = Color(0xFFFFE5FD);
+  static const Color darkBackground = Color(0xFF171712);
 }
 
 const defaultInputBorder = OutlineInputBorder(
@@ -34,6 +35,15 @@ final lightTheme = ThemeData(
   primaryColor: AppColors.accent,
   hintColor: AppColors.secondaryAccent,
   fontFamily: 'Roboto',
+  cardTheme: CardTheme(
+    color: Colors.white,
+    elevation: 1,
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+      side: BorderSide(color: Colors.grey.shade300, width: 1),
+    ),
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(color: AppColors.secondaryBackground, fontSize: 32, fontWeight: FontWeight.bold),
     titleLarge:   TextStyle(color: AppColors.secondaryBackground, fontSize: 20),
@@ -46,9 +56,9 @@ final lightTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
   appBarTheme: const AppBarTheme(
-    color: AppColors.secondaryBackground,
+    color: Colors.white,
     iconTheme: IconThemeData(color: AppColors.primaryText),
-    titleTextStyle: TextStyle(color: AppColors.primaryText, fontSize: 20),
+    titleTextStyle: TextStyle(color: AppColors.darkBackground, fontSize: 20),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.accent,
@@ -70,10 +80,18 @@ final lightTheme = ThemeData(
 // dark theme
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: Colors.black,
+  scaffoldBackgroundColor: Colors.black12,
   primaryColor: AppColors.accent,
   hintColor: AppColors.secondaryAccent,
   fontFamily: 'Roboto',
+  cardTheme: const CardTheme(
+    color: const Color(0xFF212330),
+    elevation: 1,
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    ),
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(color: AppColors.primaryText, fontSize: 32, fontWeight: FontWeight.bold),
     titleLarge:   TextStyle(color: AppColors.primaryText, fontSize: 20),
@@ -86,7 +104,7 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
   appBarTheme: const AppBarTheme(
-    color: Colors.grey,
+    color: Colors.black26,
     iconTheme: IconThemeData(color: AppColors.primaryText),
     titleTextStyle: TextStyle(color: AppColors.primaryText, fontSize: 20),
   ),

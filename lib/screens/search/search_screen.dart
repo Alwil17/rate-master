@@ -45,7 +45,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _onFilterPressed() async {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
-      backgroundColor: Colors.white,
       builder: (_) => FilterBottomSheet(
         selectedCat: selectedCat ?? 0,
         selectedTags: selectedTags,
@@ -71,10 +70,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
-              color: Colors.black),
+          icon: PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Theme.of(context).iconTheme.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(locale.explore),
@@ -91,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 // Search field: only filters locally on 'name'
                 Expanded(
                   child: TextField(
-                    autofocus: true,
+                    autofocus: false,
                     decoration: InputDecoration(
                       hintText: locale.makeASearch,
                       border: InputBorder.none,

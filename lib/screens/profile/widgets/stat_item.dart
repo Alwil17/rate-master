@@ -30,10 +30,9 @@ class StatItem extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black54,
-          ),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Colors.grey,
+              ),
         ),
       ],
     );

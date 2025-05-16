@@ -195,7 +195,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 style: TextStyle(
                     fontSize: 15,
                     color:
-                        (ascendingString == id) ? Colors.blue : Colors.black,
+                        (ascendingString == id) ? Colors.blue : Theme.of(context).iconTheme.color,
                     fontWeight: (ascendingString == id)
                         ? FontWeight.bold
                         : FontWeight.normal)),

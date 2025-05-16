@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
       appBar: homeAppBar(context, null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
@@ -60,14 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     TextSpan(
                       text: "${locale.welcome} ",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextSpan(
                       text: "${authProvider.user!.name},",
-                      style: TextStyle(
-                        fontSize: 18,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -81,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(color: AppColors.accent),
                 ),
