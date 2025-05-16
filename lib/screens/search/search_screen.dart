@@ -45,7 +45,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _onFilterPressed() async {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
-      backgroundColor: Colors.white,
       builder: (_) => FilterBottomSheet(
         selectedCat: selectedCat ?? 0,
         selectedTags: selectedTags,
