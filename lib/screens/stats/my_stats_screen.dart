@@ -62,10 +62,10 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
 
           RatingHistogram(ratings: Provider.of<RatingProvider>(context).userReviews),
 
-          /*const SizedBox(height: 20),
+          const SizedBox(height: 20),
           // 2. Répartition catégories
           Text("Avis par catégorie"),
-          CategoryPieChart(data: stats.byCategory),
+          /*CategoryPieChart(data: stats.byCategory),
 
           const SizedBox(height: 20),
           // 3. Évolution
