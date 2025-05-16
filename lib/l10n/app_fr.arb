@@ -119,5 +119,7 @@
     }
   },
   "exitApp": "Quitter l'application",
-  "exitConfirmation": "Êtes-vous sûr de vouloir quitter l'application ?"
+  "exitConfirmation": "Êtes-vous sûr de vouloir quitter l'application ?",
+  "notifications": "Notifications",
+  "noNotifications": "Aucune notification pour le moment."
 }
