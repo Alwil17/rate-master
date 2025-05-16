@@ -5,7 +5,7 @@
     "placeholders": {
       "appName": {
         "type": "String",
-        "example": "RateMaster"
+        "example": "Rate Master"
       }
     }
   },
@@ -129,5 +129,6 @@
   "error": "Error",
   "registerSuccess": "Registration successful!",
   "loginSuccess": "Login successful!",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "errorLoadingApp": "Error when loading the application"
 }
