@@ -8,8 +8,7 @@ import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/items/item_detail_screen.dart';
 import 'package:rate_master/screens/profile/profile_screen.dart';
 import 'package:rate_master/screens/search/search_screen.dart';
-import 'package:rate_master/screens/stats/my_reviews_screen.dart';
-import 'package:rate_master/screens/stats/my_stats_screen.dart';
+import 'package:rate_master/screens/stats/my_activity_screen.dart';
 import 'package:rate_master/shared/error_screen.dart';
 
 class AppRouter {
@@ -68,7 +67,7 @@ class AppRouter {
       GoRoute(
         path: APP_PAGES.stats.toPath,
         name: APP_PAGES.stats.toName,
-        builder: (context, state) => MyStatsScreen(),
+        builder: (context, state) => MyActivityScreen(),
       ),
       /*
       GoRoute(
