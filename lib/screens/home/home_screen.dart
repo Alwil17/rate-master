@@ -42,10 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: globalAppBar(context, () {
-        // Manual Pull-to-refresh
-        itemProvider.fetchItems();
-      }),
+      appBar: globalAppBar(context, null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
