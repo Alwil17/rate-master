@@ -23,16 +23,6 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Mes stats"),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
-              color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
