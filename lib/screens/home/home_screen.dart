@@ -59,14 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     TextSpan(
                       text: "${locale.welcome} ",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextSpan(
                       text: "${authProvider.user!.name},",
-                      style: TextStyle(
-                        fontSize: 18,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -85,7 +85,7 @@ final darkTheme = ThemeData(
   hintColor: AppColors.secondaryAccent,
   fontFamily: 'Roboto',
   cardTheme: const CardTheme(
-    color: Color(0xFF212330),
+    color: const Color(0xFF212330),
     elevation: 1,
     clipBehavior: Clip.antiAlias,
     shape: RoundedRectangleBorder(
@@ -104,7 +104,7 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
   appBarTheme: const AppBarTheme(
-    color: Colors.grey,
+    color: Colors.black26,
     iconTheme: IconThemeData(color: AppColors.primaryText),
     titleTextStyle: TextStyle(color: AppColors.primaryText, fontSize: 20),
   ),
