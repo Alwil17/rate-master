@@ -88,7 +88,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Stack(
           fit: StackFit.expand,

@@ -23,7 +23,7 @@ class ItemDetailHeader extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             height: 250,
-            child: _buildImage(),
+            child: _buildImage(context),
           ),
         ),
 
@@ -37,11 +37,10 @@ class ItemDetailHeader extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(8),
-                  backgroundColor: Colors.white,
                   elevation: 1,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
-                child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Colors.black,),
+                child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,),
               ),
             ),
           ),
@@ -75,29 +74,31 @@ class ItemDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
       return Image.network(
         item.imageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(),
+        errorBuilder: (_, __, ___) => _buildPlaceholder(context),
         loadingBuilder: (_, child, progress) =>
         progress == null ? child : const Center(child: CircularProgressIndicator()),
       );
     } else {
-      return _buildPlaceholder();
+      return _buildPlaceholder(context);
     }
   }
 
   /// Placeholder gris avec icône film
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      color: Colors.grey[300],
-      child: const Center(
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.blueGrey[900]
+          : Colors.grey[300],
+      child: Center(
         child: Icon(
           Icons.movie,
           size: 48,
-          color: Colors.white,
+          color: Theme.of(context).iconTheme.color,
         ),
       ),
     );

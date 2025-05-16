@@ -119,5 +119,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "exitApp": "Exit the application",
+  "exitConfirmation": "Are you sure you want to exit the application?",
+  "notifications": "Notifications",
+  "noNotifications": "No notifications for now."
 }

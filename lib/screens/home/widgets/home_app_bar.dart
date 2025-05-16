@@ -12,7 +12,9 @@ PreferredSizeWidget homeAppBar(
       child: Padding(
         padding: const EdgeInsets.only(left: 12.0),
         child: CircleAvatar(
-          backgroundColor: Colors.white70,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.blueGrey[900]
+              : Colors.grey[300],
           child: Image.asset("assets/images/avatar.png"),
         ),
       ),
@@ -43,7 +45,7 @@ PreferredSizeWidget homeAppBar(
         ),
         icon: PhosphorIcon(PhosphorIconsRegular.bellSimpleRinging,
             color: Colors.white),
-        onPressed: () {},
+        onPressed: () => context.pushNamed(APP_PAGES.notifications.toName),
       ),
     ],
   );

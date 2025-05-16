@@ -8,7 +8,7 @@ class AppColors {
   static const Color success = Color(0xFF4CAF50);
   static const Color error = Color(0xFFF44336);
   static const Color secondaryAccent = Color(0xFF7E57C2);
-  static const Color vectorsBackground = Color(0xFFFFE5FD);
+  static const Color vectorsBackground = Color(0xFFBB86FC);
   static const Color darkBackground = Color(0xFF171712);
 }
 
@@ -60,6 +60,11 @@ final lightTheme = ThemeData(
     iconTheme: IconThemeData(color: AppColors.primaryText),
     titleTextStyle: TextStyle(color: AppColors.darkBackground, fontSize: 20),
   ),
+  bottomAppBarTheme: const BottomAppBarTheme(
+    color: Colors.white,
+    elevation: 1,
+    shape: CircularNotchedRectangle(),
+  ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.accent,
     foregroundColor: AppColors.primaryText,
@@ -97,6 +102,11 @@ final darkTheme = ThemeData(
     titleLarge:   TextStyle(color: AppColors.primaryText, fontSize: 20),
     bodyLarge:    TextStyle(color: AppColors.primaryText, fontSize: 16),
     bodyMedium:   TextStyle(color: AppColors.primaryText, fontSize: 14),
+  ),
+  bottomAppBarTheme: const BottomAppBarTheme(
+    color: AppColors.darkBackground,
+    elevation: 1,
+    shape: CircularNotchedRectangle(),
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: AppColors.accent,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
@@ -36,10 +37,40 @@ class _HomeScreenState extends State<HomeScreen> {
     itemProvider = Provider.of<ItemProvider>(context, listen: false);
   }
 
+  Future<void> _handlePopInvokedWithResult(BuildContext context) async {
+    final locale = AppLocalizations.of(context)!;
+    final shouldExit = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(locale.exitApp),
+        content: Text(locale.exitConfirmation),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(locale.cancel)),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(locale.exit)),
+        ],
+      ),
+    ) ?? false;
+
+    if (shouldExit) {
+      SystemNavigator.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final locale = AppLocalizations.of(context)!;
+    // Get the locale for localization
+    return PopScope<bool>(
+      // Allow pop events to be intercepted
+      canPop: false,
+        onPopInvokedWithResult: (ctxt, result) async {
+          await _handlePopInvokedWithResult(context);
+        },
+      child: _buildHomeBody(context),
+    );
+  }
 
+  Widget _buildHomeBody(BuildContext context){
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       key: _scaffoldKey,
       appBar: homeAppBar(context, null),
