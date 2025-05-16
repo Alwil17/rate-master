@@ -36,33 +36,34 @@ class _HomeScreenState extends State<HomeScreen> {
     itemProvider = Provider.of<ItemProvider>(context, listen: false);
   }
 
-  Future<bool> _onWillPop(BuildContext context) async {
+  Future<void> _handlePopInvokedWithResult(BuildContext context) async {
     final locale = AppLocalizations.of(context)!;
     final shouldExit = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (ctx) => AlertDialog(
         title: Text(locale.exitApp),
         content: Text(locale.exitConfirmation),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(locale.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(locale.exit),
-          ),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(locale.cancel)),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(locale.exit)),
         ],
       ),
-    );
+    ) ?? false;
 
-    return shouldExit ?? false;
+    if (shouldExit) {
+      Navigator.of(context).pop(true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+    // Get the locale for localization
+    return PopScope<bool>(
+      // Allow pop events to be intercepted
+      canPop: false,
+        onPopInvokedWithResult: (ctxt, result) async {
+          await _handlePopInvokedWithResult(context);
+        },
       child: _buildHomeBody(context),
     );
   }
