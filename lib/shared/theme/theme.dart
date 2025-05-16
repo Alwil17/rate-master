@@ -76,7 +76,14 @@ final darkTheme = ThemeData(
   primaryColor: AppColors.accent,
   hintColor: AppColors.secondaryAccent,
   fontFamily: 'Roboto',
-  cardColor: const Color(0xFF212330),
+  cardTheme: const CardTheme(
+    color: Color(0xFF212330),
+    elevation: 1,
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    ),
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(color: AppColors.primaryText, fontSize: 32, fontWeight: FontWeight.bold),
     titleLarge:   TextStyle(color: AppColors.primaryText, fontSize: 20),

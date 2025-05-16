@@ -17,16 +17,10 @@ class ItemCardVertical extends StatelessWidget {
       child: SizedBox(
         width: 150,
         child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 1,
-          clipBehavior: Clip.antiAlias,
-          // pour que l'image soit rognée aux coins
-          color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image ou placeholder
+              // Image or placeholder
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: _buildImage(),
