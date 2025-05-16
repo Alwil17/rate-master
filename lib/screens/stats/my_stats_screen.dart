@@ -38,7 +38,10 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(locale.summary, style: Theme.of(context).textTheme.titleLarge,),
+              const SizedBox(height: 10),
               Consumer2<AuthProvider, RatingProvider>(
                 builder: (ctx, auth, ratings, _) {
                   // Stats
@@ -61,34 +64,20 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
                   );
                 },
               ),
-
+              const SizedBox(height: 20),
               // 1. Distribution
-              Text("Distribution des notes"),
-
+              Text(locale.perRating),
+              const SizedBox(height: 10),
               RatingHistogram(
                   ratings: Provider.of<RatingProvider>(context).userReviews),
 
               const SizedBox(height: 20),
-              // 2. Répartition catégories
-              Text("Avis par catégorie"),
+              // 2. By categories
+              Text(locale.perCategory),
+              const SizedBox(height: 10),
               CategoryPieChart(
                   reviews: Provider.of<RatingProvider>(context).userReviews,
                   items: Provider.of<ItemProvider>(context).items),
-
-              const SizedBox(height: 20),
-              // 3. Évolution
-              Text("Avis par mois"),
-              /*ReviewsLineChart(data: stats.overTime),
-
-          const SizedBox(height: 20),
-          // 4. Avis récents
-          SectionHeader(title: "Avis récents", onViewAll: () => ...),
-          RecentReviewsList(reviews: stats.recentReviews),
-
-          const SizedBox(height: 20),
-          // 5. Top 3
-          SectionHeader(title: "Top 3 de mes coups de cœur"),
-          TopRatedItemsCarousel(items: stats.topItems),*/
             ],
           ),
         ),
