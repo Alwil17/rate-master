@@ -21,17 +21,18 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<AppStateProvider>();
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-          title: Text(locale.settings),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
-                color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+        title: Text(locale.settings),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: ListView(
@@ -44,7 +45,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSettingTile(
               context.read<AuthProvider>().user?.name ?? 'Utilisateur',
               context.read<AuthProvider>().user?.email ?? '',
-              PhosphorIconsDuotone.user, () => context.pushNamed(APP_PAGES.profile.toName),
+              PhosphorIconsDuotone.user,
+              () => context.pushNamed(APP_PAGES.profile.toName),
             )
           ]),
 
@@ -58,8 +60,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SwitchListTile(
               secondary: const PhosphorIcon(PhosphorIconsRegular.circleHalf),
               title: Text(locale.darkMode),
-              value: Theme.of(context).brightness == Brightness.dark,
-              onChanged: (value) {},
+              value: appState.isDarkMode,
+              onChanged: (value) {
+                // Toggle theme
+                appState.isDarkMode = value;
+              },
             ),
             _buildSettingTile(
               locale.language,
@@ -76,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingTileContainer([
             _buildSettingTile(
               locale.appVersion,
-              context.read<AppStateProvider>().appVersion,
+              appState.appVersion,
               PhosphorIconsRegular.info,
               null,
             ),
