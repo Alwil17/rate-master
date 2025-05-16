@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/models/rating.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 class RatingHistogram extends StatelessWidget {
   final List<Rating> ratings;
@@ -39,7 +41,10 @@ class RatingHistogram extends StatelessWidget {
                 getTitlesWidget: (value, meta) {
                   final index = value.toInt();
                   if (index >= 0 && index < 5) {
-                    return Text('${index + 1}★');
+                    return Row(mainAxisSize: MainAxisSize.min, children: [
+                      Text('${index + 1}'),
+                      PhosphorIcon(PhosphorIconsDuotone.star, size: 12, color: AppColors.accent,)
+                    ]);
                   }
                   return const SizedBox.shrink();
                 },
