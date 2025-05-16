@@ -45,7 +45,7 @@ PreferredSizeWidget homeAppBar(
         ),
         icon: PhosphorIcon(PhosphorIconsRegular.bellSimpleRinging,
             color: Colors.white),
-        onPressed: () {},
+        onPressed: () => context.pushNamed(APP_PAGES.notifications.toName),
       ),
     ],
   );
