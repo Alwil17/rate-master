@@ -24,10 +24,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(locale.settings),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        centerTitle: true,
+          title: Text(locale.settings),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+                color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
       ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: ListView(
