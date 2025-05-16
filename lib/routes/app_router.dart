@@ -6,6 +6,7 @@ import 'package:rate_master/screens/init/splash_screen.dart';
 import 'package:rate_master/screens/init/welcome_screen.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/items/item_detail_screen.dart';
+import 'package:rate_master/screens/notifications/notification_screen.dart';
 import 'package:rate_master/screens/profile/profile_screen.dart';
 import 'package:rate_master/screens/search/search_screen.dart';
 import 'package:rate_master/screens/settings/settings_screen.dart';
@@ -74,6 +75,11 @@ class AppRouter {
         path: APP_PAGES.settings.toPath,
         name: APP_PAGES.settings.toName,
         builder: (context, state) => SettingsScreen(),
+      ),
+      GoRoute(
+        path: APP_PAGES.notifications.toPath,
+        name: APP_PAGES.notifications.toName,
+        builder: (context, state) => NotificationScreen(),
       ),
     ],
     debugLogDiagnostics: true,
