@@ -19,7 +19,7 @@ class CategoryChip extends StatelessWidget {
         label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontSize: 10,
-          color: Theme.of(context).brightness == Brightness.dark ? Colors.black45 : Colors.white,
+          color: Colors.black45,
         ),
       ),
     );

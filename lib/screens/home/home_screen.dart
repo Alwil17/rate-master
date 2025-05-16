@@ -36,10 +36,39 @@ class _HomeScreenState extends State<HomeScreen> {
     itemProvider = Provider.of<ItemProvider>(context, listen: false);
   }
 
+  Future<bool> _onWillPop(BuildContext context) async {
+    final locale = AppLocalizations.of(context)!;
+    final shouldExit = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(locale.exitApp),
+        content: Text(locale.exitConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(locale.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(locale.exit),
+          ),
+        ],
+      ),
+    );
+
+    return shouldExit ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final locale = AppLocalizations.of(context)!;
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: _buildHomeBody(context),
+    );
+  }
 
+  Widget _buildHomeBody(BuildContext context){
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       key: _scaffoldKey,
       appBar: homeAppBar(context, null),
