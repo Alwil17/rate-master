@@ -13,7 +13,7 @@ class MyActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Nombre d'onglets
+      length: 2, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.myActivity),
