@@ -26,16 +26,6 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Mes avis"),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
-              color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8),
