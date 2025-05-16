@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 class LanguageSelectionDialog extends StatefulWidget {
   final String defaultLocale;
@@ -53,43 +54,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
           const SizedBox(height: 16),
 
           // Apply Button
-          Center(
-              child: SizedBox(
-            height: 40,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff79a5b4),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                  ),
-                  icon: Icon(Icons.close, color: Color(0xff056380)),
-                  label: Text(
-                    AppLocalizations.of(context)!.cancel,
-                    style:
-                        const TextStyle(fontSize: 18, color: Color(0xff056380)),
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () => Navigator.pop(context, selecttedlanguage),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffd9e8ee),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                  ),
-                  icon: Icon(Icons.save, color: Color(0xff056380)),
-                  label: Text(
-                    AppLocalizations.of(context)!.end,
-                    style:
-                        const TextStyle(fontSize: 18, color: Color(0xff056380)),
-                  ),
-                )
-              ],
-            ),
-          )),
+          _buildCancelAndEndButtons(),
         ],
       ),
     );
@@ -114,5 +79,36 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
               .titleLarge!
               .copyWith(fontWeight: FontWeight.bold, fontSize: 22)),
     ]));
+  }
+
+  Widget _buildCancelAndEndButtons() {
+    final locale = AppLocalizations.of(context)!;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        /// Edit button
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(AppLocalizations.of(context)!.cancel),
+        ),
+
+        const SizedBox(width: 12),
+
+        /// End button
+        ElevatedButton.icon(
+          icon: const PhosphorIcon(PhosphorIconsRegular.floppyDisk, color: Colors.white),
+          label: Text(locale.end,
+              style: const TextStyle(color: Colors.white)),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.accent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          onPressed: () => Navigator.pop(context, selecttedlanguage),
+        ),
+      ],
+    );
   }
 }
