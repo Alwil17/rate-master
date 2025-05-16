@@ -15,13 +15,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final user = authProvider.user;
-
 
     return Scaffold(
       appBar: AppBar(
@@ -56,14 +54,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               secondary: const PhosphorIcon(PhosphorIconsRegular.circleHalf),
               title: Text(locale.darkMode),
               value: Theme.of(context).brightness == Brightness.dark,
-              onChanged: (value) {
-
-              },
+              onChanged: (value) {},
             ),
             _buildSettingTile(
               locale.language,
               null,
-              PhosphorIconsRegular.globe, () => _showLanguageDialog(context),
+              PhosphorIconsRegular.globe,
+              () => _showLanguageDialog(context),
             ),
           ]),
           const SizedBox(height: 24),
@@ -117,9 +114,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: PhosphorIcon(icon),
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle) : null,
-      trailing: onTap != null
-          ? PhosphorIcon(PhosphorIconsRegular.caretRight)
-          : null,
+      trailing:
+          onTap != null ? PhosphorIcon(PhosphorIconsRegular.caretRight) : null,
     );
   }
 
@@ -140,8 +136,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (result != null) {
       print(result);
-
     }
   }
-
 }
