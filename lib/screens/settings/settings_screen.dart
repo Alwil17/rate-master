@@ -27,10 +27,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: Text(locale.settings),
         centerTitle: true,
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
-              color: Colors.black),
+          icon: PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Theme.of(context).iconTheme.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -105,8 +104,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSettingTileContainer(List<Widget> childs) {
     return Card(
-      color: Colors.white,
-      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(color: AppColors.accent, width: 0.5),
