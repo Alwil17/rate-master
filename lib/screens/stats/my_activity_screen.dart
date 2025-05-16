@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
 
@@ -17,6 +18,11 @@ class MyActivityScreen extends StatelessWidget {
           title: const Text('Mon activité'),
           centerTitle: true,
           backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+                color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           bottom: const TabBar(
             labelColor: Colors.black,
             indicatorColor: Colors.blue,
