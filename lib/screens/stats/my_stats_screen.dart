@@ -22,70 +22,68 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                locale.summary,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 10),
-              Consumer2<AuthProvider, RatingProvider>(
-                builder: (ctx, auth, ratings, _) {
-                  // Stats
-                  final totalReviews = ratings.userReviews.length;
-                  final reviewsWithComments = ratings.userReviews
-                      .where((r) => r.comment!.trim().isNotEmpty)
-                      .toList();
-                  final commentCount = reviewsWithComments.length;
-                  final avgRating = ratings.userReviews.isNotEmpty
-                      ? ratings.userReviews
-                              .map((r) => r.value)
-                              .reduce((a, b) => a + b) /
-                          ratings.userReviews.length
-                      : 0.0;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              locale.summary,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 10),
+            Consumer2<AuthProvider, RatingProvider>(
+              builder: (ctx, auth, ratings, _) {
+                // Stats
+                final totalReviews = ratings.userReviews.length;
+                final reviewsWithComments = ratings.userReviews
+                    .where((r) => r.comment!.trim().isNotEmpty)
+                    .toList();
+                final commentCount = reviewsWithComments.length;
+                final avgRating = ratings.userReviews.isNotEmpty
+                    ? ratings.userReviews
+                    .map((r) => r.value)
+                    .reduce((a, b) => a + b) /
+                    ratings.userReviews.length
+                    : 0.0;
 
-                  return _buildChartWrapper(
-                      StatsSummary(
-                        reviewsCount: totalReviews,
-                        averageRating: avgRating,
-                        commentsCount: commentCount,
-                      ),
-                      Colors.white);
-                },
-              ),
-              const SizedBox(height: 20),
-              // 1. Distribution
-              Text(
-                locale.perRating,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 10),
-              _buildChartWrapper(
-                RatingHistogram(
-                    ratings: Provider.of<RatingProvider>(context).userReviews),
-                Colors.white,
-              ),
+                return _buildChartWrapper(
+                    StatsSummary(
+                      reviewsCount: totalReviews,
+                      averageRating: avgRating,
+                      commentsCount: commentCount,
+                    ),
+                    Colors.white);
+              },
+            ),
+            const SizedBox(height: 20),
+            // 1. Distribution
+            Text(
+              locale.perRating,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 10),
+            _buildChartWrapper(
+              RatingHistogram(
+                  ratings: Provider.of<RatingProvider>(context).userReviews),
+              Colors.white,
+            ),
 
-              const SizedBox(height: 20),
-              // 2. By categories
-              Text(
-                locale.perCategory,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 10),
-              _buildChartWrapper(
-                CategoryPieChart(
-                    reviews: Provider.of<RatingProvider>(context).userReviews,
-                    items: Provider.of<ItemProvider>(context).items),
-                Colors.white,
-              ),
-            ],
-          ),
+            const SizedBox(height: 20),
+            // 2. By categories
+            Text(
+              locale.perCategory,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 10),
+            _buildChartWrapper(
+              CategoryPieChart(
+                  reviews: Provider.of<RatingProvider>(context).userReviews,
+                  items: Provider.of<ItemProvider>(context).items),
+              Colors.white,
+            ),
+          ],
         ),
       ),
     );
