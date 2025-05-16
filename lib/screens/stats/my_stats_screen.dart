@@ -40,7 +40,10 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(locale.summary, style: Theme.of(context).textTheme.titleLarge,),
+              Text(
+                locale.summary,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 10),
               Consumer2<AuthProvider, RatingProvider>(
                 builder: (ctx, auth, ratings, _) {
@@ -57,30 +60,55 @@ class _MyStatsScreenState extends State<MyStatsScreen> {
                           ratings.userReviews.length
                       : 0.0;
 
-                  return StatsSummary(
-                    reviewsCount: totalReviews,
-                    averageRating: avgRating,
-                    commentsCount: commentCount,
-                  );
+                  return _buildChartWrapper(
+                      StatsSummary(
+                        reviewsCount: totalReviews,
+                        averageRating: avgRating,
+                        commentsCount: commentCount,
+                      ),
+                      Colors.white);
                 },
               ),
               const SizedBox(height: 20),
               // 1. Distribution
-              Text(locale.perRating),
+              Text(
+                locale.perRating,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 10),
-              RatingHistogram(
-                  ratings: Provider.of<RatingProvider>(context).userReviews),
+              _buildChartWrapper(
+                RatingHistogram(
+                    ratings: Provider.of<RatingProvider>(context).userReviews),
+                Colors.white,
+              ),
 
               const SizedBox(height: 20),
               // 2. By categories
-              Text(locale.perCategory),
+              Text(
+                locale.perCategory,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 10),
-              CategoryPieChart(
-                  reviews: Provider.of<RatingProvider>(context).userReviews,
-                  items: Provider.of<ItemProvider>(context).items),
+              _buildChartWrapper(
+                CategoryPieChart(
+                    reviews: Provider.of<RatingProvider>(context).userReviews,
+                    items: Provider.of<ItemProvider>(context).items),
+                Colors.white,
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildChartWrapper(Widget child, Color color) {
+    return Card(
+      elevation: 1,
+      color: color,
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: child,
       ),
     );
   }
