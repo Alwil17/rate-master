@@ -25,48 +25,46 @@ class _MyReviewsScreenState extends State<MyReviewsScreen> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        child: Consumer2<RatingProvider, ItemProvider>(
-          builder: (context, ratingProvider, itemProvider, _) {
-            if (ratingProvider.isLoadingReviews) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (ratingProvider.error != null) {
-              // Error message
-              return Center(
-                  child: Text(ratingProvider.error!,
-                      style: const TextStyle(color: Colors.red)));
-            }
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      child: Consumer2<RatingProvider, ItemProvider>(
+        builder: (context, ratingProvider, itemProvider, _) {
+          if (ratingProvider.isLoadingReviews) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (ratingProvider.error != null) {
+            // Error message
+            return Center(
+                child: Text(ratingProvider.error!,
+                    style: const TextStyle(color: Colors.red)));
+          }
 
-            if (ratingProvider.userReviews.isEmpty ||
-                itemProvider.items.isEmpty) {
-              // No item found
-              return Center(
-                child: Text(locale.noItemFound),
-              );
-            }
-
-            final validRatings = ratingProvider.userReviews
-                .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
-                .toList();
-
-            // Affiche la liste horizontale
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (_, __) => const SizedBox(height: 5),
-              itemCount: validRatings.length,
-              itemBuilder: (context, index) {
-                final rating = validRatings[index];
-                final item =
-                    itemProvider.items.firstWhere((i) => i.id == rating.itemId);
-                return _buildReviewTile(rating, item, ratingProvider);
-              },
+          if (ratingProvider.userReviews.isEmpty ||
+              itemProvider.items.isEmpty) {
+            // No item found
+            return Center(
+              child: Text(locale.noItemFound),
             );
-          },
-        ),
+          }
+
+          final validRatings = ratingProvider.userReviews
+              .where((r) => itemProvider.items.any((i) => i.id == r.itemId))
+              .toList();
+
+          // Affiche la liste horizontale
+          return ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (_, __) => const SizedBox(height: 5),
+            itemCount: validRatings.length,
+            itemBuilder: (context, index) {
+              final rating = validRatings[index];
+              final item =
+              itemProvider.items.firstWhere((i) => i.id == rating.itemId);
+              return _buildReviewTile(rating, item, ratingProvider);
+            },
+          );
+        },
       ),
     );
   }
