@@ -82,5 +82,6 @@
   "myReviews": "Mes avis",
   "summary": "Résumé",
   "perCategory": "Par catégorie",
-  "perRating": "Par note"
+  "perRating": "Par note",
+  "myStats": "Mes statistiques"
 }

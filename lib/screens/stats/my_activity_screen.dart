@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'my_reviews_screen.dart';
 import 'my_stats_screen.dart';
@@ -23,12 +24,12 @@ class MyActivityScreen extends StatelessWidget {
                 color: Colors.black),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
             labelColor: Colors.black,
             indicatorColor: Colors.blue,
             tabs: [
-              Tab(text: 'Mes avis'),
-              Tab(text: 'Mes stats'),
+              Tab(text: AppLocalizations.of(context)!.myReviews),
+              Tab(text: AppLocalizations.of(context)!.myStats),
             ],
           ),
         ),
