@@ -1,5 +1,5 @@
 abstract class ApiRoutes {
-  static const String baseUrl = "http://192.168.93.144:8000";
+  static const String baseUrl = "https://rating-api-fvz9.onrender.com";
   static const String baseApi = baseUrl;
   static const String login = "$baseApi/login";
   static const String forgetPassword = "$baseApi/forgetpassword";
