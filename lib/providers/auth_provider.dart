@@ -154,6 +154,31 @@ class AuthProvider with ChangeNotifier {
     _setString(_kUser, userJson);
     _setString(_kToken, value.token!);
   }
+
+  Future<void> deleteAccount() async {
+    try {
+      // Envoie une requête DELETE à l'API pour supprimer le compte
+      final response = await http.delete(
+        Uri.parse(ApiRoutes.deleteAccount), // Assurez-vous que cette route est définie dans `ApiRoutes`
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        // Suppression réussie, nettoie les données locales
+        await logout();
+      } else {
+        // Gère les erreurs de l'API
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Erreur lors de la suppression du compte.');
+      }
+    } catch (e) {
+      // Gère les erreurs réseau ou autres
+      throw Exception('Impossible de supprimer le compte : $e');
+    }
+  }
 }
 
 const String _kToken = 'auth_token';
