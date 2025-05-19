@@ -66,7 +66,7 @@ class _ShareAppDialogState extends State<ShareAppDialog> {
           ),
           const SizedBox(height: 10),
           Text(
-            AppLocalizations.of(context)!.share,
+            AppLocalizations.of(context)!.shareApp,
             style: TextStyle(fontSize: 18, fontFamily: 'OpenSans'),
           ),
           const SizedBox(height: 20),
@@ -93,16 +93,9 @@ class _ShareAppDialogState extends State<ShareAppDialog> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () async {
-                    final shareResult = await SharePlus.instance.share(
-                      ShareParams(
-                        text:
-                            "${AppLocalizations.of(context)!.shareMessage} : https://play.google.com/store/apps/details?id=com.grey.rate_master",
-                      ),
+                    SharePlus.instance.share(
+                        ShareParams(text: "${AppLocalizations.of(context)!.shareMessage} : https://play.google.com/store/apps/details?id=com.grey.rate_master")
                     );
-                    if (shareResult.status == ShareResultStatus.success) {
-                      // Handle success
-                      print("succeed");
-                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.accent,
