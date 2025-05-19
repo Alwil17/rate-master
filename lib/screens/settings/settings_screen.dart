@@ -9,6 +9,7 @@ import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,6 +19,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  Future<void> _launchUrl(String urlToOpen) async {
+    final Uri url = Uri.parse(urlToOpen);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppStateProvider>();
@@ -87,7 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               locale.privacyPolicy,
               null,
               PhosphorIconsRegular.shieldWarning,
-              null,
+                  () => _launchUrl('https://alwil17.github.io/rate-master/privacy-policy.html'),
             ),
             _buildSettingTile(
               locale.contactSupport,
