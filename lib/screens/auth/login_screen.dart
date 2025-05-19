@@ -43,25 +43,25 @@ class _LoginScreenState extends State<LoginScreen> {
       final String password = _passwordController.text.trim();
 
       if (user.isEmpty || password.isEmpty) {
-        Utils.showError(context, 'Veuillez remplir tous les champs.');
+        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
         return;
       }
 
-      await EasyLoading.show(status: "loading...");
+      await EasyLoading.show(status: AppLocalizations.of(context)!.loading);
 
       final response = await auth.login(user, password);
 
       await EasyLoading.dismiss();
 
       if (response is bool && response == true) {
-        await EasyLoading.showSuccess("Connexion réussie");
+        await EasyLoading.showSuccess(AppLocalizations.of(context)!.loginSuccess);
         // return back to login
         context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
         Utils.showError(context,errorMessages.join("\n"));
       } else {
-        Utils.showError(context,'Une erreur inconnue est survenue.');
+        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
       }
       await EasyLoading.dismiss();
     }
@@ -82,17 +82,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: MediaQuery.of(context).size.width, height: 434),
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            left: 15,
-            child: SizedBox(
-              child: IconButton(
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(8),
+                    elevation: 1,
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
-                  icon: PhosphorIcon(
-                      PhosphorIconsRegular.arrowLeft,
-                    size: 30,
-                    color: Colors.black,
-                  )),
+                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,),
+                ),
+              ),
             ),
           ),
           Center(
@@ -125,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: EdgeInsets.all(20),
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(

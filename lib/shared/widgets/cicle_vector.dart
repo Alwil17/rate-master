@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 class CircleVector extends CustomPainter {
   @override
@@ -6,11 +7,9 @@ class CircleVector extends CustomPainter {
     Paint paint = Paint();
     Path path = Path();
 
-
     // Path number 1
 
-
-    paint.color = Color(0xffFFE5FD);
+    paint.color = AppColors.vectorsBackground;
     path = Path();
     path.lineTo(size.width, size.height / 2);
     path.cubicTo(size.width, size.height * 0.78, size.width * 0.78, size.height, size.width / 2, size.height);

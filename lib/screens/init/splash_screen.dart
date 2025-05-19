@@ -10,6 +10,7 @@ import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../generated/assets.dart';
 
@@ -74,10 +75,9 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     } catch (e) {
-      debugPrint("Erreur au lancement de l'app : $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Une erreur est survenue au lancement.'),
+          content: Text(AppLocalizations.of(context)!.errorLoadingApp),
         ));
         setState(() => _isLoading = false);
       }
@@ -88,7 +88,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Stack(
           fit: StackFit.expand,

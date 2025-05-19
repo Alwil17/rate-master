@@ -5,7 +5,7 @@ import 'package:rate_master/routes/routes.dart';
 class Constants {
   Constants._();
 
-  static const String appName = "RateMaster";
+  static const String appName = "Rate Master";
 
   static List<NavItem> navItems = [
     NavItem(name: APP_PAGES.home.toName, icon: PhosphorIconsDuotone.house, label: 'Home'),

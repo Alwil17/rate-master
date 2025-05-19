@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 class TopVector extends CustomPainter {
   @override
@@ -10,7 +11,7 @@ class TopVector extends CustomPainter {
     // Path number 1
 
 
-    paint.color = Color(0xffFFE5FD);
+    paint.color = AppColors.vectorsBackground;
     path = Path();
     path.lineTo(size.width, 0);
     path.cubicTo(size.width, 0, size.width, size.height, size.width, size.height);

@@ -9,6 +9,7 @@ abstract class Routes {
   static const String search = "/search";
   static const String stats = "/stats";
   static const String settings = "/settings";
+  static const String notifications = "/notifications";
 }
 
 enum APP_PAGES {
@@ -22,6 +23,7 @@ enum APP_PAGES {
   search,
   stats,
   settings,
+  notifications,
 }
 
 extension AppPageExtension on APP_PAGES {
@@ -47,6 +49,8 @@ extension AppPageExtension on APP_PAGES {
         return Routes.stats;
       case APP_PAGES.settings:
         return Routes.settings;
+      case APP_PAGES.notifications:
+        return Routes.notifications;
     }
   }
 

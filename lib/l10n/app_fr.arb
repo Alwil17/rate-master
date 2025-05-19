@@ -5,7 +5,7 @@
     "placeholders": {
       "appName": {
         "type": "String",
-        "example": "RateMaster"
+        "example": "Rate Master"
       }
     }
   },
@@ -117,5 +117,16 @@
         "type": "String"
       }
     }
-  }
+  },
+  "exitApp": "Quitter l'application",
+  "exitConfirmation": "Êtes-vous sûr de vouloir quitter l'application ?",
+  "notifications": "Notifications",
+  "noNotifications": "Aucune notification pour le moment.",
+  "fillAllFields": "Veuillez remplir tous les champs.",
+  "unknownError": "Une erreur inconnue est survenue.",
+  "error": "Erreur",
+  "registerSuccess": "Inscription réussie",
+  "loginSuccess": "Connexion réussie",
+  "loading": "Chargement...",
+  "errorLoadingApp": "Erreur lors du chargement de l'application"
 }

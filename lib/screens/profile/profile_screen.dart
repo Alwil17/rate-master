@@ -206,7 +206,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  /// Placeholder gris avec icône film
   Widget _buildPlaceholder() {
     return Image.asset(
       'assets/images/avatar.png',
