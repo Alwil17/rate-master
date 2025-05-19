@@ -155,7 +155,7 @@ class AuthProvider with ChangeNotifier {
     _setString(_kToken, value.token!);
   }
 
-  Future<void> deleteAccount() async {
+  Future<dynamic> deleteAccount() async {
     try {
       // Envoie une requête DELETE à l'API pour supprimer le compte
       final response = await http.delete(
@@ -169,14 +169,18 @@ class AuthProvider with ChangeNotifier {
       if (response.statusCode == 200 || response.statusCode == 204) {
         // Suppression réussie, nettoie les données locales
         await logout();
+        return true;
       } else {
         // Gère les erreurs de l'API
-        final error = jsonDecode(response.body);
-        throw Exception(error['message'] ?? 'Erreur lors de la suppression du compte.');
+       return jsonDecode(response.body);
       }
     } catch (e) {
       // Gère les erreurs réseau ou autres
-      throw Exception('Impossible de supprimer le compte : $e');
+      return {
+        'detail': [
+          {'msg': 'Impossible de supprimer le compte : $e'}
+        ]
+      };
     }
   }
 }
