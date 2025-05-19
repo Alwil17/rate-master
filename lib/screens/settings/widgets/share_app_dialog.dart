@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/shared/constants/constants.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -61,7 +62,7 @@ class _ShareAppDialogState extends State<ShareAppDialog> {
                 fontSize: 24,
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
-                color: Color(0xff056380)),
+                color: AppColors.accent),
           ),
           const SizedBox(height: 10),
           Text(
@@ -77,15 +78,17 @@ class _ShareAppDialogState extends State<ShareAppDialog> {
                 ElevatedButton.icon(
                   onPressed: () => Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff79a5b4),
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.circular(15),
+                        side: BorderSide(
+                            color: Colors.grey, width: 1)),
                   ),
-                  icon: Icon(Icons.close, color: Color(0xff056380)),
+                  icon: Icon(Icons.close),
                   label: Text(
                     AppLocalizations.of(context)!.cancel,
                     style:
-                        const TextStyle(fontSize: 18, color: Color(0xff056380)),
+                        const TextStyle(fontSize: 18),
                   ),
                 ),
                 ElevatedButton.icon(
@@ -102,15 +105,15 @@ class _ShareAppDialogState extends State<ShareAppDialog> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffd9e8ee),
+                    backgroundColor: AppColors.accent,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                   ),
-                  icon: Icon(Icons.share, color: Color(0xff056380)),
+                  icon: Icon(Icons.share, color: Colors.white),
                   label: Text(
                     AppLocalizations.of(context)!.share,
                     style:
-                        const TextStyle(fontSize: 18, color: Color(0xff056380)),
+                        const TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ],
