@@ -6,6 +6,7 @@ import 'package:rate_master/providers/app_state_provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/screens/settings/widgets/delete_account_tile.dart';
 import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
@@ -57,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             )
           ]),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           // Apparence
           Text(locale.appearance,
@@ -80,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               () => _showLanguageDialog(context),
             ),
           ]),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           // À propos
           Text(locale.about, style: Theme.of(context).textTheme.titleLarge),
@@ -105,6 +106,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               null,
             ),
           ]),
+          const SizedBox(height: 20),
+          // Other options
+          Text(locale.otherOptions, style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 8),
+          DeleteAccountTile(),
         ],
       ),
     );
