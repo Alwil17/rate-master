@@ -90,7 +90,7 @@ final darkTheme = ThemeData(
   hintColor: AppColors.secondaryAccent,
   fontFamily: 'Roboto',
   cardTheme: const CardTheme(
-    color: const Color(0xFF212330),
+    color: Color(0xFF212330),
     elevation: 1,
     clipBehavior: Clip.antiAlias,
     shape: RoundedRectangleBorder(
