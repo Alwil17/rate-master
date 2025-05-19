@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/shared/api/api_helper.dart';
+import 'package:rate_master/shared/widgets/utils.dart';
 
 class DeleteAccountTile extends StatelessWidget {
   const DeleteAccountTile({super.key});
@@ -24,12 +29,22 @@ class DeleteAccountTile extends StatelessWidget {
     ) ?? false;
 
     if (shouldDelete) {
+      await EasyLoading.show(status: locale.loading);
       // Call the delete account API or perform the deletion logic here
-      await Provider.of<AuthProvider>(context).deleteAccount();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(locale.deleteAccountSuccess)),
-      );
-      // Navigate to the login screen or perform any other action
+      final response =  await Provider.of<AuthProvider>(context, listen: false).deleteAccount();
+
+      if (response is bool && response == true) {
+        await EasyLoading.showSuccess(AppLocalizations.of(context)!.deleteAccountSuccess);
+        // return back to login
+        context.goNamed(APP_PAGES.splash.toName);
+      } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
+        final errorMessages = ApiHelper.parseApiErrors(response['detail']);
+        Utils.showError(context,errorMessages.join("\n"));
+      } else {
+        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
+      }
+
+      await EasyLoading.dismiss();
     }
   }
 
