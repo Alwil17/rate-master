@@ -131,5 +131,6 @@
   "loginSuccess": "Login successful!",
   "loading": "Loading...",
   "errorLoadingApp": "Error when loading the application",
-  "otherOptions": "Other options"
+  "otherOptions": "Other options",
+  "deleteAccount": "Delete my account"
 }

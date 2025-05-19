@@ -129,5 +129,6 @@
   "loginSuccess": "Connexion réussie",
   "loading": "Chargement...",
   "errorLoadingApp": "Erreur lors du chargement de l'application",
-  "otherOptions": "Autres options"
+  "otherOptions": "Autres options",
+  "deleteAccount": "Supprimer mon compte"
 }
