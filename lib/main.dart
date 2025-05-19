@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
     return Consumer<AppStateProvider>(
         builder: (context, appStateProvider, child) {
       return MaterialApp.router(
-        title: 'RateMaster',
+        title: 'Rate Master',
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: appStateProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
