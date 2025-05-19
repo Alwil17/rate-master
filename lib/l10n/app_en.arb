@@ -136,5 +136,7 @@
   "deleteAccountConfirmation": "Are you sure you want to delete your account?",
   "permanentDelete": "Permanent deletion",
   "deleteAccountMessage": "This action is irreversible. All your data will be permanently deleted.",
-  "deleteAccountSuccess": "Your account has been successfully deleted."
+  "deleteAccountSuccess": "Your account has been successfully deleted.",
+  "shareApp": "Share the application with your loved ones",
+  "shareMessage": "Discover Rate Master, your app for rating and sharing experiences! Download it here",
 }
