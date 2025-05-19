@@ -130,5 +130,13 @@
   "registerSuccess": "Registration successful!",
   "loginSuccess": "Login successful!",
   "loading": "Loading...",
-  "errorLoadingApp": "Error when loading the application"
+  "errorLoadingApp": "Error when loading the application",
+  "otherOptions": "Other options",
+  "deleteAccount": "Delete my account",
+  "deleteAccountConfirmation": "Are you sure you want to delete your account?",
+  "permanentDelete": "Permanent deletion",
+  "deleteAccountMessage": "This action is irreversible. All your data will be permanently deleted.",
+  "deleteAccountSuccess": "Your account has been successfully deleted.",
+  "shareApp": "Share the application with your loved ones",
+  "shareMessage": "Discover Rate Master, your app for rating and sharing experiences! Download it here"
 }

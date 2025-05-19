@@ -49,6 +49,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   Future<void> _refreshItemDatas() async {
+    await _itemProvider.fetchItems();
     await _itemProvider.fetchRecommandations(_authProvider.user!.id);
     await  _ratingProvider.fetchMyReviews(_authProvider.user!.id);
   }
@@ -188,6 +189,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 onSuccess: () => _ratingProvider.fetchMyReviews(_authProvider.user!.id),
               );
 
+              fetchItemDatas();
               await _refreshItemDatas();
             },
           ),

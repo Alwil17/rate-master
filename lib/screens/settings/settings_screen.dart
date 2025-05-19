@@ -6,9 +6,11 @@ import 'package:rate_master/providers/app_state_provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/screens/settings/widgets/delete_account_tile.dart';
 import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,6 +20,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  Future<void> _launchUrl(String urlToOpen) async {
+    final Uri url = Uri.parse(urlToOpen);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppStateProvider>();
@@ -48,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             )
           ]),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           // Apparence
           Text(locale.appearance,
@@ -71,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               () => _showLanguageDialog(context),
             ),
           ]),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           // À propos
           Text(locale.about, style: Theme.of(context).textTheme.titleLarge),
@@ -87,7 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               locale.privacyPolicy,
               null,
               PhosphorIconsRegular.shieldWarning,
-              null,
+                  () => _launchUrl('https://alwil17.github.io/rate-master/privacy-policy.html'),
             ),
             _buildSettingTile(
               locale.contactSupport,
@@ -96,6 +106,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               null,
             ),
           ]),
+          const SizedBox(height: 20),
+          // Other options
+          Text(locale.otherOptions, style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 8),
+          DeleteAccountTile(),
         ],
       ),
     );

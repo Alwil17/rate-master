@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/profile/widgets/profile_option_card.dart';
+import 'package:rate_master/screens/settings/widgets/share_app_dialog.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
 import 'widgets/profile_vector.dart';
@@ -166,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: locale.share,
                             subtitle: locale.share,
                             icon: PhosphorIconsFill.shareNetwork,
-                            onTap: () {}),
+                            onTap: () => _showShareDialog(context)),
                         ProfileOptionCard(
                             title: locale.close,
                             subtitle: locale.close,
@@ -202,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         shape: StadiumBorder(),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       ),
-      onPressed: (){},
+      onPressed: null,
     );
   }
 
@@ -212,6 +213,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: 120,
       height: 120,
       fit: BoxFit.cover,
+    );
+  }
+
+  Future<void> _showShareDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return ShareAppDialog();
+      },
     );
   }
 
