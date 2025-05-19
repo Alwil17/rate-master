@@ -130,5 +130,9 @@
   "loading": "Chargement...",
   "errorLoadingApp": "Erreur lors du chargement de l'application",
   "otherOptions": "Autres options",
-  "deleteAccount": "Supprimer mon compte"
+  "deleteAccount": "Supprimer mon compte",
+  "deleteAccountConfirmation": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+  "permanentDelete": "Suppression permanente",
+  "deleteAccountMessage": "Cette action supprimera définitivement votre compte et toutes vos données. \nÊtes-vous sûr de vouloir continuer ?",
+  "deleteAccountSuccess": "Votre compte a été supprimé avec succès."
 }
