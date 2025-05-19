@@ -128,5 +128,6 @@
   "registerSuccess": "Inscription réussie",
   "loginSuccess": "Connexion réussie",
   "loading": "Chargement...",
-  "errorLoadingApp": "Erreur lors du chargement de l'application"
+  "errorLoadingApp": "Erreur lors du chargement de l'application",
+  "otherOptions": "Autres options"
 }

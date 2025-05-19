@@ -130,5 +130,6 @@
   "registerSuccess": "Registration successful!",
   "loginSuccess": "Login successful!",
   "loading": "Loading...",
-  "errorLoadingApp": "Error when loading the application"
+  "errorLoadingApp": "Error when loading the application",
+  "otherOptions": "Other options"
 }
