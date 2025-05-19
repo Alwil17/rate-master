@@ -18,7 +18,7 @@ class DeleteAccountTile extends StatelessWidget {
         content: Text(locale.deleteAccountConfirmation),
         actions: [
           TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(locale.cancel)),
-          TextButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(locale.exit)),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(locale.delete)),
         ],
       ),
     ) ?? false;
@@ -44,9 +44,9 @@ class DeleteAccountTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        leading: PhosphorIcon(PhosphorIconsRegular.trash),
-        title: Text(AppLocalizations.of(context)!.deleteAccount),
-        subtitle: Text(AppLocalizations.of(context)!.permanentDelete),
+        leading: PhosphorIcon(PhosphorIconsRegular.trash, color: Colors.red,),
+        title: Text(AppLocalizations.of(context)!.deleteAccount, style: TextStyle(color: Colors.red)),
+        subtitle: Text(AppLocalizations.of(context)!.permanentDelete, style: TextStyle(color: Colors.red)),
         onTap: () => deleteAccount(context),
       ),
     );
