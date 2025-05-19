@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: null,
                       child: Text(
                         AppLocalizations.of(context)!.forgotPassword,
                         style: TextStyle(color: Colors.blue, fontSize: 14),
