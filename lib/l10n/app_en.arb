@@ -5,7 +5,7 @@
     "placeholders": {
       "appName": {
         "type": "String",
-        "example": "RateMaster"
+        "example": "Rate Master"
       }
     }
   },
@@ -123,5 +123,12 @@
   "exitApp": "Exit the application",
   "exitConfirmation": "Are you sure you want to exit the application?",
   "notifications": "Notifications",
-  "noNotifications": "No notifications for now."
+  "noNotifications": "No notifications for now.",
+  "fillAllFields": "Please fill in all fields.",
+  "unknownError": "An unknown error occurred.",
+  "error": "Error",
+  "registerSuccess": "Registration successful!",
+  "loginSuccess": "Login successful!",
+  "loading": "Loading...",
+  "errorLoadingApp": "Error when loading the application"
 }

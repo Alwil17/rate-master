@@ -44,10 +44,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final String password = _passwordController.text.trim();
 
       if (email.isEmpty || password.isEmpty || fullname.isEmpty) {
-        _showError('Veuillez remplir tous les champs.');
+        _showError(AppLocalizations.of(context)!.fillAllFields);
         return;
       }
-      await EasyLoading.show(status: "loading...");
+      await EasyLoading.show(status: AppLocalizations.of(context)!.loading);
 
       // Créer le corps de la requête
       final Map<String, String> body = {
@@ -61,14 +61,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await EasyLoading.dismiss();
 
       if (response is bool && response == true) {
-        await EasyLoading.showSuccess("Inscription réussie.");
+        await EasyLoading.showSuccess(AppLocalizations.of(context)!.registerSuccess);
         // return back to login
         context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
         _showError(errorMessages.join("\n"));
       } else {
-        _showError('Une erreur inconnue est survenue.');
+        _showError(AppLocalizations.of(context)!.error);
       }
       await EasyLoading.dismiss();
     }

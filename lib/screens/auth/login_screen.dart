@@ -43,25 +43,25 @@ class _LoginScreenState extends State<LoginScreen> {
       final String password = _passwordController.text.trim();
 
       if (user.isEmpty || password.isEmpty) {
-        Utils.showError(context, 'Veuillez remplir tous les champs.');
+        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
         return;
       }
 
-      await EasyLoading.show(status: "loading...");
+      await EasyLoading.show(status: AppLocalizations.of(context)!.loading);
 
       final response = await auth.login(user, password);
 
       await EasyLoading.dismiss();
 
       if (response is bool && response == true) {
-        await EasyLoading.showSuccess("Connexion réussie");
+        await EasyLoading.showSuccess(AppLocalizations.of(context)!.loginSuccess);
         // return back to login
         context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
         Utils.showError(context,errorMessages.join("\n"));
       } else {
-        Utils.showError(context,'Une erreur inconnue est survenue.');
+        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
       }
       await EasyLoading.dismiss();
     }
