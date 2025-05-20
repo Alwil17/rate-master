@@ -139,22 +139,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-
-  Future<void> logout() async {
-    _token = null;
-    _user = null;
-    await prefs.remove(_kToken);
-    await prefs.remove(_kUser);
-    notifyListeners();
-  }
-
-  // Setters with SharedPreferences updates
-  set user(User? value) {
-    String userJson = jsonEncode(value!.toJson());
-    _setString(_kUser, userJson);
-    _setString(_kToken, value.token!);
-  }
-
   Future<dynamic> deleteAccount() async {
     try {
       // Envoie une requête DELETE à l'API pour supprimer le compte
@@ -172,7 +156,7 @@ class AuthProvider with ChangeNotifier {
         return true;
       } else {
         // Gère les erreurs de l'API
-       return jsonDecode(response.body);
+        return jsonDecode(response.body);
       }
     } catch (e) {
       // Gère les erreurs réseau ou autres
@@ -182,6 +166,48 @@ class AuthProvider with ChangeNotifier {
         ]
       };
     }
+  }
+
+  Future<void> logout() async {
+    _token = null;
+    _user = null;
+    await prefs.remove(_kToken);
+    await prefs.remove(_kUser);
+    notifyListeners();
+  }
+
+  Future<dynamic> updateUser(Map<String, String> updatedData) async {
+    try {
+      final response = await http.put(
+        Uri.parse(ApiRoutes.updateUser), // Assurez-vous que cette route est définie dans `ApiRoutes`
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(updatedData),
+      );
+
+      if (response.statusCode == 200) {
+        final updatedUser = User.fromJson(jsonDecode(response.body));
+        await _saveToPrefs(_token!, updatedUser); // Met à jour localement
+        return true;
+      } else {
+        return jsonDecode(response.body); // Retourne les erreurs éventuelles
+      }
+    } catch (e) {
+      return {
+        'detail': [
+          {'msg': 'Erreur réseau ou serveur.'}
+        ]
+      };
+    }
+  }
+
+  // Setters with SharedPreferences updates
+  set user(User? value) {
+    String userJson = jsonEncode(value!.toJson());
+    _setString(_kUser, userJson);
+    _setString(_kToken, value.token!);
   }
 }
 

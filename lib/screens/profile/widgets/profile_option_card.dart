@@ -35,6 +35,7 @@ class ProfileOptionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Titre et sous-titre
             Expanded(child: Column(
