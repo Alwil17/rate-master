@@ -162,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: locale.learnMore,
                             subtitle: locale.about,
                             icon: PhosphorIconsFill.info,
-                            onTap: () {}),
+                            onTap: () => context.goNamed(APP_PAGES.about.toName)),
                         ProfileOptionCard(
                             title: locale.share,
                             subtitle: locale.share,
