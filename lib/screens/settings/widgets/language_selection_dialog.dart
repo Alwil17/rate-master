@@ -51,7 +51,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
                 });
               },
             );
-          }).toList(),
+          }),
           const SizedBox(height: 16),
 
           // Apply Button

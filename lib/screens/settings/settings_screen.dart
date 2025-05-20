@@ -10,23 +10,9 @@ import 'package:rate_master/screens/settings/widgets/delete_account_tile.dart';
 import 'package:rate_master/screens/settings/widgets/language_selection_dialog.dart';
 import 'package:rate_master/shared/constants/constants.dart';
 import 'package:rate_master/shared/widgets/expanding_bottom_nav.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-
-  Future<void> _launchUrl(String urlToOpen) async {
-    final Uri url = Uri.parse(urlToOpen);
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Compte
           Text(locale.account, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
-          _buildSettingTileContainer([
+          _buildSettingTileContainer(context, [
             _buildSettingTile(
               context.read<AuthProvider>().user?.name ?? 'Utilisateur',
               context.read<AuthProvider>().user?.email ?? '',
@@ -64,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Text(locale.appearance,
               style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
-          _buildSettingTileContainer([
+          _buildSettingTileContainer(context, [
             SwitchListTile(
               secondary: const PhosphorIcon(PhosphorIconsRegular.circleHalf),
               title: Text(locale.darkMode),
@@ -86,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // À propos
           Text(locale.about, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
-          _buildSettingTileContainer([
+          _buildSettingTileContainer(context,[
             _buildSettingTile(
               locale.appVersion,
               appState.appVersion,
@@ -94,10 +80,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               null,
             ),
             _buildSettingTile(
-              locale.privacyPolicy,
+              locale.learnMore,
               null,
-              PhosphorIconsRegular.shieldWarning,
-                  () => _launchUrl('https://alwil17.github.io/rate-master/privacy-policy.html'),
+              PhosphorIconsRegular.info,
+                  () => context.pushNamed(APP_PAGES.about.toName),
             ),
             _buildSettingTile(
               locale.contactSupport,
@@ -116,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSettingTileContainer(List<Widget> childs) {
+  Widget _buildSettingTileContainer(BuildContext context,List<Widget> childs) {
     return Card(
       shape: Theme.of(context).cardTheme.shape,
       child: Column(
