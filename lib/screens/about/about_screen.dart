@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -13,20 +15,30 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('À propos')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Theme.of(context).iconTheme.color),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(locale.about)
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: ListView(
           children: [
-            const Text(
-              '🎯 À propos de RateMaster',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              "🎯 ${locale.aboutApp}",
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold
+              ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'RateMaster est une application qui vous permet de noter et commenter vos expériences avec des produits, des lieux ou des services.',
-              style: TextStyle(fontSize: 16),
+            Text(
+            locale.appDescription,
+              style: Theme.of(context).textTheme.bodyMedium
             ),
             const SizedBox(height: 24),
             const Text(
@@ -52,17 +64,20 @@ class AboutScreen extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('• Politique de confidentialité'),
-              onTap: () => _openUrl('https://alwil17.github.io/rate-master/privacy-policy.html'),
+              onTap: () => _openUrl(
+                  'https://alwil17.github.io/rate-master/privacy-policy.html'),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('• Conditions générales d’utilisation'),
-              onTap: () => _openUrl('https://alwil17.github.io/rate-master/terms.html'),
+              onTap: () =>
+                  _openUrl('https://alwil17.github.io/rate-master/terms.html'),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('• Suppression de compte'),
-              onTap: () => _openUrl('https://alwil17.github.io/rate-master/child-protection.html'),
+              onTap: () => _openUrl(
+                  'https://alwil17.github.io/rate-master/child-protection.html'),
             ),
           ],
         ),
