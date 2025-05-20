@@ -11,7 +11,7 @@ class BulletItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           PhosphorIcon(PhosphorIconsFill.circle, size: 6, color: Theme.of(context).iconTheme.color),
           const SizedBox(width: 8),
