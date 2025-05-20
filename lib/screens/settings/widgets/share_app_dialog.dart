@@ -8,9 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ShareAppDialog extends StatefulWidget {
   static const double _padding = 20;
 
-  const ShareAppDialog({
-    Key? key,
-  }) : super(key: key);
+  const ShareAppDialog({super.key});
 
   @override
   State<ShareAppDialog> createState() => _ShareAppDialogState();
