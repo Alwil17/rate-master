@@ -85,12 +85,12 @@ class SettingsScreen extends StatelessWidget {
               PhosphorIconsRegular.info,
                   () => context.pushNamed(APP_PAGES.about.toName),
             ),
-            _buildSettingTile(
+            /*_buildSettingTile(
               locale.contactSupport,
               null,
               PhosphorIconsRegular.headset,
               null,
-            ),
+            ),*/
           ]),
           const SizedBox(height: 20),
           // Other options
