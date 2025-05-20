@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,24 +22,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialiser les contrôleurs avec des données existantes
-    _nameController.text = "Nom actuel";
-    _emailController.text = "email@example.com";
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    // init controllers with existing datas
+    _nameController.text = authProvider.user?.name ?? '';
+    _emailController.text = authProvider.user?.email ?? '';
   }
 
-  void _saveProfile() {
+  void _saveProfile() async {
     if (_formKey.currentState!.validate()) {
-      // Logique pour sauvegarder les modifications
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.profileUpdated)),
-      );
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final result = await authProvider.updateUser({
+        'name': _nameController.text,
+        'email': _emailController.text,
+        if (_passwordController.text.isNotEmpty) 'password': _passwordController.text,
+      });
+
+      if (result == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.profileUpdated)),
+        );
+        Navigator.of(context).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result['detail'][0]['msg'])),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.editMyProfile)),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: PhosphorIcon(PhosphorIconsRegular.arrowLeft,
+              color: Theme.of(context).iconTheme.color),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(locale.editMyProfile),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -50,14 +76,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               buildTextField(
                 context,
-                hintText: AppLocalizations.of(context)!.enterName,
+                hintText: locale.enterName,
                 controller: _nameController,
                 keyboardType: TextInputType.name,
                 inputAction: TextInputAction.next,
               ),
               // Champ Email
               Text(
-                AppLocalizations.of(context)!.yourEmail,
+                locale.yourEmail,
                 style: const TextStyle(color: Colors.black54, fontSize: 16),
               ),
               buildTextField(
@@ -69,7 +95,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               // Champ Mot de passe
               Text(
-                AppLocalizations.of(context)!.password,
+                locale.password,
                 style: const TextStyle(color: Colors.black54, fontSize: 16),
               ),
               Padding(
@@ -105,7 +131,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     shape: const StadiumBorder(),
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.saveChanges,
+                    locale.saveChanges,
                     style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
