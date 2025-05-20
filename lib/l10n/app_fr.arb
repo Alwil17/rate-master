@@ -139,5 +139,12 @@
   "shareMessage": "Découvrez Rate Master, votre application pour noter et partager vos expériences ! Téléchargez-la ici",
   "aboutApp": "À propos de Rate Master",
   "appDescription": "Rate Master est une application qui vous permet de noter et de partager vos expériences sur des produits, lieux et services avec d'autres utilisateurs. \nNous croyons que chaque avis compte et peut aider les autres à faire des choix éclairés. \nRejoignez notre communauté et commencez à partager vos expériences dès aujourd'hui !",
-  "functionalities": "Fonctionnalités principales"
+  "functionalities": "Fonctionnalités principales",
+  "addReviewFrom1To5": "Ajouter un note de 1 à 5 étoiles",
+  "viewStats": "Voir les statistiques de vos notes",
+  "editPreferences": "Modifier vos préférences",
+  "datasPrivateAndSecure": "Vos données sont privées et stockées de manière sécurisée. \nNous ne partageons pas vos informations personnelles avec des tiers.",
+  "termsAndConditions": "Conditions générales d'utilisation",
+  "accountDeletion": "Suppression de compte",
+  "childProtection": "Protection des enfants"
 }

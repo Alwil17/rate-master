@@ -141,5 +141,12 @@
   "shareMessage": "Discover Rate Master, your app for rating and sharing experiences! Download it here",
   "aboutApp": "About Rate Master",
   "appDescription": "Rate Master is an application that allows you to rate and share your experiences with others. Whether it's a restaurant, a movie, or any other experience, Rate Master helps you express your opinion and discover what others think.",
-  "functionalities": "Main functionalities"
+  "functionalities": "Main functionalities",
+  "addReviewFrom1To5": "Add a review from 1 to 5 stars",
+  "viewStats": "View the statistics of your ratings",
+  "editPreferences": "Edit your preferences",
+  "datasPrivateAndSecure": "Your data is private and secure with us. We do not share your information with third parties.",
+  "termsAndConditions": "Terms and Conditions",
+  "accountDeletion": "Account Deletion",
+  "childProtection": "Child Protection"
 }
