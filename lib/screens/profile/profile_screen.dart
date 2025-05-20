@@ -155,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 10,
-                      childAspectRatio: 2.1,
+                      childAspectRatio: 1.6,
                       // Ajust cards height to fit the screen
                       children: [
                         ProfileOptionCard(
