@@ -146,5 +146,7 @@
   "datasPrivateAndSecure": "Vos données sont privées et stockées de manière sécurisée. \nNous ne partageons pas vos informations personnelles avec des tiers.",
   "termsAndConditions": "Conditions générales d'utilisation",
   "accountDeletion": "Suppression de compte",
-  "childProtection": "Protection des enfants"
+  "childProtection": "Protection des enfants",
+  "profileUpdated": "Votre profil a été mis à jour avec succès.",
+  "saveChanges": "Enregistrer les modifications"
 }
