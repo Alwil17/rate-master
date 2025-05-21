@@ -16,6 +16,7 @@ import 'package:rate_master/shared/widgets/text_field_builder.dart';
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Widgets
 import 'widgets/auth_back_button.dart';
 import 'widgets/auth_header_image.dart';
 import 'widgets/auth_call_to_action.dart';
