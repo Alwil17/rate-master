@@ -1,5 +1,6 @@
 // shared/widgets/primary_button.dart
 import 'package:flutter/material.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 
 /// A primary button that handles loading state and disabled state.
 ///
@@ -37,8 +38,8 @@ class PrimaryButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: const StadiumBorder(),
-          // Uses the app's accent color by default
+          backgroundColor: AppColors.accent,
+          shape: const StadiumBorder()
         ),
         child: isLoading
             ? const SizedBox(
