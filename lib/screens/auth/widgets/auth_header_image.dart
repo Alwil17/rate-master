@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rate_master/generated/assets.dart';
 
+/// A widget that displays an image at the top of the authentication screen.
+///
+/// Example:
+/// ```dart
+/// AuthHeaderImage(),
+/// ```
 class AuthHeaderImage extends StatelessWidget {
+  /// Creates an [AuthHeaderImage] widget.
   const AuthHeaderImage({super.key});
 
   @override
