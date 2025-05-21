@@ -10,6 +10,7 @@ Widget buildTextField(BuildContext context, {
   String? Function(String?)? validator,
   InputDecoration? decoration,
   bool obscureText = false,
+  Function(String)? onSubmitted,
 }) {
   return Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 16),
@@ -20,6 +21,7 @@ Widget buildTextField(BuildContext context, {
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      onFieldSubmitted: onSubmitted,
       decoration: decoration ?? InputDecoration(
         prefixIcon: (icon != null) ? Icon(icon): null,
         hintText: hintText,
