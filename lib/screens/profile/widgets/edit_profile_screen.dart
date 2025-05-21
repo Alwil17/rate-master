@@ -18,11 +18,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+  late AuthProvider authProvider;
 
   @override
   void initState() {
     super.initState();
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    authProvider = context.read<AuthProvider>();
     // init controllers with existing datas
     _nameController.text = authProvider.user?.name ?? '';
     _emailController.text = authProvider.user?.email ?? '';
@@ -44,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         Navigator.of(context).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result['detail'][0]['msg'])),
+          SnackBar(content: Text(authProvider.error ?? "")),
         );
       }
     }

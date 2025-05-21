@@ -148,5 +148,17 @@
   "accountDeletion": "Suppression de compte",
   "childProtection": "Protection des enfants",
   "profileUpdated": "Votre profil a été mis à jour avec succès.",
-  "saveChanges": "Enregistrer les modifications"
+  "saveChanges": "Enregistrer les modifications",
+  "emailHint": "test@exemple.com",
+  "enterEmail": "Entrez votre adresse e-mail",
+  "invalidEmail": "Adresse e-mail invalide",
+  "enterPassword": "Entrez votre mot de passe",
+  "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+  "goBack": "Retour",
+  "passwordHint": "********",
+  "showPassword": "Afficher le mot de passe",
+  "hidePassword": "Masquer le mot de passe",
+  "underConstruction": "Cette section est en cours de construction",
+  "loginFailed": "Échec de la connexion",
+  "registerFailed": "Échec de l'inscription"
 }
