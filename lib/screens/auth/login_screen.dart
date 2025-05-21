@@ -7,11 +7,12 @@ import 'package:provider/provider.dart';
 
 // Internal packages
 import 'package:rate_master/providers/auth_provider.dart';
+import 'package:rate_master/screens/auth/widgets/auth_form_card.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
-import 'package:rate_master/shared/widgets/text_field_builder.dart';
+import 'package:rate_master/shared/widgets/reusable_text_field.dart';
 
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -53,7 +54,13 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text.trim();
     final success = await context.read<AuthProvider>().login(email, password);
 
-    if (success) context.goNamed(APP_PAGES.splash.toName);
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.loginFailed)),
+      );
+    }else {
+      context.goNamed(APP_PAGES.splash.toName);
+    }
   }
 
   @override
@@ -88,84 +95,77 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginForm(BuildContext context) {
     return Form(
         key: _formKey,
-        child: Center(
-          child: Card(
-            margin: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.05),
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: AuthFormCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  AppLocalizations.of(context)!.logIn,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blueColor,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Champ Email/Téléphone
+              Text(
+                AppLocalizations.of(context)!.yourEmail,
+                style: const TextStyle(color: Colors.black54, fontSize: 16),
+              ),
+              _buildEmailField(),
+              // Champ Mot de passe
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context)!.logIn,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blueColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // Champ Email/Téléphone
                   Text(
-                    AppLocalizations.of(context)!.yourEmail,
-                    style: const TextStyle(color: Colors.black54, fontSize: 16),
+                    AppLocalizations.of(context)!.password,
+                    style: const TextStyle(
+                        color: Colors.black54, fontSize: 16),
                   ),
-                  _buildEmailField(),
-                  // Champ Mot de passe
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.password,
-                        style: const TextStyle(
-                            color: Colors.black54, fontSize: 16),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            context.pushNamed(APP_PAGES.forgotPassword.toName),
-                        child: Text(
-                          AppLocalizations.of(context)!.forgotPassword,
-                          style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blueColor),
-                        ),
-                      )
-                    ],
-                  ),
-
-                  _buildPasswordField(),
-                  if (auth.error != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(auth.error!,
-                          style: TextStyle(color: Colors.red)),
+                  TextButton(
+                    onPressed: () =>
+                        context.pushNamed(APP_PAGES.forgotPassword.toName),
+                    child: Text(
+                      AppLocalizations.of(context)!.forgotPassword,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blueColor),
                     ),
-                  // Bouton de Connexion
-                  PrimaryButton(
-                    label: AppLocalizations.of(context)!.loginNow,
-                    isLoading: auth.isLoading, // from your AuthProvider
-                    onPressed: auth.isLoading ? null : _login,
-                  ),
-                  SizedBox(height: 10),
-                  // Lien "S'inscrire maintenant"
-                  AuthCallToAction(
-                    label: AppLocalizations.of(context)!.noAccount,
-                    actionText: AppLocalizations.of(context)!.registerNow,
-                    onPressed: () => context.pushNamed(APP_PAGES.register.toName),
-                  ),
+                  )
                 ],
               ),
-            ),
+
+              _buildPasswordField(),
+              if (auth.error != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(auth.error!,
+                      style: TextStyle(color: Colors.red)),
+                ),
+              // Bouton de Connexion
+              PrimaryButton(
+                label: AppLocalizations.of(context)!.loginNow,
+                isLoading: auth.isLoading, // from your AuthProvider
+                onPressed: auth.isLoading ? null : _login,
+              ),
+              SizedBox(height: 10),
+              // Lien "S'inscrire maintenant"
+              AuthCallToAction(
+                label: AppLocalizations.of(context)!.noAccount,
+                actionText: AppLocalizations.of(context)!.registerNow,
+                onPressed: () => context.pushNamed(APP_PAGES.register.toName),
+              ),
+            ],
           ),
         ));
   }
 
   Widget _buildEmailField(){
-    return buildTextField(context,
+    return ReusableTextField(
         hintText: AppLocalizations.of(context)!.emailHint,
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
@@ -181,8 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildPasswordField(){
-    return buildTextField(
-      context,
+    return ReusableTextField(
       hintText: AppLocalizations.of(context)!.passwordHint,
       controller: _passwordController,
       keyboardType: TextInputType.visiblePassword,
@@ -195,6 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },
       decoration: InputDecoration(
+        hintText: AppLocalizations.of(context)!.passwordHint,
         suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible
@@ -208,24 +208,6 @@ class _LoginScreenState extends State<LoginScreen> {
               : AppLocalizations.of(context)!.showPassword,
         ),
       ),
-    );
-  }
-
-  Widget _buildSignUpOption() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(AppLocalizations.of(context)!.noAccount),
-        TextButton(
-          onPressed: () {
-            context.pushNamed(APP_PAGES.register.toName);
-          },
-          child: Text(
-            AppLocalizations.of(context)!.registerNow,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blueColor),
-          ),
-        ),
-      ],
     );
   }
 }
