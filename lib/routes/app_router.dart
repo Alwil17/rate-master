@@ -44,6 +44,8 @@ class AppRouter {
             path: APP_PAGES.forgotPassword.toPath,
             name: APP_PAGES.forgotPassword.toName,
             builder: (context, state) => ForgotPasswordScreen(),
+          )
+        ]
       ),
       GoRoute(
         path: APP_PAGES.register.toPath,
