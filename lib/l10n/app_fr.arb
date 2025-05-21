@@ -159,5 +159,6 @@
   "showPassword": "Afficher le mot de passe",
   "hidePassword": "Masquer le mot de passe",
   "underConstruction": "Cette section est en cours de construction",
-  "loginFailed": "Échec de la connexion"
+  "loginFailed": "Échec de la connexion",
+  "registerFailed": "Échec de l'inscription"
 }

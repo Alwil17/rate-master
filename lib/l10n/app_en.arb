@@ -161,5 +161,6 @@
   "showPassword": "Show password",
   "hidePassword": "Hide password",
   "underConstruction": "This section is under construction",
-  "loginFailed": "Login failed"
+  "loginFailed": "Login failed",
+  "registerFailed": "Registration failed"
 }

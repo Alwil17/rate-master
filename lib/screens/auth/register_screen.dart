@@ -10,9 +10,14 @@ import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
+import 'package:rate_master/shared/widgets/reusable_text_field.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'widgets/auth_back_button.dart';
+import 'widgets/auth_form_card.dart';
+import 'widgets/auth_header_image.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -41,6 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _passwordController.clear();
     _passwordController.dispose();
     super.dispose();
   }
@@ -56,14 +62,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'password': _passwordController.text.trim(),
     };
 
-    final success = await auth.register(body);
 
-    if (success) context.goNamed(APP_PAGES.splash.toName);
+    final success = await context.read<AuthProvider>().register(body);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.registerFailed)),
+      );
+    }else {
+      context.goNamed(APP_PAGES.splash.toName);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
+    auth = context.watch<AuthProvider>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Stack(
@@ -77,30 +90,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: MediaQuery.of(context).size.width, height: 434),
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(8),
-                    elevation: 1,
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: PhosphorIcon(
-                    PhosphorIconsRegular.caretLeft,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          AuthBackButton(),
           Center(
             child: SingleChildScrollView(
               child: Column(
-                children: [_buildHeaderImage(), _buildRegisterForm(context)],
+                children: [AuthHeaderImage(), _buildRegisterForm(context)],
               ),
             ),
           )
@@ -108,118 +102,119 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-
-  Widget _buildHeaderImage() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: Image.asset(
-        Assets.imagesShootingStar, // Votre image du médecin ici
-        height: 100, // Vous pouvez ajuster la hauteur
-      ),
-    );
-  }
-
+  // Widget to build the registration form
   Widget _buildRegisterForm(BuildContext context) {
     return Form(
         key: _formKey,
-        child: Center(
-          child: Card(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context)!.registering,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                      ),
-                    ),
+        child: AuthFormCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  AppLocalizations.of(context)!.registering,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // fullname field
-                  Text(
-                    AppLocalizations.of(context)!.fullname,
-                    style: const TextStyle(color: Colors.black54, fontSize: 16),
-                  ),
-                  buildTextField(
-                    context,
-                    hintText: AppLocalizations.of(context)!.enterName,
-                    controller: _nameController,
-                    keyboardType: TextInputType.name,
-                    inputAction: TextInputAction.next,
-                  ),
-                  // email field
-                  Text(
-                    AppLocalizations.of(context)!.yourEmail,
-                    style: const TextStyle(color: Colors.black54, fontSize: 16),
-                  ),
-                  buildTextField(
-                      context,
-                      hintText: AppLocalizations.of(context)!.emailHint,
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      inputAction: TextInputAction.next,
-                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                      validator: (v) {
-                        if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
-                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                        if (!emailRegex.hasMatch(v)) return AppLocalizations.of(context)!.invalidEmail;
-                        return null;
-                      }
-                  ),
-                  // password field
-                  Text(
-                    AppLocalizations.of(context)!.password,
-                    style: const TextStyle(color: Colors.black54, fontSize: 16),
-                  ),
-
-                  buildTextField(
-                    context,
-                    hintText: AppLocalizations.of(context)!.passwordHint,
-                    controller: _passwordController,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: !_isPasswordVisible,
-                    inputAction: TextInputAction.done,
-                    onSubmitted: (_) => _register(),
-                    validator: (v) {
-                      if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
-                      if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                        ),
-                        onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
-                        tooltip: _isPasswordVisible
-                            ? AppLocalizations.of(context)!.hidePassword
-                            : AppLocalizations.of(context)!.showPassword,
-                      ),
-                    ),
-                  ),
-                  // Bouton de Connexion
-                  PrimaryButton(
-                    label: AppLocalizations.of(context)!.register,
-                    isLoading: auth.isLoading, // from your AuthProvider
-                    onPressed: auth.isLoading ? null : _register,
-                  ),
-                  SizedBox(height: 10),
-                  // Sign up now
-                  _buildSignInOption(),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(
+                height: 20,
+              ),
+              // fullname field
+              Text(
+                AppLocalizations.of(context)!.fullname,
+                style: const TextStyle(color: Colors.black54, fontSize: 16),
+              ),
+              _buildFullNameField(),
+              // email field
+              Text(
+                AppLocalizations.of(context)!.yourEmail,
+                style: const TextStyle(color: Colors.black54, fontSize: 16),
+              ),
+              _buildEmailField(),
+              // password field
+              Text(
+                AppLocalizations.of(context)!.password,
+                style: const TextStyle(color: Colors.black54, fontSize: 16),
+              ),
+
+              _buildPasswordField(),
+              // Bouton de Connexion
+              PrimaryButton(
+                label: AppLocalizations.of(context)!.register,
+                isLoading: auth.isLoading, // from your AuthProvider
+                onPressed: auth.isLoading ? null : _register,
+              ),
+              SizedBox(height: 10),
+              // Sign up now
+              _buildSignInOption(),
+            ],
           ),
         ));
+  }
+  // Widget to build the fullname field
+  Widget _buildFullNameField(){
+    return ReusableTextField(
+        hintText: AppLocalizations.of(context)!.fullname,
+        controller: _nameController,
+        keyboardType: TextInputType.name,
+        inputAction: TextInputAction.next,
+        onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+        validator: (v) {
+          if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterName;
+          return null;
+        }
+    );
+  }
+
+  // Widget to build the email field
+  Widget _buildEmailField(){
+    return ReusableTextField(
+        hintText: AppLocalizations.of(context)!.emailHint,
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
+        inputAction: TextInputAction.next,
+        onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+        validator: (v) {
+          if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
+          final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+          if (!emailRegex.hasMatch(v)) return AppLocalizations.of(context)!.invalidEmail;
+          return null;
+        }
+    );
+  }
+
+  // Widget to build the password field
+  Widget _buildPasswordField(){
+    return ReusableTextField(
+      hintText: AppLocalizations.of(context)!.passwordHint,
+      controller: _passwordController,
+      keyboardType: TextInputType.visiblePassword,
+      obscureText: !_isPasswordVisible,
+      inputAction: TextInputAction.done,
+      onSubmitted: (_) => _register(),
+      validator: (v) {
+        if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
+        if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
+        return null;
+      },
+      decoration: InputDecoration(
+        hintText: AppLocalizations.of(context)!.passwordHint,
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+          tooltip: _isPasswordVisible
+              ? AppLocalizations.of(context)!.hidePassword
+              : AppLocalizations.of(context)!.showPassword,
+        ),
+      ),
+    );
   }
 
   // Widget to show the option to sign in if the user already has an account
