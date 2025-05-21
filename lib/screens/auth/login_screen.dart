@@ -1,19 +1,22 @@
 // Flutter/Dart SDK
 import 'package:flutter/material.dart';
+
 // Third-party packages
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
+
 // Internal packages
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
+import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
+
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,14 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    auth = context.read<AuthProvider>();
-  }
-
-  @override
   void dispose() {
     _emailController.dispose();
+    _passwordController.clear();
     _passwordController.dispose();
     super.dispose();
   }
@@ -50,14 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-    final success = await auth.login(email, password);
+    final success = await context.read<AuthProvider>().login(email, password);
 
     if (success) context.goNamed(APP_PAGES.splash.toName);
   }
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
+    auth = context.watch<AuthProvider>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Stack(
@@ -82,9 +80,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8),
                     elevation: 1,
                   ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,
-                  semanticLabel: AppLocalizations.of(context)!.goBack,),
+                  onPressed: () => context.pop(),
+                  child: PhosphorIcon(
+                    PhosphorIconsRegular.caretLeft,
+                    color: Theme.of(context).iconTheme.color,
+                    semanticLabel: AppLocalizations.of(context)!.goBack,
+                  ),
                 ),
               ),
             ),
@@ -105,8 +106,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Image.asset(
-        Assets.imagesShootingStar, // Votre image du médecin ici
-        height: 120, // Vous pouvez ajuster la hauteur
+        Assets.imagesShootingStar,
+        height: 120,
+        fit: BoxFit.contain,
+        cacheWidth: 300,
       ),
     );
   }
@@ -116,105 +119,121 @@ class _LoginScreenState extends State<LoginScreen> {
         key: _formKey,
         child: Center(
           child: Card(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child:  Padding(padding: EdgeInsets.all(20), child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    AppLocalizations.of(context)!.logIn,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+            margin: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.05),
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      AppLocalizations.of(context)!.logIn,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.blueColor,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // Champ Email/Téléphone
-                Text(
-                  AppLocalizations.of(context)!.yourEmail,
-                  style: const TextStyle(color: Colors.black54, fontSize: 16),
-                ),
-                buildTextField(
-                    context,
-                    hintText: AppLocalizations.of(context)!.emailHint,
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    inputAction: TextInputAction.next,
-                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                    validator: (v) {
-                      if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
-                      final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                      if (!emailRegex.hasMatch(v)) return AppLocalizations.of(context)!.invalidEmail;
-                      return null;
-                    }
-                ),
-                // Champ Mot de passe
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.password,
-                      style:
-                      const TextStyle(color: Colors.black54, fontSize: 16),
-                    ),
-                    TextButton(
-                      onPressed: () => context.pushNamed(APP_PAGES.forgotPassword.toName),
-                      child: Text(
-                        AppLocalizations.of(context)!.forgotPassword,
-                        style: TextStyle(color: Colors.blue, fontSize: 14),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // Champ Email/Téléphone
+                  Text(
+                    AppLocalizations.of(context)!.yourEmail,
+                    style: const TextStyle(color: Colors.black54, fontSize: 16),
+                  ),
+                  _buildEmailField(),
+                  // Champ Mot de passe
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.password,
+                        style: const TextStyle(
+                            color: Colors.black54, fontSize: 16),
                       ),
-                    )
-                  ],
-                ),
+                      TextButton(
+                        onPressed: () =>
+                            context.pushNamed(APP_PAGES.forgotPassword.toName),
+                        child: Text(
+                          AppLocalizations.of(context)!.forgotPassword,
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blueColor),
+                        ),
+                      )
+                    ],
+                  ),
 
-                buildTextField(
-                  context,
-                  hintText: AppLocalizations.of(context)!.passwordHint,
-                  controller: _passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: !_isPasswordVisible,
-                  inputAction: TextInputAction.done,
-                  onSubmitted: (_) => _login(),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
-                    if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
-                      tooltip: _isPasswordVisible
-                          ? AppLocalizations.of(context)!.hidePassword
-                          : AppLocalizations.of(context)!.showPassword,
+                  _buildPasswordField(),
+                  if (auth.error != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(auth.error!,
+                          style: TextStyle(color: Colors.red)),
                     ),
+                  // Bouton de Connexion
+                  PrimaryButton(
+                    label: AppLocalizations.of(context)!.loginNow,
+                    isLoading: auth.isLoading, // from your AuthProvider
+                    onPressed: auth.isLoading ? null : _login,
                   ),
-                ),
-                if (auth.error != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(auth.error!, style: TextStyle(color: Colors.red)),
-                  ),
-                // Bouton de Connexion
-                PrimaryButton(
-                  label: AppLocalizations.of(context)!.loginNow,
-                  isLoading: auth.isLoading, // from your AuthProvider
-                  onPressed: auth.isLoading ? null : _login,
-                ),
-                SizedBox(height: 10),
-                // Lien "S'inscrire maintenant"
-                _buildSignUpOption(),
-              ],
-            ),) ,
+                  SizedBox(height: 10),
+                  // Lien "S'inscrire maintenant"
+                  _buildSignUpOption(),
+                ],
+              ),
+            ),
           ),
         ));
+  }
+
+  Widget _buildEmailField(){
+    return buildTextField(context,
+        hintText: AppLocalizations.of(context)!.emailHint,
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
+        inputAction: TextInputAction.next,
+        onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+        validator: (v) {
+          if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
+          final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+          if (!emailRegex.hasMatch(v)) return AppLocalizations.of(context)!.invalidEmail;
+
+          return null;
+        });
+  }
+
+  Widget _buildPasswordField(){
+    return buildTextField(
+      context,
+      hintText: AppLocalizations.of(context)!.passwordHint,
+      controller: _passwordController,
+      keyboardType: TextInputType.visiblePassword,
+      obscureText: !_isPasswordVisible,
+      inputAction: TextInputAction.done,
+      onSubmitted: (_) => _login(),
+      validator: (v) {
+        if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
+        if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
+        return null;
+      },
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isPasswordVisible
+                ? Icons.visibility
+                : Icons.visibility_off,
+          ),
+          onPressed: () => setState(
+                  () => _isPasswordVisible = !_isPasswordVisible),
+          tooltip: _isPasswordVisible
+              ? AppLocalizations.of(context)!.hidePassword
+              : AppLocalizations.of(context)!.showPassword,
+        ),
+      ),
+    );
   }
 
   Widget _buildSignUpOption() {
@@ -228,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           child: Text(
             AppLocalizations.of(context)!.registerNow,
-            style: TextStyle(color: Colors.blue, fontSize: 14),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blueColor),
           ),
         ),
       ],
