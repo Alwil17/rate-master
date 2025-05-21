@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 
 // Third-party packages
 import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
 // Internal packages
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
-import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
@@ -17,6 +15,10 @@ import 'package:rate_master/shared/widgets/text_field_builder.dart';
 
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'widgets/auth_back_button.dart';
+import 'widgets/auth_header_image.dart';
+import 'widgets/auth_call_to_action.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -69,47 +71,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: MediaQuery.of(context).size.width, height: 434),
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(8),
-                    elevation: 1,
-                  ),
-                  onPressed: () => context.pop(),
-                  child: PhosphorIcon(
-                    PhosphorIconsRegular.caretLeft,
-                    color: Theme.of(context).iconTheme.color,
-                    semanticLabel: AppLocalizations.of(context)!.goBack,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          AuthBackButton(),
           Center(
             child: SingleChildScrollView(
               child: Column(
-                children: [_buildHeaderImage(), _buildLoginForm(context)],
+                children: [AuthHeaderImage(), _buildLoginForm(context)],
               ),
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget _buildHeaderImage() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: Image.asset(
-        Assets.imagesShootingStar,
-        height: 120,
-        fit: BoxFit.contain,
-        cacheWidth: 300,
       ),
     );
   }
@@ -181,7 +151,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 10),
                   // Lien "S'inscrire maintenant"
-                  _buildSignUpOption(),
+                  AuthCallToAction(
+                    label: AppLocalizations.of(context)!.noAccount,
+                    actionText: AppLocalizations.of(context)!.registerNow,
+                    onPressed: () => context.pushNamed(APP_PAGES.register.toName),
+                  ),
                 ],
               ),
             ),
