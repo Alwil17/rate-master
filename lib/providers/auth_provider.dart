@@ -148,6 +148,28 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Verify the current token by making a request to the API.
+  Future<bool> verifyToken() async {
+    try {
+      final tokenResponse = await http.get(
+        Uri.parse(ApiRoutes.me),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      if (tokenResponse.statusCode == 200) {
+        // Si tu veux, tu peux mettre à jour l'utilisateur ici
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   /// Delete the current user's account and logout on success.
   Future<bool> deleteAccount() async {
     if (_token == null) return false;
