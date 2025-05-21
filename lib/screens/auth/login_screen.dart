@@ -9,10 +9,8 @@ import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
-import 'package:rate_master/shared/api/api_helper.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
-import 'package:rate_master/shared/widgets/utils.dart';
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -46,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-
   Future<void> _login() async {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
@@ -55,10 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text.trim();
     final success = await auth.login(email, password);
 
-    if (success) {
-      // return back to login
-      context.goNamed(APP_PAGES.splash.toName);
-    }
+    if (success) context.goNamed(APP_PAGES.splash.toName);
   }
 
   @override
