@@ -1,17 +1,21 @@
-
+// Flutter/Dart SDK
 import 'package:flutter/material.dart';
+// Third-party packages
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
+// Internal packages
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/api/api_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 import 'package:rate_master/shared/widgets/utils.dart';
+// Localizations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    auth = Provider.of<AuthProvider>(context, listen: false);
+    auth = context.read<AuthProvider>();
   }
 
   @override
@@ -70,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Stack(
@@ -157,6 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     inputAction: TextInputAction.next,
+                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     validator: (v) {
                       if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
                       final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
@@ -190,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     inputAction: TextInputAction.done,
                     obscureText: !_isPasswordVisible,
+                    onSubmitted: (_) => _login(),
                     validator: (v) {
                       if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
                       if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
@@ -206,6 +213,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             _isPasswordVisible = !_isPasswordVisible;
                           });
                         },
+                        tooltip: _isPasswordVisible
+                            ? AppLocalizations.of(context)!.hidePassword
+                            : AppLocalizations.of(context)!.showPassword,
                       ),
                     )
                 ),
