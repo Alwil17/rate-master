@@ -1,16 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_master/providers/auth_provider.dart';
-import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/api/api_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rate_master/shared/widgets/primary_button.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
 import 'package:rate_master/shared/widgets/utils.dart';
 
@@ -25,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   late AuthProvider auth;
-  bool _isLoading = false;
 
   // Controllers for text fields to keep the state
   final TextEditingController _emailController = TextEditingController();
@@ -44,43 +42,29 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _hideLoader() async {
-    await EasyLoading.dismiss();
-  }
-
   Future<void> _login() async {
     FocusScope.of(context).requestFocus(FocusNode());
     if (!_formKey.currentState!.validate()) return;
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-      final String user = _emailController.text.trim();
-      final String password = _passwordController.text.trim();
 
-      if (user.isEmpty || password.isEmpty) {
-        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
-        return;
-      }
+    // assume both fields are non-empty and valid
+    final String user = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
 
-      await EasyLoading.show(status: AppLocalizations.of(context)!.loading);
+    if (user.isEmpty || password.isEmpty) {
+      Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
+      return;
+    }
 
-      final response = await auth.login(user, password);
+    final response = await auth.login(user, password);
 
-      _hideLoader();
-
-      if (response is bool && response == true) {
-        await EasyLoading.showSuccess(AppLocalizations.of(context)!.loginSuccess);
-        setState(() => _isLoading = false);
-        // return back to login
-        context.goNamed(APP_PAGES.splash.toName);
-      } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
-        final errorMessages = ApiHelper.parseApiErrors(response['detail']);
-        Utils.showError(context,errorMessages.join("\n"));
-      } else {
-        Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
-      }
-      _hideLoader();
-
-      setState(() => _isLoading = false);
+    if (response is bool && response == true) {
+      // return back to login
+      context.goNamed(APP_PAGES.splash.toName);
+    } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
+      final errorMessages = ApiHelper.parseApiErrors(response['detail']);
+      Utils.showError(context,errorMessages.join("\n"));
+    } else {
+      Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
     }
   }
 
@@ -111,7 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     elevation: 1,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
-                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,),
+                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,
+                  semanticLabel: AppLocalizations.of(context)!.goBack,),
                 ),
               ),
             ),
@@ -168,10 +153,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 buildTextField(
                     context,
-                    hintText: 'test@example.com',
+                    hintText: AppLocalizations.of(context)!.emailHint,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    inputAction: TextInputAction.next
+                    inputAction: TextInputAction.next,
+                    validator: (v) {
+                      if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
+                      final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                      if (!emailRegex.hasMatch(v)) return AppLocalizations.of(context)!.invalidEmail;
+                      return null;
+                    }
                 ),
                 // Champ Mot de passe
                 Row(
@@ -192,9 +183,43 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
 
-                _buildPasswordField(showIcon: false),
+                buildTextField(
+                    context,
+                    hintText: AppLocalizations.of(context)!.passwordHint,
+                    controller: _passwordController,
+                    keyboardType: TextInputType.emailAddress,
+                    inputAction: TextInputAction.done,
+                    obscureText: !_isPasswordVisible,
+                    validator: (v) {
+                      if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
+                      if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.passwordHint,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    )
+                ),
+                if (auth.error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(auth.error!, style: TextStyle(color: Colors.red)),
+                  ),
                 // Bouton de Connexion
-                _buildLoginButton(),
+                PrimaryButton(
+                  label: AppLocalizations.of(context)!.loginNow,
+                  isLoading: auth.isLoading, // from your AuthProvider
+                  onPressed: auth.isLoading ? null : _login,
+                ),
                 SizedBox(height: 10),
                 // Lien "S'inscrire maintenant"
                 _buildSignUpOption(),
@@ -202,50 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),) ,
           ),
         ));
-  }
-
-  Widget _buildPasswordField({bool showIcon = true}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      child: TextFormField(
-        autofocus: true,
-        textInputAction: TextInputAction.done,
-        obscureText: !_isPasswordVisible,
-        controller: _passwordController,
-        decoration: InputDecoration(
-          prefixIcon: showIcon ? Icon(Icons.vpn_key) : null,
-          hintText: '********',
-          suffixIcon: IconButton(
-            icon: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            ),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoginButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _isLoading ? null : _login,
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          backgroundColor: AppColors.accent, // Couleur bouton
-          shape: StadiumBorder(),
-        ),
-        child: _isLoading
-            ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-            : Text(AppLocalizations.of(context)!.loginNow,
-            style: TextStyle(fontSize: 16, color: Colors.white)),
-      ),
-    );
   }
 
   Widget _buildSignUpOption() {
