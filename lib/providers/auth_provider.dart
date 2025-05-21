@@ -10,6 +10,7 @@ class AuthProvider with ChangeNotifier {
   String? _token;
   User?   _user;
   bool _isLoading = false;
+  String? _error;
 
   AuthProvider(this.prefs) {
     _loadFromPrefs();
@@ -19,6 +20,7 @@ class AuthProvider with ChangeNotifier {
   String? get token => _token;
   User? get user  => _user;
   bool get isLoading  => _isLoading;
+  String? get error => _error;
 
   Future<void> _loadFromPrefs() async {
     _token = prefs.getString(_kToken);
@@ -45,6 +47,7 @@ class AuthProvider with ChangeNotifier {
   Future<dynamic> login(String email, String password) async {
     try {
       _isLoading = true;
+      _error = null;
       notifyListeners();
 
       final tokenResponse = await http.post(
@@ -79,20 +82,24 @@ class AuthProvider with ChangeNotifier {
           // 3. Sauvegarde locale
           await _saveToPrefs(token, user);
           _isLoading = false;
+          _error = null;
           notifyListeners();
           return true;
         } else {
           _isLoading = false;
+          _error = jsonDecode(userResponse.body)['detail'][0]['msg'];
           notifyListeners();
-          return jsonDecode(userResponse.body);
+          return jsonDecode(userResponse.body)['detail'][0]['msg'];
         }
       } else {
         _isLoading = false;
+        _error = jsonDecode(tokenResponse.body);
         notifyListeners();
         return jsonDecode(tokenResponse.body);
       }
     } catch (e) {
       _isLoading = false;
+      _error = 'Erreur réseau ou serveur.';
       notifyListeners();
       return {
         'detail': [
