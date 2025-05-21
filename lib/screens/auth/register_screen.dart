@@ -1,16 +1,18 @@
+// Flutter/Dart SDK
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+// Third-party packages
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
+// Internal packages
 import 'package:rate_master/providers/auth_provider.dart';
-import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
 import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rate_master/shared/api/api_helper.dart';
+import 'package:rate_master/shared/widgets/primary_button.dart';
 import 'package:rate_master/shared/widgets/text_field_builder.dart';
+// Localizations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -32,70 +34,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-    auth = Provider.of<AuthProvider>(context, listen: false);
+    auth = context.read<AuthProvider>();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   Future<void> _register() async {
-    FocusScope.of(context).requestFocus(FocusNode());
-    if (_formKey.currentState!.validate()) {
-      final String fullname = _nameController.text.trim();
-      final String email = _emailController.text.trim();
-      final String password = _passwordController.text.trim();
+    FocusScope.of(context).unfocus();
+    if (!_formKey.currentState!.validate()) return;
 
-      if (email.isEmpty || password.isEmpty || fullname.isEmpty) {
-        _showError(AppLocalizations.of(context)!.fillAllFields);
-        return;
-      }
-      await EasyLoading.show(status: AppLocalizations.of(context)!.loading);
+    // Assume all fields are valid and non empty
+    final Map<String, String> body = {
+      'name': _nameController.text.trim(),
+      'email': _emailController.text.trim(),
+      'password': _passwordController.text.trim(),
+    };
 
-      // Créer le corps de la requête
-      final Map<String, String> body = {
-        'name': fullname,
-        'email': email,
-        'password': password,
-      };
+    final success = await auth.register(body);
 
-      final response = await auth.register(body);
-
-      await EasyLoading.dismiss();
-
-      if (response is bool && response == true) {
-        await EasyLoading.showSuccess(
-            AppLocalizations.of(context)!.registerSuccess);
-        // return back to login
-        context.goNamed(APP_PAGES.splash.toName);
-      } else if (response is Map<String, dynamic> &&
-          response.containsKey('detail')) {
-        final errorMessages = ApiHelper.parseApiErrors(response['detail']);
-        _showError(errorMessages.join("\n"));
-      } else {
-        _showError(AppLocalizations.of(context)!.error);
-      }
-      await EasyLoading.dismiss();
-    }
-  }
-
-  void _showError(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Erreur'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: Text('OK'),
-          )
-        ],
-      ),
-    );
+    if (success) context.goNamed(APP_PAGES.splash.toName);
   }
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -191,20 +161,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     AppLocalizations.of(context)!.yourEmail,
                     style: const TextStyle(color: Colors.black54, fontSize: 16),
                   ),
-                  buildTextField(context,
-                      hintText: 'Ex: test@example.com',
+                  buildTextField(
+                      context,
+                      hintText: AppLocalizations.of(context)!.emailHint,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      inputAction: TextInputAction.next),
+                      inputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterEmail;
+                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                        if (!emailRegex.hasMatch(v)) return AppLocalizations.of(context)!.invalidEmail;
+                        return null;
+                      }
+                  ),
                   // password field
                   Text(
                     AppLocalizations.of(context)!.password,
                     style: const TextStyle(color: Colors.black54, fontSize: 16),
                   ),
 
-                  _buildPasswordField(showIcon: false),
+                  buildTextField(
+                    context,
+                    hintText: AppLocalizations.of(context)!.passwordHint,
+                    controller: _passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: !_isPasswordVisible,
+                    inputAction: TextInputAction.done,
+                    onSubmitted: (_) => _register(),
+                    validator: (v) {
+                      if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
+                      if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+                        tooltip: _isPasswordVisible
+                            ? AppLocalizations.of(context)!.hidePassword
+                            : AppLocalizations.of(context)!.showPassword,
+                      ),
+                    ),
+                  ),
                   // Bouton de Connexion
-                  _buildRegisterButton(),
+                  PrimaryButton(
+                    label: AppLocalizations.of(context)!.register,
+                    isLoading: auth.isLoading, // from your AuthProvider
+                    onPressed: auth.isLoading ? null : _register,
+                  ),
                   SizedBox(height: 10),
                   // Sign up now
                   _buildSignInOption(),
@@ -215,50 +222,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ));
   }
 
-  Widget _buildPasswordField({bool showIcon = true}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      child: TextFormField(
-        autofocus: true,
-        textInputAction: TextInputAction.done,
-        obscureText: !_isPasswordVisible,
-        controller: _passwordController,
-        decoration: InputDecoration(
-          prefixIcon: showIcon ? Icon(Icons.vpn_key) : null,
-          hintText: '********',
-          suffixIcon: IconButton(
-            icon: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            ),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRegisterButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _register,
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          backgroundColor: AppColors.accent, // Couleur bouton
-          shape: StadiumBorder(),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.register,
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-      ),
-    );
-  }
-
+  // Widget to show the option to sign in if the user already has an account
   Widget _buildSignInOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
