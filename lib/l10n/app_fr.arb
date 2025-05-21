@@ -157,5 +157,6 @@
   "goBack": "Retour",
   "passwordHint": "********",
   "showPassword": "Afficher le mot de passe",
-  "hidePassword": "Masquer le mot de passe"
+  "hidePassword": "Masquer le mot de passe",
+  "underConstruction": "Cette section est en cours de construction"
 }

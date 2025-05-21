@@ -159,5 +159,6 @@
   "goBack": "Go back",
   "passwordHint": "********",
   "showPassword": "Show password",
-  "hidePassword": "Hide password"
+  "hidePassword": "Hide password",
+  "underConstruction": "This section is under construction"
 }
