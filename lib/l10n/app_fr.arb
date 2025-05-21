@@ -158,5 +158,6 @@
   "passwordHint": "********",
   "showPassword": "Afficher le mot de passe",
   "hidePassword": "Masquer le mot de passe",
-  "underConstruction": "Cette section est en cours de construction"
+  "underConstruction": "Cette section est en cours de construction",
+  "loginFailed": "Échec de la connexion"
 }
