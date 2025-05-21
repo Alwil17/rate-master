@@ -1,4 +1,3 @@
-// shared/widgets/primary_button.dart
 import 'package:flutter/material.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 
