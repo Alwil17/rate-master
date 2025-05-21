@@ -2,19 +2,17 @@
 import 'package:flutter/material.dart';
 // Third-party packages
 import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 // Internal packages
 import 'package:rate_master/providers/auth_provider.dart';
 import 'package:rate_master/screens/auth/widgets/auth_vector.dart';
-import 'package:rate_master/generated/assets.dart';
 import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/shared/widgets/primary_button.dart';
 import 'package:rate_master/shared/widgets/reusable_text_field.dart';
-import 'package:rate_master/shared/widgets/text_field_builder.dart';
 // Localizations
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Widgets
 import 'widgets/auth_back_button.dart';
 import 'widgets/auth_form_card.dart';
 import 'widgets/auth_header_image.dart';
