@@ -5,10 +5,12 @@ import 'package:rate_master/shared/api/api_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+/// [AuthProvider] manages authentication state, user info, and error/loading flags.
 class AuthProvider with ChangeNotifier {
   final SharedPreferences prefs;
+
   String? _token;
-  User?   _user;
+  User? _user;
   bool _isLoading = false;
   String? _error;
 
@@ -16,12 +18,14 @@ class AuthProvider with ChangeNotifier {
     _loadFromPrefs();
   }
 
+  /// Public getters
   bool get isAuthenticated => _token != null;
   String? get token => _token;
-  User? get user  => _user;
-  bool get isLoading  => _isLoading;
+  User? get user => _user;
+  bool get isLoading => _isLoading;
   String? get error => _error;
 
+  /// Load token and user from shared preferences on startup.
   Future<void> _loadFromPrefs() async {
     _token = prefs.getString(_kToken);
     final userJson = prefs.getString(_kUser);
@@ -31,30 +35,30 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Save token and user into shared preferences.
   Future<void> _saveToPrefs(String token, User user) async {
     _token = token;
-    _user  = user;
+    _user = user;
     await prefs.setString(_kToken, token);
     await prefs.setString(_kUser, jsonEncode(user.toJson()));
     notifyListeners();
   }
 
-  Future<void> _setString(String key, String value) async {
-    await prefs.setString(key, value);
+  /// Perform login with [email] and [password].
+  /// Updates [isLoading], [error], [token], and [user].
+  /// Returns true on success, false otherwise.
+  Future<bool> login(String email, String password) async {
+    _isLoading = true;
+    _error = null;
     notifyListeners();
-  }
 
-  Future<dynamic> login(String email, String password) async {
     try {
-      _isLoading = true;
-      _error = null;
-      notifyListeners();
-
-      final tokenResponse = await http.post(
+      // 1. Retrieve access token
+      final tokenRes = await http.post(
         Uri.parse(ApiRoutes.token),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': '*/*',
+          'Accept': 'application/json',
         },
         body: {
           'username': email,
@@ -62,131 +66,51 @@ class AuthProvider with ChangeNotifier {
         },
       );
 
-      if (tokenResponse.statusCode == 200) {
-        final tokenBody = jsonDecode(tokenResponse.body);
-        final token = tokenBody['access_token'];
-
-        // Ensuite, récupérer les infos utilisateur via /me ou /users/me
-        final userResponse = await http.get(
-          Uri.parse(ApiRoutes.me),
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'application/json',
-          },
-        );
-
-        if (userResponse.statusCode == 200) {
-          final userMap = jsonDecode(userResponse.body) as Map<String, dynamic>;
-          final user = User.fromJson(userMap).copyWith(token: token);
-
-          // 3. Sauvegarde locale
-          await _saveToPrefs(token, user);
-          _isLoading = false;
-          _error = null;
-          notifyListeners();
-          return true;
-        } else {
-          _isLoading = false;
-          _error = jsonDecode(userResponse.body)['detail'][0]['msg'];
-          notifyListeners();
-          return jsonDecode(userResponse.body)['detail'][0]['msg'];
-        }
-      } else {
+      if (tokenRes.statusCode != 200) {
+        final body = jsonDecode(tokenRes.body);
+        _error = _parseError(body);
         _isLoading = false;
-        _error = jsonDecode(tokenResponse.body);
         notifyListeners();
-        return jsonDecode(tokenResponse.body);
-      }
-    } catch (e) {
-      _isLoading = false;
-      _error = 'Erreur réseau ou serveur.';
-      notifyListeners();
-      return {
-        'detail': [
-          {'msg': 'Erreur réseau ou serveur.'}
-        ]
-      };
-    }
-  }
-
-  Future<dynamic> register(Map<String, String> datas) async {
-    try {
-      // Étape 1 : Inscription
-      final registerResponse = await http.post(
-        Uri.parse(ApiRoutes.register),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'name': datas["name"],
-          'email': datas["email"],
-          'password': datas["password"],
-        }),
-      );
-
-      if (registerResponse.statusCode != 200 && registerResponse.statusCode != 201) {
-        return jsonDecode(registerResponse.body);
-      }
-
-      return await login(datas["email"]!, datas["password"]!);
-
-    } catch (e) {
-      return {
-        'detail': [
-          {'msg': 'Erreur réseau ou serveur.'}
-        ]
-      };
-    }
-  }
-
-  Future<bool> verifyToken() async {
-    try {
-      final tokenResponse = await http.get(
-        Uri.parse(ApiRoutes.me),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': '*/*',
-          'Authorization': 'Bearer $token'
-        },
-      );
-      if (tokenResponse.statusCode == 200) {
-        // Si tu veux, tu peux mettre à jour l'utilisateur ici
-        return true;
-      } else {
         return false;
       }
+
+      final tokenBody = jsonDecode(tokenRes.body);
+      final accessToken = tokenBody['access_token'] as String;
+
+      // 2. Fetch user profile
+      final userRes = await http.get(
+        Uri.parse(ApiRoutes.me),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (userRes.statusCode != 200) {
+        final body = jsonDecode(userRes.body);
+        _error = _parseError(body);
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+      final userMap = jsonDecode(userRes.body) as Map<String, dynamic>;
+      final user = User.fromJson(userMap).copyWith(token: accessToken);
+
+      // 3. Save credentials locally
+      await _saveToPrefs(accessToken, user);
+      _isLoading = false;
+      notifyListeners();
+      return true;
     } catch (e) {
+      _error = 'Network or server error.';
+      _isLoading = false;
+      notifyListeners();
       return false;
     }
   }
 
-  Future<dynamic> deleteAccount() async {
-    try {
-      // Envoie une requête DELETE à l'API pour supprimer le compte
-      final response = await http.delete(
-        Uri.parse(ApiRoutes.deleteAccount), // Assurez-vous que cette route est définie dans `ApiRoutes`
-        headers: {
-          'Authorization': 'Bearer $_token',
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 204) {
-        // Suppression réussie, nettoie les données locales
-        await logout();
-        return true;
-      } else {
-        // Gère les erreurs de l'API
-        return jsonDecode(response.body);
-      }
-    } catch (e) {
-      // Gère les erreurs réseau ou autres
-      return {
-        'detail': [
-          {'msg': 'Impossible de supprimer le compte : $e'}
-        ]
-      };
-    }
-  }
-
+  /// Logout clears token, user, and shared preferences.
   Future<void> logout() async {
     _token = null;
     _user = null;
@@ -195,10 +119,71 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> updateUser(Map<String, String> updatedData) async {
+  /// Register a new user and perform login on success.
+  Future<bool> register(Map<String, String> data) async {
+    try {
+      final registerRes = await http.post(
+        Uri.parse(ApiRoutes.register),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': data['name'],
+          'email': data['email'],
+          'password': data['password'],
+        }),
+      );
+
+      if (registerRes.statusCode != 200 && registerRes.statusCode != 201) {
+        final body = jsonDecode(registerRes.body);
+        _error = _parseError(body);
+        notifyListeners();
+        return false;
+      }
+
+      // Auto-login after successful registration
+      return await login(data['email']!, data['password']!);
+    } catch (e) {
+      _error = 'Network or server error.';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Delete the current user's account and logout on success.
+  Future<bool> deleteAccount() async {
+    if (_token == null) return false;
+
+    try {
+      final response = await http.delete(
+        Uri.parse(ApiRoutes.deleteAccount),
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        await logout();
+        return true;
+      }
+
+      final body = jsonDecode(response.body);
+      _error = _parseError(body);
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = 'Network or server error.';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Update user profile and persist changes.
+  Future<bool> updateUser(Map<String, String> updatedData) async {
+    if (_token == null) return false;
+
     try {
       final response = await http.put(
-        Uri.parse(ApiRoutes.updateUser), // Assurez-vous que cette route est définie dans `ApiRoutes`
+        Uri.parse(ApiRoutes.updateUser),
         headers: {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json',
@@ -206,27 +191,37 @@ class AuthProvider with ChangeNotifier {
         body: jsonEncode(updatedData),
       );
 
-      if (response.statusCode == 200) {
-        final updatedUser = User.fromJson(jsonDecode(response.body));
-        await _saveToPrefs(_token!, updatedUser); // Met à jour localement
-        return true;
-      } else {
-        return jsonDecode(response.body); // Retourne les erreurs éventuelles
+      if (response.statusCode != 200) {
+        final body = jsonDecode(response.body);
+        _error = _parseError(body);
+        notifyListeners();
+        return false;
       }
+
+      final updatedUser = User.fromJson(jsonDecode(response.body));
+      await _saveToPrefs(_token!, updatedUser);
+      return true;
     } catch (e) {
-      return {
-        'detail': [
-          {'msg': 'Erreur réseau ou serveur.'}
-        ]
-      };
+      _error = 'Network or server error.';
+      notifyListeners();
+      return false;
     }
   }
 
-  // Setters with SharedPreferences updates
-  set user(User? value) {
-    String userJson = jsonEncode(value!.toJson());
-    _setString(_kUser, userJson);
-    _setString(_kToken, value.token!);
+  /// Helper to extract a user-friendly error message from API error bodies.
+  String _parseError(dynamic body) {
+    try {
+      if (body is Map<String, dynamic> && body.containsKey('detail')) {
+        final detail = body['detail'];
+        if (detail is List && detail.isNotEmpty && detail[0] is Map) {
+          return detail[0]['msg'] as String;
+        }
+        if (detail is String) return detail;
+      }
+      return body.toString();
+    } catch (_) {
+      return 'Unknown error';
+    }
   }
 }
 
