@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
@@ -61,10 +60,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await EasyLoading.dismiss();
 
       if (response is bool && response == true) {
-        await EasyLoading.showSuccess(AppLocalizations.of(context)!.registerSuccess);
+        await EasyLoading.showSuccess(
+            AppLocalizations.of(context)!.registerSuccess);
         // return back to login
         context.goNamed(APP_PAGES.splash.toName);
-      } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
+      } else if (response is Map<String, dynamic> &&
+          response.containsKey('detail')) {
         final errorMessages = ApiHelper.parseApiErrors(response['detail']);
         _showError(errorMessages.join("\n"));
       } else {
@@ -95,7 +96,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -119,7 +119,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     elevation: 1,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
-                  child: PhosphorIcon(PhosphorIconsRegular.caretLeft, color: Theme.of(context).iconTheme.color,),
+                  child: PhosphorIcon(
+                    PhosphorIconsRegular.caretLeft,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                 ),
               ),
             ),
@@ -141,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Image.asset(
         Assets.imagesShootingStar, // Votre image du médecin ici
-        height: 150, // Vous pouvez ajuster la hauteur
+        height: 100, // Vous pouvez ajuster la hauteur
       ),
     );
   }
@@ -150,71 +153,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Form(
         key: _formKey,
         child: Center(
-          child: Container(
-            padding: EdgeInsets.all(20),
+          child: Card(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    AppLocalizations.of(context)!.registering,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      AppLocalizations.of(context)!.registering,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // fullname field
-                Text(
-                  AppLocalizations.of(context)!.fullname,
-                  style: const TextStyle(color: Colors.black54, fontSize: 16),
-                ),
-                buildTextField(context,
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // fullname field
+                  Text(
+                    AppLocalizations.of(context)!.fullname,
+                    style: const TextStyle(color: Colors.black54, fontSize: 16),
+                  ),
+                  buildTextField(
+                    context,
                     hintText: AppLocalizations.of(context)!.enterName,
                     controller: _nameController,
                     keyboardType: TextInputType.name,
-                inputAction: TextInputAction.next,
-                ),
-                // email field
-                Text(
-                  AppLocalizations.of(context)!.yourEmail,
-                  style: const TextStyle(color: Colors.black54, fontSize: 16),
-                ),
-                buildTextField(context,
-                    hintText: 'Ex: test@example.com',
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    inputAction: TextInputAction.next),
-                // password field
-                Text(
-                  AppLocalizations.of(context)!.password,
-                  style: const TextStyle(color: Colors.black54, fontSize: 16),
-                ),
+                    inputAction: TextInputAction.next,
+                  ),
+                  // email field
+                  Text(
+                    AppLocalizations.of(context)!.yourEmail,
+                    style: const TextStyle(color: Colors.black54, fontSize: 16),
+                  ),
+                  buildTextField(context,
+                      hintText: 'Ex: test@example.com',
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      inputAction: TextInputAction.next),
+                  // password field
+                  Text(
+                    AppLocalizations.of(context)!.password,
+                    style: const TextStyle(color: Colors.black54, fontSize: 16),
+                  ),
 
-                _buildPasswordField(showIcon: false),
-                // Bouton de Connexion
-                _buildRegisterButton(),
-                SizedBox(height: 10),
-                // Sign up now
-                _buildSignInOption(),
-              ],
+                  _buildPasswordField(showIcon: false),
+                  // Bouton de Connexion
+                  _buildRegisterButton(),
+                  SizedBox(height: 10),
+                  // Sign up now
+                  _buildSignInOption(),
+                ],
+              ),
             ),
           ),
         ));
