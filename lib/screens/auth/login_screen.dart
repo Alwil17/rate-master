@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   late AuthProvider auth;
+  bool _isLoading = false;
 
   // Controllers for text fields to keep the state
   final TextEditingController _emailController = TextEditingController();
@@ -49,7 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login() async {
     FocusScope.of(context).requestFocus(FocusNode());
+    if (!_formKey.currentState!.validate()) return;
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
       final String user = _emailController.text.trim();
       final String password = _passwordController.text.trim();
 
@@ -66,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response is bool && response == true) {
         await EasyLoading.showSuccess(AppLocalizations.of(context)!.loginSuccess);
+        setState(() => _isLoading = false);
         // return back to login
         context.goNamed(APP_PAGES.splash.toName);
       } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
@@ -75,6 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
       }
       _hideLoader();
+
+      setState(() => _isLoading = false);
     }
   }
 
@@ -228,16 +234,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _login,
+        onPressed: _isLoading ? null : _login,
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 15),
           backgroundColor: AppColors.accent, // Couleur bouton
           shape: StadiumBorder(),
         ),
-        child: Text(
-          AppLocalizations.of(context)!.loginNow,
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
+        child: _isLoading
+            ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+            : Text(AppLocalizations.of(context)!.loginNow,
+            style: TextStyle(fontSize: 16, color: Colors.white)),
       ),
     );
   }
