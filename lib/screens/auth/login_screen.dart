@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Image.asset(
         Assets.imagesShootingStar, // Votre image du médecin ici
-        height: 150, // Vous pouvez ajuster la hauteur
+        height: 120, // Vous pouvez ajuster la hauteur
       ),
     );
   }
@@ -125,21 +125,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Form(
         key: _formKey,
         child: Center(
-          child: Container(
-            padding: EdgeInsets.all(20),
+          child: Card(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
+            child:  Padding(padding: EdgeInsets.all(20), child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
@@ -162,11 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: const TextStyle(color: Colors.black54, fontSize: 16),
                 ),
                 buildTextField(
-                  context,
-                  hintText: 'test@example.com',
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  inputAction: TextInputAction.next
+                    context,
+                    hintText: 'test@example.com',
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    inputAction: TextInputAction.next
                 ),
                 // Champ Mot de passe
                 Row(
@@ -175,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       AppLocalizations.of(context)!.password,
                       style:
-                          const TextStyle(color: Colors.black54, fontSize: 16),
+                      const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
                     TextButton(
                       onPressed: null,
@@ -194,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Lien "S'inscrire maintenant"
                 _buildSignUpOption(),
               ],
-            ),
+            ),) ,
           ),
         ));
   }
