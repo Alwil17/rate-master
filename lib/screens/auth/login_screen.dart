@@ -113,13 +113,13 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 20,
               ),
-              // Champ Email/Téléphone
+              // email field
               Text(
                 AppLocalizations.of(context)!.yourEmail,
                 style: const TextStyle(color: Colors.black54, fontSize: 16),
               ),
               _buildEmailField(),
-              // Champ Mot de passe
+              // password field
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -129,8 +129,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.black54, fontSize: 16),
                   ),
                   TextButton(
-                    onPressed: () =>
-                        context.pushNamed(APP_PAGES.forgotPassword.toName),
+                    onPressed: auth.isLoading ? null : () {
+                      context.pushNamed(APP_PAGES.forgotPassword.toName);
+                    },
                     child: Text(
                       AppLocalizations.of(context)!.forgotPassword,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blueColor),
@@ -157,7 +158,10 @@ class _LoginScreenState extends State<LoginScreen> {
               AuthCallToAction(
                 label: AppLocalizations.of(context)!.noAccount,
                 actionText: AppLocalizations.of(context)!.registerNow,
-                onPressed: () => context.pushNamed(APP_PAGES.register.toName),
+                onPressed: auth.isLoading
+                    ? null
+                    : () => context.pushNamed(APP_PAGES.register.toName,
+                ),
               ),
             ],
           ),
