@@ -13,15 +13,15 @@ import 'package:rate_master/shared/theme/theme.dart';
 ///  }
 /// )
 /// ```
-class SignUpOption extends StatelessWidget {
+class AuthCallToAction extends StatelessWidget {
   /// The text to display before the action button.
   final String label;
   /// The text to display inside the action button.
   final String actionText;
   /// Called when the button is tapped. If null, the button is disabled.
   final VoidCallback? onPressed;
-  /// Creates a [SignUpOption].
-  const SignUpOption({super.key, required this.label, required this.actionText, this.onPressed});
+  /// Creates a [AuthCallToAction].
+  const AuthCallToAction({super.key, required this.label, required this.actionText, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
