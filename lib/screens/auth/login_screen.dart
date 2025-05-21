@@ -46,29 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+
   Future<void> _login() async {
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
 
-    // assume both fields are non-empty and valid
-    final String user = _emailController.text.trim();
-    final String password = _passwordController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final success = await auth.login(email, password);
 
-    if (user.isEmpty || password.isEmpty) {
-      Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
-      return;
-    }
-
-    final response = await auth.login(user, password);
-
-    if (response is bool && response == true) {
+    if (success) {
       // return back to login
       context.goNamed(APP_PAGES.splash.toName);
-    } else if (response is Map<String, dynamic> && response.containsKey('detail')) {
-      final errorMessages = ApiHelper.parseApiErrors(response['detail']);
-      Utils.showError(context,errorMessages.join("\n"));
-    } else {
-      Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
     }
   }
 
@@ -190,34 +179,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
                 buildTextField(
-                    context,
-                    hintText: AppLocalizations.of(context)!.passwordHint,
-                    controller: _passwordController,
-                    keyboardType: TextInputType.emailAddress,
-                    inputAction: TextInputAction.done,
-                    obscureText: !_isPasswordVisible,
-                    onSubmitted: (_) => _login(),
-                    validator: (v) {
-                      if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
-                      if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.passwordHint,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                        tooltip: _isPasswordVisible
-                            ? AppLocalizations.of(context)!.hidePassword
-                            : AppLocalizations.of(context)!.showPassword,
+                  context,
+                  hintText: AppLocalizations.of(context)!.passwordHint,
+                  controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_isPasswordVisible,
+                  inputAction: TextInputAction.done,
+                  onSubmitted: (_) => _login(),
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
+                    if (v.length < 6) return AppLocalizations.of(context)!.passwordTooShort;
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                       ),
-                    )
+                      onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+                      tooltip: _isPasswordVisible
+                          ? AppLocalizations.of(context)!.hidePassword
+                          : AppLocalizations.of(context)!.showPassword,
+                    ),
+                  ),
                 ),
                 if (auth.error != null)
                   Padding(
