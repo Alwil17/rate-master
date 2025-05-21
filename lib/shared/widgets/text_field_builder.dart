@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget buildTextField(BuildContext context, {
   required String hintText,
@@ -7,21 +6,22 @@ Widget buildTextField(BuildContext context, {
   required TextInputType keyboardType,
   required TextInputAction inputAction,
   IconData? icon,
+  String? Function(String?)? validator,
+  InputDecoration? decoration,
+  bool obscureText = false,
+  Function(String)? onSubmitted,
 }) {
   return Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 16),
     child: TextFormField(
       textInputAction: inputAction,
       autofocus: true,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return AppLocalizations.of(context)!.fieldValidatorMessage;
-        }
-        return null;
-      },
+      validator: validator,
       controller: controller,
       keyboardType: keyboardType,
-      decoration: InputDecoration(
+      obscureText: obscureText,
+      onFieldSubmitted: onSubmitted,
+      decoration: decoration ?? InputDecoration(
         prefixIcon: (icon != null) ? Icon(icon): null,
         hintText: hintText,
       ),

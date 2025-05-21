@@ -150,5 +150,17 @@
   "accountDeletion": "Account Deletion",
   "childProtection": "Child Protection",
   "profileUpdated": "Your profile has been updated successfully.",
-  "saveChanges": "Save changes"
+  "saveChanges": "Save changes",
+  "emailHint": "test@example.com",
+  "enterEmail": "Enter your email address",
+  "invalidEmail": "Invalid email address",
+  "enterPassword": "Enter your password",
+  "passwordTooShort": "Password must be at least 6 characters long",
+  "goBack": "Go back",
+  "passwordHint": "********",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "underConstruction": "This section is under construction",
+  "loginFailed": "Login failed",
+  "registerFailed": "Registration failed"
 }

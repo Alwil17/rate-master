@@ -12,6 +12,7 @@ abstract class Routes {
   static const String notifications = "/notifications";
   static const String about = "/about";
   static const String editProfile = "/editProfile";
+  static const String forgotPassword = "/forgotPassword";
 }
 
 enum APP_PAGES {
@@ -28,6 +29,7 @@ enum APP_PAGES {
   notifications,
   about,
   editProfile,
+  forgotPassword,
 }
 
 extension AppPageExtension on APP_PAGES {
@@ -59,6 +61,8 @@ extension AppPageExtension on APP_PAGES {
         return Routes.about;
       case APP_PAGES.editProfile:
         return Routes.editProfile;
+      case APP_PAGES.forgotPassword:
+        return Routes.forgotPassword;
     }
   }
 
