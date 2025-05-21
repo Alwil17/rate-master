@@ -151,6 +151,5 @@
   "childProtection": "Child Protection",
   "profileUpdated": "Your profile has been updated successfully.",
   "saveChanges": "Save changes",
-  "emailHint": "Enter your email address",
-  "emailPlaceHolder": "test@example.com"
+  "emailHint": "test@example.com"
 }
