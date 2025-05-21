@@ -150,5 +150,7 @@
   "accountDeletion": "Account Deletion",
   "childProtection": "Child Protection",
   "profileUpdated": "Your profile has been updated successfully.",
-  "saveChanges": "Save changes"
+  "saveChanges": "Save changes",
+  "emailHint": "Enter your email address",
+  "emailPlaceHolder": "test@example.com"
 }

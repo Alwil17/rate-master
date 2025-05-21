@@ -148,5 +148,7 @@
   "accountDeletion": "Suppression de compte",
   "childProtection": "Protection des enfants",
   "profileUpdated": "Votre profil a été mis à jour avec succès.",
-  "saveChanges": "Enregistrer les modifications"
+  "saveChanges": "Enregistrer les modifications",
+  "emailHint": "Entrez votre adresse e-mail",
+  "emailPlaceHolder": "test@exemple.com"
 }
