@@ -157,5 +157,7 @@
   "enterPassword": "Enter your password",
   "passwordTooShort": "Password must be at least 6 characters long",
   "goBack": "Go back",
-  "passwordHint": "********"
+  "passwordHint": "********",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password"
 }
