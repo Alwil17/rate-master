@@ -9,6 +9,7 @@ class AuthProvider with ChangeNotifier {
   final SharedPreferences prefs;
   String? _token;
   User?   _user;
+  bool _isLoading = false;
 
   AuthProvider(this.prefs) {
     _loadFromPrefs();
@@ -17,6 +18,7 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => _token != null;
   String? get token => _token;
   User? get user  => _user;
+  bool get isLoading  => _isLoading;
 
   Future<void> _loadFromPrefs() async {
     _token = prefs.getString(_kToken);
@@ -42,6 +44,9 @@ class AuthProvider with ChangeNotifier {
 
   Future<dynamic> login(String email, String password) async {
     try {
+      _isLoading = true;
+      notifyListeners();
+
       final tokenResponse = await http.post(
         Uri.parse(ApiRoutes.token),
         headers: {
@@ -73,15 +78,22 @@ class AuthProvider with ChangeNotifier {
 
           // 3. Sauvegarde locale
           await _saveToPrefs(token, user);
-
+          _isLoading = false;
+          notifyListeners();
           return true;
         } else {
+          _isLoading = false;
+          notifyListeners();
           return jsonDecode(userResponse.body);
         }
       } else {
+        _isLoading = false;
+        notifyListeners();
         return jsonDecode(tokenResponse.body);
       }
     } catch (e) {
+      _isLoading = false;
+      notifyListeners();
       return {
         'detail': [
           {'msg': 'Erreur réseau ou serveur.'}
