@@ -7,21 +7,20 @@ Widget buildTextField(BuildContext context, {
   required TextInputType keyboardType,
   required TextInputAction inputAction,
   IconData? icon,
+  String? Function(String?)? validator,
+  InputDecoration? decoration,
+  bool obscureText = false,
 }) {
   return Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 16),
     child: TextFormField(
       textInputAction: inputAction,
       autofocus: true,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return AppLocalizations.of(context)!.fieldValidatorMessage;
-        }
-        return null;
-      },
+      validator: validator,
       controller: controller,
       keyboardType: keyboardType,
-      decoration: InputDecoration(
+      obscureText: obscureText,
+      decoration: decoration ?? InputDecoration(
         prefixIcon: (icon != null) ? Icon(icon): null,
         hintText: hintText,
       ),
