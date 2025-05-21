@@ -36,6 +36,17 @@ class _LoginScreenState extends State<LoginScreen> {
     auth = Provider.of<AuthProvider>(context, listen: false);
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _hideLoader() async {
+    await EasyLoading.dismiss();
+  }
+
   Future<void> _login() async {
     FocusScope.of(context).requestFocus(FocusNode());
     if (_formKey.currentState!.validate()) {
@@ -51,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final response = await auth.login(user, password);
 
-      await EasyLoading.dismiss();
+      _hideLoader();
 
       if (response is bool && response == true) {
         await EasyLoading.showSuccess(AppLocalizations.of(context)!.loginSuccess);
@@ -63,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         Utils.showError(context, AppLocalizations.of(context)!.fillAllFields);
       }
-      await EasyLoading.dismiss();
+      _hideLoader();
     }
   }
 
