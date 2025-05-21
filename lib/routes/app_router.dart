@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:rate_master/screens/about/about_screen.dart';
+import 'package:rate_master/screens/auth/forgot_password_screen.dart';
 import 'package:rate_master/screens/auth/login_screen.dart';
 import 'package:rate_master/screens/auth/register_screen.dart';
 import 'package:rate_master/screens/home/home_screen.dart';
@@ -38,6 +39,11 @@ class AppRouter {
         path: APP_PAGES.login.toPath,
         name: APP_PAGES.login.toName,
         builder: (context, state) => LoginScreen(),
+        routes: [
+          GoRoute(
+            path: APP_PAGES.forgotPassword.toPath,
+            name: APP_PAGES.forgotPassword.toName,
+            builder: (context, state) => ForgotPasswordScreen(),
       ),
       GoRoute(
         path: APP_PAGES.register.toPath,
