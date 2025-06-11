@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       key: _scaffoldKey,
-      appBar: homeAppBar(context, null),
+      appBar: homeAppBar(context, authProvider.user! , null),
       bottomNavigationBar: ExpandingBottomNav(items: Constants.navItems),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
