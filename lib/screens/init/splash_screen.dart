@@ -6,6 +6,7 @@ import 'package:rate_master/providers/category_provider.dart';
 import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
+import 'package:rate_master/services/token_service.dart';
 import 'package:rate_master/shared/widgets/bottom_vector.dart';
 import 'package:rate_master/shared/widgets/cicle_vector.dart';
 import 'package:rate_master/shared/widgets/top_corner.dart';
@@ -39,41 +40,60 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final itemProvider = Provider.of<ItemProvider>(context, listen: false);
-      final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
-      final tagProvider = Provider.of<TagProvider>(context, listen: false);
-      final ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+      // Récupérer le TokenService pour vérifier si l'utilisateur est authentifié
+      final tokenService = Provider.of<TokenService>(context, listen: false);
+      final isAuthenticated = await tokenService.isAuthenticated();
 
-      if (authProvider.isAuthenticated) {
+      if (isAuthenticated) {
+        // Si nous avons des tokens valides, s'assurer que le profil utilisateur est chargé
         await authProvider.refreshProfile();
 
-        await Future.wait([
-          itemProvider.fetchItems(),
-          itemProvider.fetchRecommandations(authProvider.user!.id),
-          categoryProvider.fetchCategories(),
-          tagProvider.fetchTags(),
-          ratingProvider.fetchMyReviews(authProvider.user!.id)
-        ]);
+        final itemProvider = Provider.of<ItemProvider>(context, listen: false);
+        final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
+        final tagProvider = Provider.of<TagProvider>(context, listen: false);
+        final ratingProvider = Provider.of<RatingProvider>(context, listen: false);
 
-        if (mounted) {
-          setState(() => _isLoading = false);
-          context.goNamed(APP_PAGES.home.toName);
+        // Vérifier que le profil utilisateur a bien été chargé
+        if (authProvider.user != null) {
+          await Future.wait([
+            itemProvider.fetchItems(),
+            itemProvider.fetchRecommandations(authProvider.user!.id),
+            categoryProvider.fetchCategories(),
+            tagProvider.fetchTags(),
+            ratingProvider.fetchMyReviews(authProvider.user!.id)
+          ]);
+
+          if (mounted) {
+            setState(() => _isLoading = false);
+            context.goNamed(APP_PAGES.home.toName);
+          }
+        } else {
+          // Si pour une raison quelconque le profil utilisateur n'a pas pu être chargé
+          // malgré des tokens valides, déconnectons l'utilisateur
+          await authProvider.logout();
+          if (mounted) {
+            context.goNamed(APP_PAGES.welcome.toName);
+          }
         }
       } else {
         if (mounted) {
+          setState(() => _isLoading = false);
           context.goNamed(APP_PAGES.welcome.toName);
         }
       }
     } catch (e) {
+      print('Error during app initialization: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(AppLocalizations.of(context)!.errorLoadingApp),
         ));
         setState(() => _isLoading = false);
+        
+        // En cas d'erreur, rediriger vers la page de bienvenue
+        context.goNamed(APP_PAGES.welcome.toName);
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
