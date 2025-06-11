@@ -12,7 +12,7 @@ class AuthenticationException implements Exception {
   AuthenticationException(this.message);
 
   @override
-  String toString() => 'AuthenticationException: $message';
+  String toString() => message;
 }
 
 class AuthService {
