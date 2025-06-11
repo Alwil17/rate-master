@@ -1,57 +1,43 @@
 class User {
   final int id;
-  final String name; // name in API
+  final String name;
   final String email;
-  final String? token;
+  final String? role;
   final String? imageUrl;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   User({
     required this.id,
     required this.name,
     required this.email,
-    this.token,
+    this.role,
     this.imageUrl,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  // Fonction pour convertir un Map (données JSON) en objet User
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      token: json['token'],
-      imageUrl: json['image_url'] as String?,
+      role: json['role'],
+      imageUrl: json['image_url'],
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
     );
   }
 
-  // Fonction pour convertir un objet User en Map (pour SharedPreferences)
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'email': email,
-      'token': token,
+      'role': role,
       'image_url': imageUrl,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
     };
-  }
-
-  @override
-  String toString() {
-    return name;
-  }
-
-  User copyWith({
-    int? id,
-    String? name,
-    String? email,
-    String? token,
-    String? imageUrl,
-  }) {
-    return User(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        token: token ?? this.token,
-        imageUrl: imageUrl ?? this.imageUrl);
   }
 }
