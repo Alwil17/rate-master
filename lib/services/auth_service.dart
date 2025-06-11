@@ -32,7 +32,7 @@ class AuthService {
   Future<User> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/auth/token'),
+        Uri.parse(ApiRoutes.token),
         body: {
           'username': email, // FastAPI OAuth2 attend 'username'
           'password': password,
@@ -120,7 +120,7 @@ class AuthService {
   Future<User> register(Map<String, String> data) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/auth/register'),
+        Uri.parse(ApiRoutes.register),
         body: jsonEncode({
           'name': data['name'],
           'email': data['email'],
@@ -154,7 +154,7 @@ class AuthService {
     try {
       final accessToken = await _tokenService.getAccessToken();
       final response = await http.get(
-        Uri.parse('$_baseUrl/auth/me'),
+        Uri.parse(ApiRoutes.me),
         headers: {
           'Authorization': 'Bearer $accessToken',
           'Content-Type': 'application/json',
