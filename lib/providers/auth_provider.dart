@@ -9,14 +9,14 @@ enum AuthStatus {
 }
 
 class AuthProvider with ChangeNotifier {
-  final AuthService _authService;
+  final AuthService authService;
   AuthStatus _status = AuthStatus.unknown;
   User? _user;
   String? _error;
   bool _isLoading = false;
 
-  AuthProvider({AuthService? authService})
-      : _authService = authService ?? AuthService() {
+  AuthProvider({AuthService? authSrv})
+      : authService = authSrv ?? AuthService() {
     // Vérifier l'état d'authentification au démarrage
     _checkAuthStatus();
   }
@@ -29,9 +29,9 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> _checkAuthStatus() async {
     try {
-      final isLoggedIn = await _authService.isAuthenticated();
+      final isLoggedIn = await authService.isAuthenticated();
       if (isLoggedIn) {
-        _user = await _authService.fetchUserProfile();
+        _user = await authService.fetchUserProfile();
         _status = AuthStatus.authenticated;
       } else {
         _status = AuthStatus.unauthenticated;
@@ -50,7 +50,7 @@ class AuthProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      _user = await _authService.login(email, password);
+      _user = await authService.login(email, password);
       if(_user!.role != 'user') {
         await logout();
         throw AuthenticationException('Access denied: Only regular users can log in.');
@@ -75,7 +75,7 @@ class AuthProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      _user = await _authService.register(data);
+      _user = await authService.register(data);
       _status = AuthStatus.authenticated;
       _isLoading = false;
       notifyListeners();
@@ -92,7 +92,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     _isLoading = true;
     try {
-      await _authService.logout();
+      await authService.logout();
       _user = null;
       _status = AuthStatus.unauthenticated;
     } catch (e) {
@@ -105,7 +105,7 @@ class AuthProvider with ChangeNotifier {
   /// Delete the current user's account and logout on success.
   Future<bool> deleteAccount() async {
     try {
-      final actionStatus = await _authService.deleteUser();
+      final actionStatus = await authService.deleteUser();
 
       if (actionStatus) {
         await logout();
@@ -127,7 +127,7 @@ class AuthProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      _user = await _authService.editUserProfile(updatedData);
+      _user = await authService.editUserProfile(updatedData);
       _status = AuthStatus.authenticated;
       _isLoading = false;
       notifyListeners();
@@ -143,7 +143,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> refreshProfile() async {
     try {
       _isLoading = true;
-      _user = await _authService.fetchUserProfile();
+      _user = await authService.fetchUserProfile();
       _isLoading = false;
       notifyListeners();
     } catch (e) {
