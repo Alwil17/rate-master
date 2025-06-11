@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:rate_master/screens/about/about_screen.dart';
+import 'package:rate_master/screens/auth/forgot_password_screen.dart';
 import 'package:rate_master/screens/auth/login_screen.dart';
 import 'package:rate_master/screens/auth/register_screen.dart';
 import 'package:rate_master/screens/home/home_screen.dart';
@@ -8,6 +10,7 @@ import 'package:rate_master/routes/routes.dart';
 import 'package:rate_master/screens/items/item_detail_screen.dart';
 import 'package:rate_master/screens/notifications/notification_screen.dart';
 import 'package:rate_master/screens/profile/profile_screen.dart';
+import 'package:rate_master/screens/profile/widgets/edit_profile_screen.dart';
 import 'package:rate_master/screens/search/search_screen.dart';
 import 'package:rate_master/screens/settings/settings_screen.dart';
 import 'package:rate_master/screens/stats/my_activity_screen.dart';
@@ -36,6 +39,13 @@ class AppRouter {
         path: APP_PAGES.login.toPath,
         name: APP_PAGES.login.toName,
         builder: (context, state) => LoginScreen(),
+        routes: [
+          GoRoute(
+            path: APP_PAGES.forgotPassword.toPath,
+            name: APP_PAGES.forgotPassword.toName,
+            builder: (context, state) => ForgotPasswordScreen(),
+          )
+        ]
       ),
       GoRoute(
         path: APP_PAGES.register.toPath,
@@ -80,6 +90,16 @@ class AppRouter {
         path: APP_PAGES.notifications.toPath,
         name: APP_PAGES.notifications.toName,
         builder: (context, state) => NotificationScreen(),
+      ),
+      GoRoute(
+        path: APP_PAGES.about.toPath,
+        name: APP_PAGES.about.toName,
+        builder: (context, state) => AboutScreen(),
+      ),
+      GoRoute(
+        path: APP_PAGES.editProfile.toPath,
+        name: APP_PAGES.editProfile.toName,
+        builder: (context, state) => EditProfileScreen(),
       ),
     ],
     debugLogDiagnostics: true,

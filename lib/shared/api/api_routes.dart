@@ -12,4 +12,5 @@ abstract class ApiRoutes {
   static const String ratings = "$baseApi/ratings";
   static const String users = "$baseApi/users";
   static const String deleteAccount = "$baseApi/auth/remove";
+  static const String updateUser = "$baseApi/auth/edit";
 }

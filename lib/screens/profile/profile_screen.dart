@@ -162,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: locale.learnMore,
                             subtitle: locale.about,
                             icon: PhosphorIconsFill.info,
-                            onTap: () {}),
+                            onTap: () => context.pushNamed(APP_PAGES.about.toName)),
                         ProfileOptionCard(
                             title: locale.share,
                             subtitle: locale.share,
@@ -203,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         shape: StadiumBorder(),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       ),
-      onPressed: null,
+      onPressed: () => context.pushNamed(APP_PAGES.editProfile.toName),
     );
   }
 

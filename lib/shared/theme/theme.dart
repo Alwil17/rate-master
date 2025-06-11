@@ -10,6 +10,7 @@ class AppColors {
   static const Color secondaryAccent = Color(0xFF7E57C2);
   static const Color vectorsBackground = Color(0xFFBB86FC);
   static const Color darkBackground = Color(0xFF171712);
+  static const Color blueColor = Colors.blue;
 }
 
 const defaultInputBorder = OutlineInputBorder(
