@@ -64,7 +64,7 @@ class ApiService {
       final response = await http.post(
         Uri.parse(endpoint),
         headers: finalHeaders,
-        body: body != null ? jsonEncode(body) : null,
+        body: jsonEncode(body),
       );
       return await _handleResponse(response);
     } catch (e) {
@@ -80,7 +80,7 @@ class ApiService {
       final response = await http.put(
         Uri.parse(endpoint),
         headers: finalHeaders,
-        body: body != null ? jsonEncode(body) : null,
+        body: jsonEncode(body),
       );
       return await _handleResponse(response);
     } catch (e) {
