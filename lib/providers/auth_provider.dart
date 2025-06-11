@@ -152,20 +152,4 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  /// Helper to extract a user-friendly error message from API error bodies.
-  String _parseError(dynamic body) {
-    try {
-      if (body is Map<String, dynamic> && body.containsKey('detail')) {
-        final detail = body['detail'];
-        if (detail is List && detail.isNotEmpty && detail[0] is Map) {
-          return detail[0]['msg'] as String;
-        }
-        if (detail is String) return detail;
-      }
-      return body.toString();
-    } catch (_) {
-      return 'Unknown error';
-    }
-  }
 }
