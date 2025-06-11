@@ -29,7 +29,7 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (_) => AppStateProvider(prefs)..loadPreferences()),
-    ChangeNotifierProvider(create: (_) => AuthProvider(prefs)),
+    ChangeNotifierProvider(create: (_) => AuthProvider()),
     Provider<ApiService>(create: (_) => ApiService(prefs)),
     ProxyProvider<ApiService, ItemService>(update: (_, api, __) => ItemService(api),),
     ProxyProvider<ApiService, CategoryService>(update: (_, api, __) => CategoryService(api),),
