@@ -9,10 +9,12 @@ import 'package:rate_master/providers/item_provider.dart';
 import 'package:rate_master/providers/rating_provider.dart';
 import 'package:rate_master/providers/tag_provider.dart';
 import 'package:rate_master/services/api_service.dart';
+import 'package:rate_master/services/auth_service.dart';
 import 'package:rate_master/services/category_service.dart';
 import 'package:rate_master/services/item_service.dart';
 import 'package:rate_master/services/rating_service.dart';
 import 'package:rate_master/services/tag_service.dart';
+import 'package:rate_master/services/token_service.dart';
 import 'package:rate_master/shared/theme/theme.dart';
 import 'package:rate_master/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,29 +28,46 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  // Créer le TokenService une seule fois
+  final tokenService = TokenService();
+  // Créer l'ApiService avec le TokenService
+  final apiService = ApiService(tokenService: tokenService);
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (_) => AppStateProvider(prefs)..loadPreferences()),
-    ChangeNotifierProvider(create: (_) => AuthProvider()),
-    Provider<ApiService>(create: (_) => ApiService(prefs)),
-    ProxyProvider<ApiService, ItemService>(update: (_, api, __) => ItemService(api),),
-    ProxyProvider<ApiService, CategoryService>(update: (_, api, __) => CategoryService(api),),
-    ProxyProvider<ApiService, TagService>(update: (_, api, __) => TagService(api),),
-    ProxyProvider<ApiService, RatingService>(update: (_, api, __) => RatingService(api),),
+    // Fournir TokenService
+    Provider<TokenService>(create: (_) => tokenService),
+    // Fournir ApiService
+    Provider<ApiService>(create: (_) => apiService),
+    // AuthService avec TokenService
+    Provider<AuthService>(
+      create: (_) => AuthService(tokenService: tokenService),
+    ),
+    // Services qui dépendent de l'ApiService
+    ProxyProvider<ApiService, ItemService>(update: (_, api, __) => ItemService(api)),
+    ProxyProvider<ApiService, CategoryService>(update: (_, api, __) => CategoryService(api)),
+    ProxyProvider<ApiService, TagService>(update: (_, api, __) => TagService(api)),
+    ProxyProvider<ApiService, RatingService>(update: (_, api, __) => RatingService(api)),
+    // Providers qui dépendent des services
+    ChangeNotifierProxyProvider<AuthService, AuthProvider>(
+      create: (_) => AuthProvider(),
+      update: (_, authService, previous) => previous!..authService,
+    ),
     ChangeNotifierProxyProvider<ItemService, ItemProvider>(
-      create: (_) => ItemProvider(ItemService(ApiService(prefs))),
+      create: (_) => ItemProvider(ItemService(apiService)),
       update: (_, itemService, previous) => previous!..itemService,
     ),
     ChangeNotifierProxyProvider<CategoryService, CategoryProvider>(
-      create: (_) => CategoryProvider(CategoryService(ApiService(prefs))),
+      create: (_) => CategoryProvider(CategoryService(apiService)),
       update: (_, categoryService, previous) => previous!..categoryService,
     ),
     ChangeNotifierProxyProvider<TagService, TagProvider>(
-      create: (_) => TagProvider(TagService(ApiService(prefs))),
+      create: (_) => TagProvider(TagService(apiService)),
       update: (_, tagService, previous) => previous!..tagService,
     ),
     ChangeNotifierProxyProvider<RatingService, RatingProvider>(
-      create: (_) => RatingProvider(RatingService(ApiService(prefs))),
+      create: (_) => RatingProvider(RatingService(apiService)),
       update: (_, ratingService, previous) => previous!..ratingService,
     ),
   ], child: MyApp()));
