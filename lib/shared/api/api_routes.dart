@@ -1,7 +1,6 @@
 abstract class ApiRoutes {
   static const String baseUrl = "https://rating-api-fvz9.onrender.com";
   static const String baseApi = baseUrl;
-  static const String login = "$baseApi/login";
   static const String forgetPassword = "$baseApi/forgetpassword";
   static const String register = "$baseApi/auth/register";
   static const String token = "$baseApi/auth/token";
@@ -13,4 +12,5 @@ abstract class ApiRoutes {
   static const String users = "$baseApi/users";
   static const String deleteAccount = "$baseApi/auth/remove";
   static const String updateUser = "$baseApi/auth/edit";
+  static const String refreshToken = "$baseApi/auth/refresh";
 }

@@ -78,7 +78,7 @@ class ItemDetailHeader extends StatelessWidget {
     if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
       return Image.network(
         item.imageUrl!,
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
         errorBuilder: (_, __, ___) => _buildPlaceholder(context),
         loadingBuilder: (_, child, progress) =>
         progress == null ? child : const Center(child: CircularProgressIndicator()),
